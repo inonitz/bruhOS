@@ -1,2 +1,3 @@
 # bruhOS
- My Operating System, Originally forked from Poncho On Youtube. Decided to move this here because I completely changed everything he's done in the repository.
+Operating System I've been developing. 
+Decided to move this to a new repository because it is easier to work with.
