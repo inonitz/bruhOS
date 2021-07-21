@@ -29,39 +29,52 @@
 
 
 #define SPINLOCK_INIT_VALUE { FALSE }
+#define SPINLOCK_VAL(spinlock_type) (spinlock_type.flag)
 
 
 typedef struct __spinlock_type
 {
-    atomic8u_t __lock;
+    atomic8u_t flag;
 } spinlock_t;
 
 
-static void lock(spinlock_t* sl)
+/* 
+    * Tries to lock the spinlock if it is available.
+    * Otherwise, it waits until the lock is available, after which it aquires it.
+    * spinlock_t* sl - the address of the spinlock to grab.
+*/
+static void lock(spinlock_t sl)
 {
     for(;;)
     {
-        if(!atomic_exchange_ret_explicit_u8(&sl->__lock, TRUE, memory_model_acquire)) {
+        if(!atomic_exchange_ret_explicit_u8(&sl.flag, TRUE, memory_model_acquire)) {
             return;
         }
-        
-        while(atomic_load_explicit_u8(&sl->__lock, memory_model_relaxed)) {
-            pause();
+
+
+        while(atomic_load_explicit_u8(&sl.flag, memory_model_relaxed)) {
+            __asm__ volatile("pause" : : : "memory");
         }
     }
     return;
 }
 
 
-static inline bool_t try_lock(spinlock_t* sl)
+/* 
+    * Tries to lock the spinlock. 
+    * returns if succeeded or failed: 
+    * TRUE  - Lock Acquired successfully.
+    * FALSE - failed to acquire the lock, someone is using it.
+*/
+static __force_inline bool_t try_lock(spinlock_t sl)
 {
-    return !atomic_load_u8(&sl->__lock) && !atomic_exchange_ret_u8(&sl->__lock, TRUE);
+    return !atomic_load_u8(&sl.flag) && !atomic_exchange_ret_u8(&sl.flag, TRUE);
 }
 
 
-static inline void unlock(spinlock_t* sl)
+static __force_inline void unlock(spinlock_t sl)
 {
-    atomic_cmpxchg_u8(&sl->__lock, &sl->__lock, FALSE);
+    atomic_cmpxchg_u8(&sl.flag, &sl.flag, FALSE);
     return;
 }
 

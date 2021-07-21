@@ -7,6 +7,7 @@
 static TableManager pagingMan;
 
 
+// Legacy, Should be removed & NOT USED!
 void mapVirtualToPhysical(PML4* Table, void* vaddress, void* paddress) {
     PageTable*  table      = (PageTable*)VIRT(Table);
     TableEntry* ent        = nullptr; 
@@ -47,17 +48,18 @@ void mapVirtualToPhysical(PML4* Table, void* vaddress, void* paddress) {
 }
 
 
-void map_vtop(PML4* Table, void* vaddress, void* paddress, uint16_t flags)
+void map_vtop(PML4* Table, void* vaddress, void* paddress, uint64_t flags)
 {
-    PageTable*  table      = (PageTable*)VIRT(Table);
-    TableEntry* ent        = nullptr; 
-    uint64_t    address    = (uint64_t)vaddress;
-    uint64_t    indices[4] = {0};
+    PageTable*     table      = (PageTable*)VIRT(Table);
+    TableEntry*    ent        = nullptr; 
+    uint64_t       address    = (uint64_t)vaddress;
+    uint64_t       indices[4] = {0};
     address >>= 12; indices[0] = address & 0x1ff;
     address >>= 9;  indices[1] = address & 0x1ff;
     address >>= 9;  indices[2] = address & 0x1ff;
     address >>= 9;  indices[3] = address & 0x1ff;
-
+    flags = sanitize_flags(flags);
+    // printk("indices: %u %u %u %u\n", indices[0], indices[1], indices[2], indices[3]);
 
    for(uint8_t i = 0; i < 3u; ++i)
     {
@@ -65,25 +67,28 @@ void map_vtop(PML4* Table, void* vaddress, void* paddress, uint16_t flags)
         if(!ent->present)
         {
             table = VIRT_TYPE(pfa_alloc_page(DMA_NORMAL), PageTable*);
+            // printk("allocated at %X\n", PHYS(table));
             memset((void*)table, 0x00, PAGE_SIZE);
-            ent->address = (uint64_t)PHYS(table) >> 12;
-            ent->ui64 |= (uint64_t)flags;
+            ent->ui64    = flags;                       // set 1:1 flags;
+            ent->address = (uint64_t)PHYS(table) >> 12; // set address.
         }
         else {
             table = VIRT_TYPE(ent->address << 12, PageTable*); // update table for next lvl
+            // printk("available at %X\n", PHYS(table));
         }
     }
     
-    ent          = &table->entry[indices[0]];
-    ent->address = (uint64_t)paddress >> 12;
-    ent->ui64   |= (uint64_t)flags;
 
+    ent          = &table->entry[indices[0]];
+    ent->ui64    = flags;                    // set 1:1 flags;
+    ent->address = (uint64_t)paddress >> 12; // set physical address/
+    // printk("%p\n", ent->ui64);
 }
 
 
 void unmapVirtual(PML4* Table, void* vaddress)
 {
-    PageTable*  table      = (PageTable*)Table;
+    PageTable*  table      = (PageTable*)VIRT(Table);
     TableEntry* ent        = nullptr;
     uint64_t    address    = (uint64_t)vaddress;
     uint64_t    indices[4] = {0};
@@ -96,7 +101,7 @@ void unmapVirtual(PML4* Table, void* vaddress)
     ent = &table->entry[indices[3]]; 
     for(uint8_t i = 1; ent && i < 3u; ++i)
     {
-        table = (PageTable*)(((uint64_t)ent->address) << 12);
+        table = VIRT_TYPE(ent->address << 12, PageTable*);
         ent   = &table->entry[indices[3 - i]];  
     }
     if(ent == nullptr)
@@ -125,6 +130,14 @@ void handover_paging(PML4* pml4)
 PML4* getKernelCR3()
 {
     return (PML4*)pagingMan.PML4Table;
+}
+
+
+PML4* getCurrentCR3()
+{
+    uint64_t out;
+    __asm__ volatile("mov %%cr3, %0" : "=r"(out)); 
+    return (PML4*)out;
 }
 
 

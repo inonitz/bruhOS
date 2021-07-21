@@ -4,6 +4,7 @@
 #include "../std/debug.h"
 
 
+
 #define IOREGSEL_SELECT_REG_OFFSET    0
 #define IOREGWIN_READWRITE_REG_OFFSET 0x10
 #define IOAPICID_REG  0
@@ -12,6 +13,8 @@
 
 #define IOREDTBL_OFFSET_LOW(n)  (0x10 + ((n) << 1)    )
 #define IOREDTBL_OFFSET_HIGH(n) (0x10 + ((n) << 1) + 1)
+
+
 
 
 typedef struct pack __IOAPIC_version_register

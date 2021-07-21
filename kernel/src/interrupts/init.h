@@ -9,6 +9,6 @@
     * and ACPI Related devices / data structures.
     * ROXSD_t* acpi - a pointer to the Extended Root System Descriptor Pointer in memory. (XSDT)
 */
-void init_interrupts(ACPI_DESC_TABLE* acpi);
+void init_interrupts(kernel_header_t* khdr);
 
 #endif

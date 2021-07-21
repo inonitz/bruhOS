@@ -1,18 +1,18 @@
 #include "init.h"
 #include "lapic.h"
-#include "../device/timer.h"
-#include "../interrupts/router.h"
+#include "../smp/smp.h"
 #include "../interrupts/handlers.h"
-#include "../interrupts/lapicrouter.h"
+#include "../interrupts/router.h"
+#include "../device/hpet.h"
 #include "../mem/map_ptr.h"
 
 
 
-void init_acpi(ACPI_DESC_TABLE* acpi_rsdp_descriptor)
+void init_acpi(acpiCfg* acpi_config)
 {
-    KERNEL_ERROR_IF(acpi_rsdp_descriptor->extended == FALSE, NOT_IMPLEMENTED, TRUE, "ACPI 1.0 and below isn't supported. Exiting...\n");
+    KERNEL_ERROR_IF(acpi_config->extended == FALSE, NOT_IMPLEMENTED, TRUE, "ACPI 1.0 and below isn't supported. Exiting...\n");
 
-    XSDT_t*              xsdt_table  = (XSDT_t*)acpi_rsdp_descriptor->address; // already updated to virtual offset in the kernel header
+    XSDT_t*              xsdt_table  = (XSDT_t*)acpi_config->address; // already updated to virtual offset in the kernel header
     uint32_t             entries     = (xsdt_table->hdr.length - sizeof(acpi_table_header_t)) >> 3;
     bool_t               found       = FALSE;
     bool_t               lgcy_irqs   = FALSE; // if this is true, disable the PIC.
@@ -20,6 +20,7 @@ void init_acpi(ACPI_DESC_TABLE* acpi_rsdp_descriptor)
     char_t               madt_sig[4] = "APIC";
     char_t               hpet_sig[4] = "HPET";
     acpi_table_header_t* hdr;
+    paging_flags_t       flags;
     // uint64_t             tmp        = 0;
     // int_cnt_header*      controller = 0; 
 
@@ -48,17 +49,26 @@ void init_acpi(ACPI_DESC_TABLE* acpi_rsdp_descriptor)
     KERNEL_ERROR_IF(tableChecksum(&((HPET_t*)hpet)->hdr) != 1, BAD_DATA, TRUE, "    ACPI HPET Table is invalid.");
     
 
+    /* For SMP Use, we need to Set the MADT that the smp_init() will use */
+    set_madt((MADT_t*)madt);
+
+
+    /* Map LAPIC, init BSP lapic */
     lapic = VIRT_TYPE(madt->lapic_begin, volatile LAPIC_t*); 
-    toVirtual((void*)(uint64_t)madt->lapic_begin, 1);
+    toVirtualFlag((void*)(uint64_t)madt->lapic_begin, 1, 0x8000000000000013); //  1 000000000000000000000000000000000000000000000000000 000 0 0 00 1 0 0 1 1
 
+    lapic_set_base((uint64_t)lapic);
+    lapic_init();
 
-    init_lapicrouter(madt, lapic->apic_id);
-    set_lapic(lapic->apic_id, (void*)lapic); // set BSP.
-    lapic_enable((void*)lapic);
-
-
+    /* Initialize the I/O APIC & IDT Manager */
     init_irqRouter(madt);
+    
+    
+    /* Initialize the HPET Timer */
     HPET_init(hpet);    
+
+
+    /* Debugging Info about irqRouter */
     // irqRouterDescription();
     // ioAPICDescription(0);
 }

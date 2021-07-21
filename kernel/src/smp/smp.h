@@ -1,44 +1,38 @@
 #pragma once
-#ifndef __SMP_PROCESSOR_INITIALIZATION__
-#define __SMP_PROCESSOR_INITIALIZATION__
+#ifndef __SMP_INITIALIZE_PROCESSORS__
+#define __SMP_INITIALIZE_PROCESSORS__
+#include "../../../shared/def.h"
 #include "../shared/int.h"
 #include "../acpi/acpi.h"
 
 
 
 /* 
-    * Returns the physical address of the trampoline in memory, where address < 1MiB.
+    * Will attempt to initialize all available application processors in the system.
+    * Prints debugging message according to each processor
+    * algorithm:
+    *   clear interrupts
+    *   allocate trampoline for SMP
+    *   identity map trampoline
+    *   initialize the trampoline data structure for the AP core
+    *   for all lapic_ids that are not boostrap_processor (bsp):
+    *       initialize_cpu(lapic_id[i]);
+    *   unmap trampoline
+    *   free trampoline memory 
+    *   start interrupts
 */
-uint8_t* setup_trampoline();
+void smp_init(kernel_header_t* khdr);
 
 
 /* 
-    * Will wakeup the processor as defined in the intel specification,
-    * in real mode with a functioning lapic.
-    * volatile void* lapic_base       - physical address of the bootstrap lapic
-    * uint8_t        lapic_id         - the Application Processor to wakeup.
-    * uint8_t*       trampoline_start - the address in which code that puts the processor into long mode is.
+    * If you didn't supply the MADT_t in smp_init, then call this first:
+    * this function sets a static variable in smp.c that will be used as the MADT_t,
+    * IF it wasn't supplied in smp_init.
+    * MADT_t* madt - look in smp_init() for info.
+    * 
 */
-bool_t wakeup_processor(uint8_t lapic_id, uint8_t* trampoline_start);
-
-
-/* 
-    * Uses trampoline code to set the processor into long mode.
-*/
-void   set_longmode(uint8_t lapic_id);
-
-
-/* 
-    * Does everything that the functions above do, but to all AP processors.
-*/
-void   smp_init(volatile MADT_t* madt, uint8_t* trampoline_start);
-
-
-/* 
-    * What every processor will execute after the bootstrapping code.
-    * This function will set the new processor with the kernel GDT, IDT, PML4, and a new TSS.
-*/
-void smp_main();
-
+void set_madt(MADT_t* madt);
 
 #endif
+
+

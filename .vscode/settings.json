@@ -114,7 +114,13 @@
         "percpu.h": "c",
         "flags.h": "c",
         "alloc_stack.h": "c",
-        "buddylow.h": "c"
+        "buddylow.h": "c",
+        "port.h": "c",
+        "keyboard.h": "c",
+        "smp.h": "c",
+        "cpu.h": "c",
+        "lapict.h": "c",
+        "msr.h": "c"
     },
     "files.exclude": {
         "OVMFbin": true,
@@ -137,6 +143,11 @@
         "ovmf_good_bin": true,
         "tests": true,
         "tmp": false,
-        "kernel/track_events.txt": true
-    }
+        "kernel/track_events.txt": true,
+        ".gitattributes" : true,
+        "LICENSE" : true,
+        "README.md" : true
+    },
+    "C_Cpp.default.intelliSenseMode": "linux-gcc-x64",
+    "C_Cpp.intelliSenseMemoryLimit": 1024
 }

@@ -64,7 +64,8 @@ void init_irqRouter(volatile MADT_t* madt_table)
     {
         if(table->int_type == INT_CONTROLLER_IO_APIC)
         {
-            ioapic      = (IOAPIC_t*)table; toVirtual((void*)(uint64_t)ioapic->address, 1);
+            ioapic      = (IOAPIC_t*)table; 
+            toVirtualFlag((void*)(uint64_t)ioapic->address, 1, 0x8000000000000013); // 1 51*0 000 0 0 00 1 0 0 1 1
             ioapic_addr = VIRT(ioapic->address);
             irqs       += (ioapic_read_reg(VIRT(ioapic->address), IOAPICVER_REG) >> 16) & 0xFF;
             for(uint8_t i = 0; i < irqs; ++i)
@@ -188,7 +189,7 @@ void ioAPICDescription(uint8_t ioapic_id)
 }
 
 
-void installISA(uint8_t gsi, uint8_t lapic_id, IDT_ENTRY_PRIORITY priority, void* handlerAddress)
+void installISA(uint8_t gsi, uint8_t lapic_id, uint8_t priority, void* handlerAddress)
 {
     if(unlikely(gsi > 15)) {
         printk("installISA Can't allocate interrupt vectors for non-ISA interrupts\nuse installIRQ instead\n");
@@ -196,12 +197,12 @@ void installISA(uint8_t gsi, uint8_t lapic_id, IDT_ENTRY_PRIORITY priority, void
     }
     
     
-    uint8_t idx = request_vector_min_pri(priority);
+    uint8_t idx = request_vector_min(priority);
     if(idx == 0xFF) {
         printk("Couldn't install IRQ vector. try a different (higher) priority lvl\n");
         return;
     }
-    printk("[ Interrupt Installer (ISA) ] FOUND INT#%u FOR DEVICE\n", idx+32);
+    printk("       [ Interrupt Installer (ISA) ] FOUND INT#%u FOR DEVICE\n", idx+32);
 
 
     set_handler(idx, handlerAddress);
@@ -222,7 +223,7 @@ void installISA(uint8_t gsi, uint8_t lapic_id, IDT_ENTRY_PRIORITY priority, void
 }
 
 
-void installIRQ(uint8_t gsi, uint8_t lapic_id, IRQ_FLAGS flags, IDT_ENTRY_PRIORITY priority, void* handlerAddress)
+void installIRQ(uint8_t gsi, uint8_t lapic_id, IRQ_FLAGS flags, uint8_t priority, void* handlerAddress)
 {
     // set irq, destMode = physical, dest = lapic, flags = ...
     // AND do everything in installISA 
@@ -235,12 +236,12 @@ void installIRQ(uint8_t gsi, uint8_t lapic_id, IRQ_FLAGS flags, IDT_ENTRY_PRIORI
         return;
     }
 
-    uint8_t idx = request_vector_min_pri(priority);
+    uint8_t idx = request_vector_min(priority);
     if(idx == 0xFF) {
         printk("Couldn't install IRQ vector. try a different (higher) priority lvl\n");
         return;
     } 
-    printk("[ Interrupt Installer (IRQ) ] FOUND INT#%u FOR DEVICE\n", idx);
+    printk("       [ Interrupt Installer (IRQ) ] FOUND INT#%u FOR DEVICE\n", idx);
     set_handler(idx, handlerAddress);
 
 

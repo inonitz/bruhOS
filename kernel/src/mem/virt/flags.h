@@ -29,19 +29,46 @@ typedef struct __pageTableEntry_bitFlags
         struct pack 
         {
             uint8_t  present       : 1; 
-            uint8_t  writeable     : 1; // readable by default.
+            uint8_t  writeable     : 1;  // readable by default.
             uint8_t  userAccess    : 1;
-            uint8_t  always_latest : 1; //      TRUE  (write-through) - data modified in cache is always updated also in main memory.
-            uint8_t  cacheNoAccess : 1; // ^^^^ FALSE (write-back   ) - data in main memory is updated when the data is cache evicted.
-            uint8_t  padding0      : 1;
-            uint8_t  padding1      : 1;
-            uint8_t  attrib_tbl    : 1; // uses the Paging Attribute Table.
-            uint8_t  tlb_noflush   : 1; // global attribute - data won't be evicted from the TLB Cache on CR3 Change.
-            uint8_t  available     : 3; // available for the OS.
-            uint8_t  noExecution   : 1; // TRUE - can't execute code in this page.
+            uint8_t  always_latest : 1;  //      TRUE  (write-through) - data modified in cache is always updated also in main memory.
+            uint8_t  cacheNoAccess : 1;  // ^^^^ FALSE (write-back   ) - data in main memory is updated when the data is cache evicted.
+            uint8_t  padding0      : 2;
+            uint8_t  attrib_tbl    : 1;  // uses the Paging Attribute Table.
+            uint8_t  tlb_noflush   : 1;  // global attribute - data won't be evicted from the TLB Cache on CR3 Change.
+            uint8_t  available     : 3;  // available for the OS.
+            uint64_t padding1      : 51; // address + ignore0 + protkey. should never be set.
+            uint8_t  noExecution   : 1;  // TRUE - can't execute code in this page.
         };
-        uint16_t u16;
+        QWORD qword;
     };
 } paging_flags_t;
+
+
+/* 
+    * clears the paging_flags from unwanted bits.
+    * Because the flags are 1:1 from the paging tables,
+    * some attributes should NOT be set by paging_flags_t,
+    * which means we need to clear them.
+    * NOTE:
+    * 0x8000000000000f9f == 0b1000000000000000000000000000000000000000000000000000111110011111.
+    * the bits im keeping are:
+    *   present
+    *   writeable
+    *   userAccess
+    *   always_latest
+    *   cacheNoAccess
+    * 
+    *   attrib_tbl 
+    *   tlb_noflush
+    *   available
+    *   
+    *   noExecution
+    * 
+*/
+static uint64_t __force_inline sanitize_flags(uint64_t flags)
+{
+    return flags & 0x8000000000000f9f;
+}
 
 #endif

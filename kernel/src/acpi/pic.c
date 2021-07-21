@@ -5,7 +5,7 @@
 
 // define's taken from https://github.com/pdoane/osdev/blob/master/time/pit.c.
 // I don't give enough shit about this timer that I'm going to write comprehensive
-// and understandable code.
+// and understandable code for it.
 #define PIT_COUNTER0                    0x40
 #define PIT_CMD                         0x43
 

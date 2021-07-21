@@ -186,12 +186,15 @@ void lowmem_buddy_init_free_regions(
 		}
 	}
 
-
+	// NOTE: When Memory is 512MB, The code from here and on is very buggy.
+	// I suspect it's probably previous code, but I might be wrong.
+	// for 256MB it works fine, so idk.
+	// For now I have SMP to work on, so I'll get that done, then I'll (Probably) Fix this.
 	count = 0;
 	for(int64_t i = 0; i < TREE_SIZE; ++i) {
 		count += NODE_AT(mman, i).state;
 	}
-
+	// printk("counted %u free states\n", count);
 
 	uint32_t indices[count + 1];
 	uint32_t lg2idx [count + 1];
@@ -201,12 +204,18 @@ void lowmem_buddy_init_free_regions(
 		indices[idx] = i;
 		lg2idx[idx]  = log2ui(i + 1u);
 		idx 		+= NODE_AT(mman, i).state;
+		// if(NODE_AT(mman, i).state)
+		// 	printk("%u %u %u | ", i, indices[i], lg2idx[i]);
 	}
 	for(uint32_t i = 0; i < count; ++i)
 	{
 		// printk("idx: %u lg2: %u\n", indices[i], lg2idx[i]);
 		push_entry(mman, lg2idx[i], &NODE_AT(mman, indices[i]));
 	}
+
+	
+
+
 	return;
 }
 

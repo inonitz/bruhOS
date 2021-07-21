@@ -3,12 +3,11 @@
 #include "htable.h"
 #include "../mem/map_ptr.h"
 #include "../acpi/lapic.h"
-#include "lapicrouter.h"
 
 
 
-void __noinline exception_handler(stack_state* sst); // called by interrupt handler
-void __noinline irq_handler      (stack_state* sst); // called by interrupt handler
+void __noinline exception_handler(stack_state* sst); // called by interrupt_handler
+void __noinline irq_handler      (stack_state* sst); // called by interrupt_handler
 
 
 
@@ -26,8 +25,9 @@ void __noinline interrupt_handler(stack_state* sst)
 
 void __noinline exception_handler(stack_state* sst)
 {  
-    const uint8_t trap_gates[16] = { 0, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20 };
-    bool_t        need_hang      = FALSE;
+    static const uint8_t trap_gates[16] = { 0, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20 };
+    bool_t               need_hang      = FALSE;
+
 
     printk("EXCEPTION HAS OCCURED (IRQ %u). STACK FRAME:\n", sst->irqn);
     printk("ecode:  %b\nirqn:   %u\nrsp:    %X\nrip:    %X\ncs:     %x\nrflags: %b\nss:     %b\n\n",
@@ -64,49 +64,6 @@ void __noinline irq_handler(stack_state* sst)
     );
     irqHandler handler = (irqHandler)get_handler(sst->irqn - 32);
     handler();
-    lapic_send_eoi(get_lapic(getCurrentLAPIC()));
+    lapic_send_eoi();
     return;
 }
-
-
-
-
-/* 
-I Don't know why, but when I try to access this array of strings with sst->irqn I always get Page Faults / General protection Faults,
-When in reality this is part of the kernel. I don't know, I'll just NOT use this and print the IRQ instead...
-const char_t* ErrorType[32] = {
-    "DIVIDE BY 0",
-    "DEBUG",
-    "NMI",
-    "BREAKPOINT",
-    "OVERFLOW",
-    "BOUND RANGE EXCEEDED",
-    "INVALID OPCODE",
-    "DEVICE NOT AVAILABLE",
-    "DOUBLE FAULT",
-    "RESERVED9",
-    "INVALID TSS",
-    "SEGMENT NOT PRESENT",
-    "STACK SEGMENT FAULT",
-    "GENERAL PROTECTION FAULT",
-    "PAGE FAULT",
-    "RESERVED15",
-    "x87 FLOATING-POINT EXCEPTION",
-    "ALIGNMENT CHECK",
-    "MACHINE CHECK",
-    "SIMD FLOATING-POINT EXCEPTION",
-    "VIRTUALIZATION EXCEPTION",
-    "RESERVED21",
-    "RESERVED22",
-    "RESERVED23",
-    "RESERVED24",
-    "RESERVED25",
-    "RESERVED26",
-    "RESERVED27",
-    "RESERVED28",
-    "RESERVED29",
-    "SECURITY EXCEPTION",
-    "RESERVED31"
-};
-
-*/

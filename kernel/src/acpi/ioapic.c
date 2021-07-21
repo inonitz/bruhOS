@@ -2,14 +2,14 @@
 
 
 
-inline uint32_t ioapic_read_reg(uint64_t apic_base, uint8_t register_index)
+__force_inline uint32_t ioapic_read_reg(uint64_t apic_base, uint8_t register_index)
 {
     *((uint32_t volatile*)apic_base) = register_index;
     return *(uint32_t volatile*)(apic_base + 16);
 }
 
 
-inline void ioapic_write_reg(uint64_t apic_base, uint8_t register_index, uint32_t value)
+__force_inline void ioapic_write_reg(uint64_t apic_base, uint8_t register_index, uint32_t value)
 {
     *((uint32_t volatile*)apic_base) = register_index;
     *(uint32_t  volatile*)(apic_base + 16) = value;
@@ -17,14 +17,14 @@ inline void ioapic_write_reg(uint64_t apic_base, uint8_t register_index, uint32_
 }
 
 
-inline uint32_t ioapic_irq_count(uint64_t apic_base)
+__force_inline uint32_t ioapic_irq_count(uint64_t apic_base)
 {
     // read the IOAPICVER[16:23]
-    volatile IOAPICVER_reg tmp; tmp.u32 = (volatile uint32_t)ioapic_read_reg(apic_base, 1);
+    volatile IOAPICVER_reg tmp; tmp.u32 = (volatile uint32_t)ioapic_read_reg(apic_base, IOAPICVER_REG);
     return tmp.maximumRedirectionEntries;
 }
 
-inline void disable_ioapic_irqs(uint64_t apic_base)
+__force_inline void disable_ioapic_irqs(uint64_t apic_base)
 {
     // mask all registers
     intredirectEntry_t entry;

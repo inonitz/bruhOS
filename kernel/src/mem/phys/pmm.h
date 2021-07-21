@@ -101,6 +101,15 @@ void PrintBuddyDescriptors();
 
 
 /* 
+    * Same thing as PrintBuddyDescriptors(), but for a single buddy.
+    * uint16_t buddyID - the index of the buddy in the zone array.
+      0            - Low    Memory Buddy Alloc
+      1->zoneCount - Normal memory Buddy Alloc
+*/
+void PrintBuddyDescriptor(uint16_t buddyID);
+
+
+/* 
     * Initializes the Page Frame Allocator.
     * efi_memory_map* map: a pointer to the efi_memory_map retrieved from the Bootloader.
 */

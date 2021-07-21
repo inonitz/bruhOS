@@ -10,26 +10,24 @@
 #define GATE_TYPE_TASK32      0x05
 
 
+#define PRI_LEVELS     14
 #define PRI_LVLN_COUNT 16
-#define PRI_LEVELS 14
 #define PRI_LVL_START(lvl) (lvl << 4)
-#define PRI_LVL_END(lvl) ((lvl << 4) + PRI_LVLN_COUNT - 1)
-typedef enum { 
-    PRI_LVL0  = 0, // Highest Priority
-    PRI_LVL1  = 1,
-    PRI_LVL2  = 2,
-    PRI_LVL3  = 3,
-    PRI_LVL4  = 4,
-    PRI_LVL5  = 5,
-    PRI_LVL6  = 6,
-    PRI_LVL7  = 7,
-    PRI_LVL8  = 8,
-    PRI_LVL9  = 9,
-    PRI_LVL10 = 10,
-    PRI_LVL11 = 11,
-    PRI_LVL12 = 12,
-    PRI_LVL13 = 13 // Lowest Priority
-} IDT_ENTRY_PRIORITY;
+#define PRI_LVL_END(lvl)  ((lvl << 4) + PRI_LVLN_COUNT - 1)
+#define IDT_GATE_PRI_LVL0  0x00 // Highest Priority
+#define IDT_GATE_PRI_LVL1  0x01
+#define IDT_GATE_PRI_LVL2  0x02
+#define IDT_GATE_PRI_LVL3  0x03
+#define IDT_GATE_PRI_LVL4  0x04
+#define IDT_GATE_PRI_LVL5  0x05
+#define IDT_GATE_PRI_LVL6  0x06
+#define IDT_GATE_PRI_LVL7  0x07
+#define IDT_GATE_PRI_LVL8  0x08
+#define IDT_GATE_PRI_LVL9  0x09
+#define IDT_GATE_PRI_LVL10 0x0A
+#define IDT_GATE_PRI_LVL11 0x0B
+#define IDT_GATE_PRI_LVL12 0x0C
+#define IDT_GATE_PRI_LVL13 0x0D // Lowest Priority
 
 
 typedef struct pack __idt_register
@@ -106,6 +104,12 @@ void load_idt();
 
 
 /* 
+    * returns a pointer to the idtreg_t* used by the requesting Processor.
+*/
+idtreg_t* getKernelIDTR();
+
+
+/* 
     * will print a message to the screen, 
     * informing the developer if an interrupt has been overriden properly \ has been enabled.
     * uint8_t n - the interrupt vector number which will be tested.
@@ -119,7 +123,7 @@ void test_vector_at(uint8_t n);
     * looks at priority lvl N for a free IDT entry. if not found, exits with error message.
     * IDT_ENTRY_PRIORITY pri - the priority of the vector (defined in idt.h)
 */
-uint8_t request_vector(IDT_ENTRY_PRIORITY pri); 
+uint8_t request_vector(uint8_t pri); 
 
 
 /*
@@ -128,7 +132,7 @@ uint8_t request_vector(IDT_ENTRY_PRIORITY pri);
     * if still not found, will exit with error message "Can't allocate interrupt vector from lvl N and up"
     * IDT_ENTRY_PRIORITY pri - the priority of the vector (defined in idt.h)
 */
-uint8_t request_vector_min_pri(IDT_ENTRY_PRIORITY pri); 
+uint8_t request_vector_min(uint8_t pri); 
 
 
 /* 

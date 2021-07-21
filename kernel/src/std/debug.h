@@ -14,7 +14,7 @@
 
 
 #define printLocation() printk("file: %s\nline: %s", __FILE__, __LINE__)
-
+#define debug_print(str, ...) DEBUG(printk(str, __VA_ARGS__);)
 
 #define KERNEL_ERROR(err_type, is_critical_section, msg) \
 	kernelErrorReport(__FILE__, __func__, __LINE__, err_type, is_critical_section, msg); \
@@ -31,6 +31,7 @@ extern void noret idleloop();
 extern void noret busyloop();
 extern void noret abshalt();
 	   void noret hang();
+	   void pausewhile(bool_t condition);
 
 	   
 void kernelErrorReport(

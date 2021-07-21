@@ -81,3 +81,9 @@ inline void __attribute__((noreturn, always_inline)) pauseloop()
 {
 	while(1) { __asm__ volatile("pause"); }
 }
+
+inline void __attribute__((noreturn, always_inline)) halt()
+{
+	__asm__ volatile("hlt");
+	pauseloop();
+}

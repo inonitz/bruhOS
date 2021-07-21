@@ -5,13 +5,14 @@
 
 
 
-#define NS_KERNEL 0x00 // null segment kernel
-#define CS_KERNEL 0x08 // code segment kernel
-#define DS_KERNEL 0x10 // data segment kernel
-#define NS_USER   0x18 // null segment user
-#define CS_USER   0x20 // code segment user
-#define DS_USER   0x28 // data segment user
-#define TS        0x30 // task state segment
+#define GDT_NS_KERNEL 0x00 // null segment kernel
+#define GDT_CS_KERNEL 0x08 // code segment kernel
+#define GDT_DS_KERNEL 0x10 // data segment kernel
+#define GDT_CS_USER   0x18 // code segment user
+#define GDT_DS_USER   0x20 // data segment user
+#define GDT_TS0       0x28 // task state segment
+#define GDT_TSN(i)   (GDT_TS0 + i * 0x08)
+
 
 
 
@@ -58,21 +59,20 @@ typedef struct pack __GDT_Segment
     uint8_t  base2      ;
 } GDT_ENTRY;
 
+
+
 typedef struct pack __GlobalDescriptorTable
 {
-    union {
+    union { // ONLY USE THIS AS A GDT* because of the TSS Segments.
         struct pack {
             GDT_ENTRY null;
             GDT_ENTRY kernelCode;
             GDT_ENTRY kernelData;
-            GDT_ENTRY usernull;
             GDT_ENTRY userCode;
             GDT_ENTRY userData;
-            GDT_ENTRY TaskState0;
-            GDT_ENTRY ovmfCode;
-            GDT_ENTRY ovmfData;
+            GDT_ENTRY taskState[1];
         };
-        GDT_ENTRY segments[9];
+        GDT_ENTRY segments[6];
     };
 } GDT;
 
@@ -83,8 +83,9 @@ typedef struct pack align(0x10) __gdt_descriptor_register
 } GDT_DESCRIPTOR;
 
 
-void initialize_gdt();
-void load_gdt();
+void            initialize_gdt(void* gdt_address);
+void            load_gdt();
+GDT_DESCRIPTOR* getKernelGDTP();
 
 
 #endif

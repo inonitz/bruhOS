@@ -8,7 +8,12 @@
 /* 
 	* Returns length of char array - loops until it finds '\0'.
 */
-size_t strlen(char_t* string);
+__force_inline uint64_t strlen(char_t* string)
+{
+	uint64_t r = 0;
+	while (*string != '\0') { ++string; ++r; }
+	return r;
+}
 
 
 /* 
@@ -17,15 +22,40 @@ size_t strlen(char_t* string);
 	* returns dest
 	* unsafe - doesn't check buffer length.
 */
-char_t* strcpy(char_t* source, char_t* dest);
+__force_inline char_t* strcpy(char_t* source, char_t* dest)
+{
+	while(*source != '\0')
+	{
+		*dest = *source;
+		++source;
+		++dest;
+	}
+	return dest;
+}
 
 
 /* 
-	* initializes memory with val
+	* initializes memory[i] with val
 	* size is the amount of bytes to initialize
 	* size must be less or equal to the sizeof(location)
 */
-void* memset(void* location, int32_t val, size_t size);
+__force_inline void* memset_internal(uint8_t* location, uint8_t val, uint64_t size)
+{
+	uint8_t* end = location + size;
+    for(; location < end; ++location) {
+        *location = val;
+    }
+    return location;
+}
+
+
+__force_inline void* memset(void* location, uint8_t val, uint64_t size)
+{
+	return memset_internal((uint8_t*)location, val, size);
+}
+
+
+
 
 
 /* 
@@ -33,7 +63,14 @@ void* memset(void* location, int32_t val, size_t size);
 	* the pointers CANNOT overlap.
 	* returns 0 if successful.
 */
-uint8_t memcmp(char_t* a, char_t* b, int64_t size);
+__force_inline uint8_t memcmp(char_t* a, char_t* b, int64_t size)
+{
+	--size;
+	while(size >= 0 && a[size] == b[size]) {
+		--size;
+	}
+	return size+1;
+}
 
 
 /* 
@@ -43,8 +80,13 @@ uint8_t memcmp(char_t* a, char_t* b, int64_t size);
 	* amount - how many bytes are copied
 	* unsafe - we don't know the extent of each array.
 */
-void memcpy(void* dst, void* src, uint64_t amount);
-
+__force_inline void memcpy(void* dst, void* src, uint64_t amount)
+{
+	for(uint64_t i = 0; i < amount; ++i)
+	{
+		((uint8_t*)dst)[i] = ((uint8_t*)src)[i]; 
+	}
+}
 
 /* 
 	* prints string to the local console
@@ -101,7 +143,21 @@ void puts(char_t* string);
 void putln();
 
 
-inline uint64_t round2(uint64_t n) // round n to closest power of 2
+/* 
+	* Rounds a given argument num to a multiple of N.
+	*
+*/
+__force_inline uint64_t roundN(uint64_t x, uint64_t n)
+{
+	uint64_t tmp = (x % n); 
+	tmp = boolean(tmp);
+	tmp += (x / n);
+	tmp *= n;
+	return tmp;
+}
+
+
+__force_inline uint64_t round2(uint64_t n) // round n to closest power of 2
 {
 	--n; 
 	n |= n >> 1; n |= n >> 4; n |= n >> 8; n |= n >> 2; n |= n >> 16; n |= n >> 32;
@@ -110,18 +166,18 @@ inline uint64_t round2(uint64_t n) // round n to closest power of 2
 }
 
 // n = 2^M + K, where K > 0. return 2^M. K = 0 is a special case that is not handled.
-inline uint64_t ppow2(uint64_t n)
+__force_inline uint64_t ppow2(uint64_t n)
 {
 	return round2(n) >> 1;
 }
 
 
-static inline uint32_t log2ui (uint32_t b)  { return ((unsigned) (8 * sizeof(unsigned int      ) - __builtin_clz  ((b)) - 1)); } // b = 2^n, n >= 0. returns n.
-static inline uint64_t log2ul (uint64_t b)  { return ((unsigned) (8 * sizeof(unsigned long     ) - __builtin_clzl ((b)) - 1)); } // b = 2^n, n >= 0. returns n.
-static inline size_t   log2ull(size_t   b)  { return ((unsigned) (8 * sizeof(unsigned long long) - __builtin_clzll((b)) - 1)); } // b = 2^n, n >= 0. returns n.
-static inline uint32_t lsbui  (uint32_t b)  { return __builtin_ffs((b));   } // least significant bit. index starts at 1, not 0!
-static inline uint64_t lsbul  (uint64_t b)  { return __builtin_ffsl((b));  } // least significant bit. index starts at 1, not 0!
-static inline size_t   lsbull (size_t   b)  { return __builtin_ffsll((b)); } // least significant bit. index starts at 1, not 0!
+__force_inline uint32_t log2ui (uint32_t b)  { return ((unsigned) (8 * sizeof(unsigned int      ) - __builtin_clz  ((b)) - 1)); } // b = 2^n, n >= 0. returns n.
+__force_inline uint64_t log2ul (uint64_t b)  { return ((unsigned) (8 * sizeof(unsigned long     ) - __builtin_clzl ((b)) - 1)); } // b = 2^n, n >= 0. returns n.
+__force_inline size_t   log2ull(size_t   b)  { return ((unsigned) (8 * sizeof(unsigned long long) - __builtin_clzll((b)) - 1)); } // b = 2^n, n >= 0. returns n.
+__force_inline uint32_t lsbui  (uint32_t b)  { return __builtin_ffs((b));   } // least significant bit. index starts at 1, not 0!
+__force_inline uint64_t lsbul  (uint64_t b)  { return __builtin_ffsl((b));  } // least significant bit. index starts at 1, not 0!
+__force_inline size_t   lsbull (size_t   b)  { return __builtin_ffsll((b)); } // least significant bit. index starts at 1, not 0!
 
 
 

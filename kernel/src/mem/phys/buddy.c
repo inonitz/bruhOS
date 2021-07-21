@@ -186,7 +186,7 @@ void buddy_alloc_init_free_regions(BuddyAllocator* mman, void* start, struct mem
 	struct mem_zone* zone 	   = free_memory_regions;
 	node_t*          tmp;
 
-
+	
 	buddy_alloc_init(mman, start); // initialize the buddy allocator as usual
 	pop_entry(mman, 0);			   // there isn't TOTAL_MEM available, so we get rid of this block.
 

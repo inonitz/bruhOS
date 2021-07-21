@@ -30,7 +30,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "Build and Run"
+            "preLaunchTask": ""
         }
     ]
 }

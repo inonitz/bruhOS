@@ -81,7 +81,7 @@ void   ioAPICDescription(uint8_t ioapic_id);
     * IDT_ENTRY_PRIORITY priority - the higher the index, the lower the priority.
     * void* handlerAddress        - the function that will handle the interrupt that will be triggered by the device. Basically interrupt handler.
 */
-void   installISA(uint8_t gsi, uint8_t lapic_id, IDT_ENTRY_PRIORITY priority, void* handlerAddress);
+void   installISA(uint8_t gsi, uint8_t lapic_id, uint8_t priority, void* handlerAddress);
 
 
 /* 
@@ -90,7 +90,7 @@ void   installISA(uint8_t gsi, uint8_t lapic_id, IDT_ENTRY_PRIORITY priority, vo
     * Because this function isn't meant for legacy devices, the drivers are responsible for setting their own I/O APIC Flags/Entries in the corresponding I/O APIC.
     * IRQ_FLAGS flags - additional information that a device driver needs to supply, in order to initialize the corresponding I/O APIC Entry it wants.
 */
-void   installIRQ(uint8_t gsi, uint8_t lapic_id, IRQ_FLAGS flags, IDT_ENTRY_PRIORITY priority, void* handlerAddress);
+void   installIRQ(uint8_t gsi, uint8_t lapic_id, IRQ_FLAGS flags, uint8_t priority, void* handlerAddress);
 
 
 bool_t isEmpty(uint8_t idx);

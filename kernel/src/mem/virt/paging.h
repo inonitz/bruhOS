@@ -212,16 +212,14 @@ void mapVirtualToPhysical(
 /* 
     * This function does the same as mapVirtualToPhysical, EXCEPT: 
     * This function also takes entry flags as defined above, and in the intel specification.
-    * uint16_t flags - the flags for the table entries that will be created. (paging_flags_t struct)
+    * uint64_t flags - the flags for the table entries that will be created. (paging_flags_t struct)
     *                  DO NOTE that flags.bit[N] is mapped to table_entry.flag_bit[N],
-    *                  Essentially a 1:1 bit mapping.
-    * 
 */
 void map_vtop(
     IN PML4*   Table, 
     IN void*   vaddress, 
     IN void*   paddress, 
-    IN uint16_t flags
+    IN uint64_t flags
 );
 
 
@@ -254,5 +252,9 @@ void handover_paging(PML4* pml4);
 PML4* getKernelCR3();
 
 
+/* 
+    * Returns the Requesting Processors' Loaded PML4.
+*/
+PML4* getCurrentCR3();
 
 #endif

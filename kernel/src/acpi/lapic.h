@@ -61,12 +61,14 @@
 
 #define ICR_DESTMODE_TYPE_PHYSICAL 0
 #define ICR_DESTMODE_TYPE_LOGICAL  1
-#define ICR_DESTMODE_NORMAL 0
-#define ICR_DESTMODE_LOWEST 1
-#define ICR_DESTMODE_SMI    2
-#define ICR_DESTMODE_NMI    4
-#define ICR_DESTMODE_INIT   5
-#define ICR_DESTMODE_SIPI   6
+#define ICR_DELIVMODE_NORMAL 0
+#define ICR_DELIVMODE_LOWEST 1
+#define ICR_DELIVMODE_SMI    2
+#define ICR_DELIVMODE_NMI    4
+#define ICR_DELIVMODE_INIT   5
+#define ICR_DELIVMODE_SIPI   6
+#define ICR_INIT_ASSERT    (1 << 14)
+#define ICR_INIT_DEASSERT  (1 << 15)
 
 #define ICR_INT_PENDING (1 << 12)
 
@@ -149,23 +151,107 @@ typedef struct alignpack(0x10) __local_apic_type
 } lapic_t;
 
 
-typedef struct pack __local_vector_table_register
+typedef struct pack __local_vector_table_timer_register
 {
     union {
         struct pack {
-            uint8_t  vecnum;
+            uint8_t  vecnum    : 8;
+            uint8_t  reserved0 : 4;
+            uint8_t  delivStts : 1;
+            uint8_t  reserved1 : 3;
+            uint8_t  masked    : 1;
+            uint8_t  timerMode : 2;
+            uint16_t reserved2 : 13;
+        };
+        uint32_t u32;
+    };
+} LVTTR_t;
+
+
+typedef struct pack __local_vector_table_cmci_register
+{
+    union {
+        struct pack {
+            uint8_t  vecnum     : 8;
             uint8_t  delivMode  : 3;
+            uint8_t  reserved0  : 1;
+            uint8_t  delivStts  : 1;
+            uint8_t  reserved1  : 3;
+            uint8_t  masked     : 1;
+            uint16_t reserved2  : 15;
+        };
+        uint32_t u32;
+    };
+} LVTCMCIR_t;
+
+
+typedef struct pack __local_vector_table_local_interrupt_n_register
+{
+    union {
+        struct pack {
+            uint8_t  vecnum     : 8;
+            uint8_t  delivMode  : 3;
+            uint8_t  reserved0  : 1;
             uint8_t  delivStts  : 1;
             uint8_t  polarity_t : 1;
             uint8_t  rmtirr_t   : 1; // used for fixed, level-triggered int's
             uint8_t  trigmode_t : 1; // only used when delivMode is fixed, else trigger sensitive
-            uint8_t  mask       : 1;
-            uint8_t  timerMode  : 2; // 0b11 is reserved
-            uint16_t reserved   : 14;
+            uint8_t  masked     : 1;
+            uint16_t reserved1  : 15;
         };
         uint32_t u32;
     };
-} LVTR_t;
+} LVTINTR_t;
+
+
+typedef struct pack __local_vector_table_error_register
+{
+    union {
+        struct pack {
+            uint8_t  vecnum     : 8;
+            uint8_t  reserved0  : 4;
+            uint8_t  delivStts  : 1;
+            uint8_t  reserved1  : 3;
+            uint8_t  masked     : 1;
+            uint16_t reserved2  : 15;
+        };
+        uint32_t u32;
+    };
+} LVTERRR_t;
+
+
+typedef struct pack __local_vector_table_performance_monitor_counters_register
+{
+    union {
+        struct pack {
+            uint8_t  vecnum     : 8;
+            uint8_t  delivMode  : 3;
+            uint8_t  reserved0  : 1;
+            uint8_t  delivStts  : 1;
+            uint8_t  reserved1  : 3;
+            uint8_t  masked     : 1;
+            uint16_t reserved2  : 15;
+        };
+        uint32_t u32;
+    };
+} LVTPERFCNTR_t;
+
+
+typedef struct pack __local_vector_table_thermal_sensor_register
+{
+    union {
+        struct pack {
+            uint8_t  vecnum     : 8;
+            uint8_t  delivMode  : 3;
+            uint8_t  reserved0  : 1;
+            uint8_t  delivStts  : 1;
+            uint8_t  reserved1  : 3;
+            uint8_t  masked     : 1;
+            uint16_t reserved2  : 15;
+        };
+        uint32_t u32;
+    };
+} LVTSENSTHERMR_t;
 
 
 typedef struct pack __interrupt_command_register
@@ -206,10 +292,102 @@ typedef struct pack __spurious_interrupt_vector_register
 } SIVR_t;
 
 
-uint32_t lapic_read_reg (void* apic_base, uint16_t offset);
-void     lapic_write_reg(void* apic_base, uint16_t offset, uint32_t data);
-void     lapic_enable   (void* apic_base);
-void     send_interrupt (void* apic_base, uint8_t target_apic, uint8_t vector);
-void     lapic_send_eoi (void* apic_base);
+typedef struct pack __divide_configuration_register
+{
+    union {
+        // formula:
+        // uint8_t div = div0 + (div1 << 1) + (div2 << 2);
+        //         div = 2 << div; 
+        struct pack {
+            uint8_t  div0       : 1;
+            uint8_t  div1       : 1;
+            uint8_t  reserved0  : 1;
+            uint8_t  div2       : 1;
+            uint32_t reserved1  : 28;
+        };
+        uint32_t u32;
+    };
+} DIVCFG_t;
+
+
+/* 
+    * Sets the found LAPIC Address from the ACPI MADT table.
+    * uint64_t lapic_address - the virtual address of the lapic in memory.
+*/
+void     lapic_set_base    (uint64_t lapic_address);
+
+
+/* 
+    * read the contents of an lapic register.
+    * basically:
+    *   uint32_t* data = &((uint8_t*)lapic_address)[offset];
+    *   return *data;
+    * uint16_t offset - the offset to the register in the lapic.
+*/
+extern uint32_t lapic_read_reg    (uint16_t offset);
+
+
+/* 
+    * write to an lapic register
+    * uint16_t offset - the offset to the register in the lapic.
+    * uint32_t data   - the data to write in the desired register.
+*/
+extern void     lapic_write_reg   (uint16_t offset, uint32_t data);
+
+
+/* 
+    * Initializes the active local apic by modifying the Spurious Interrupt Vector Register
+*/
+void     lapic_init        ();
+
+
+/* 
+    * sends an interrupt to a given ap core.
+    * uint32_t lapic_id - the ap core LAPIC_ID
+    * uint8_t  vector   - the interrupt vector to send.
+*/
+void     lapic_send_int    (uint32_t lapic_id, uint8_t vector);
+
+
+/* 
+    * sends an INIT-ASSERT INIT-DEASSERT to the desired AP Processor.
+    * Moreover, it does the following:
+    *   Send to AP_CORE[lapic_id] -> INIT ASSERT
+    *   Wait_until(AP_CORE[lapic_id] -> RECEIVED INIT);
+    * 
+    *   Send to AP_CORE[lapic_id] -> INIT DEASSERT
+    *   Wait_until(AP_CORE[lapic_id] -> RECEIVED INIT); 
+    *   return;
+    * uint32_t lapic_id - the LAPIC_ID of the desired AP processor.
+*/
+void     lapic_send_init   (uint32_t lapic_id);
+
+
+/* 
+    * sends an INIT-IPI to the given AP Processor, with the address of a known 'Trampoline'.
+    * trampoline is essentially the code that will bring the AP proc to long mode.
+    * 
+    * uint32_t lapic_id   - the LAPIC_ID of the desired AP processor.
+    * uint32_t trampoline - the address of the trampoline code in memory. must be < 1MiB. (real mode :/) 
+*/
+void     lapic_send_startup(uint32_t lapic_id, uint32_t trampoline);
+
+
+/* 
+    * Sends an END_OF_INTERRUPT to the requesting AP processor. (requesting = whichever ap proc is calling this func)
+*/
+extern void     lapic_send_eoi    ();
+
+
+/* 
+    * returns the LAPIC_ID of the requesting AP Processor. (requesting = whichever ap proc is calling this func)
+*/
+extern uint32_t lapic_get_id      ();
+
+
+/* 
+    * returns TRUE if the LAPIC is currently handling an interrupt.
+*/
+extern bool_t lapic_pending();
 
 #endif

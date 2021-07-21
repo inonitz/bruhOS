@@ -5,9 +5,7 @@
 
 
 // inline definitions
-extern inline uint64_t round2(uint64_t n);
-extern inline uint64_t ppow2(uint64_t n);
-
+extern __force_inline void* memset(void* location, uint8_t val, uint64_t size);
 
 
 // statics
@@ -19,64 +17,55 @@ static       int16_t  format_align_pad     = 0;
 
 
 // funcs
-size_t strlen(char_t* string)
-{
-	uint32_t r = 0;
-	while (*string != '\0') { ++string; ++r; }
-	return r;
-}
+// size_t strlen(char_t* string)
+// {
+// 	uint32_t r = 0;
+// 	while (*string != '\0') { ++string; ++r; }
+// 	return r;
+// }
 
 
-char_t* strcpy(char_t* str1, char_t* str2)
-{
-	while (*str1 != '\0')
-	{
-		*str2 = *str1;
-		++str1;
-		++str2;
-	}
-	return str2;
-}
+// char_t* strcpy(char_t* str1, char_t* str2)
+// {
+// 	while (*str1 != '\0')
+// 	{
+// 		*str2 = *str1;
+// 		++str1;
+// 		++str2;
+// 	}
+// 	return str2;
+// }
 
 
-void* memset(void* location, int32_t val, size_t size)
-{
-	char_t* ptr = (char_t*)location + size - 1;
-	val &= 0xFF;
-	for (; size != 0; --size)
-	{
-		*ptr = val;
-		--ptr;
-	}
-	return location;
-}
+// void* memset(void* location, uint8_t val, size_t size)
+// {
+// 	char_t* ptr = (char_t*)location + size - 1;
+// 	for (; size != 0; --size)
+// 	{
+// 		*ptr = val;
+// 		--ptr;
+// 	}
+// 	return location;
+// }
 
 
-uint8_t memcmp(char_t* a, char_t* b, int64_t size)
-{
-	--size;
-	while(size >= 0 && a[size] == b[size]) {
-		--size;
-	}
-	return size+1;
-}
+// uint8_t memcmp(char_t* a, char_t* b, int64_t size)
+// {
+// 	--size;
+// 	while(size >= 0 && a[size] == b[size]) {
+// 		--size;
+// 	}
+// 	return size+1;
+// }
 
 
-void memcpy(void* dst, void* src, uint64_t amount)
-{
-	// processing 8 bytes in every request. 16/32/64 is too much 
-	// (I tested, there is only improvement when the arrays are extremely large)
-	register uint64_t i = 0;
-    for(; i < amount >> 3; ++i)
-	{
-		((uint64_t*)dst)[i] = ((uint64_t*)src)[i];
-	}
-	amount &= 7;
-	for(i = 0; i < amount; ++i)
-	{
-		((char_t*)dst)[i] = ((char_t*)src)[i];
-	}
-}
+// void memcpy(void* dst, void* src, uint64_t amount)
+// {
+// 	for(uint64_t i = 0; i < amount; ++i)
+// 	{
+// 		((uint8_t*)dst)[i] = ((uint8_t*)src)[i]; 
+// 	}
+// }
 
 
 // format specifier functions.
@@ -441,7 +430,7 @@ void printk(char_t* string, ...)
 	va_list args; 
 	va_start(args, string);
 	print_internal(string, args); 
-	
+
 	va_end(args);
 	return;
 }

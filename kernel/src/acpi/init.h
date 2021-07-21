@@ -9,7 +9,7 @@
     * Initializes the HPET Timer, the I/O APIC's to a usable interface (install_vector(), ...)
     * and all the detected LAPIC's (enables all CPU's detected).
 */
-void init_acpi(ACPI_DESC_TABLE* acpi_rsdp_descriptor);
+void init_acpi(acpiCfg* acpi_config);
 
 
 #endif

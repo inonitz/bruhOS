@@ -4,11 +4,7 @@
 
 
 
-// able to manage atleast 512MiB of Memory, given the assumption theres atleast 512MiB of memory.
-// if there is more than 512MiB of memory, then we'll create more buddies using the slab allocator (not implemented yet).
 static PageFrameAllocator pageManager;
-static char_t             tempStack[4096];
-static uintptr_t          tempStack_ptr      = 0;
 static uint64_t           MemoryMapPageCount = 0; 
 
 
@@ -35,8 +31,6 @@ typedef enum {
 
 void PrintMemMapBasicInfo(efi_memory_map* map)
 {
-    // don't blank out the whole section from elf_file->p_filesz to elf_file->p_memsz,
-    // as the .rodata section is located in there and I need these strings in the .rodata section.
     const size_t dscs = map->used_size / map->entry_size;
     printk("efi_memory_map info:\nsize:              %x\nstart:             %p\nDescriptor Amount: %x\nDescriptor Size:   %x\n", 
         map->map_size,
@@ -52,7 +46,6 @@ void PrintMemMapInfo(efi_memory_map* map, bool_t FreeOrUsed)
 {
     // Free - 0
     // Used - 1
-
     const size_t          dscs              = map->used_size / map->entry_size;
     efi_mem_descriptor*   dsc               = 0;
     uint8_t               RegionIsFree[2]   = { 0, 0 };
@@ -219,14 +212,32 @@ void PrintPMMInfo()
 void PrintBuddyDescriptors()
 {
     printk("Buddy Descriptors: \n");
+    
+    
+    buddyLow_info(pageManager.lowZoneAllocator.manager);
+
+
     for(uint16_t i = 0; i < pageManager.zoneCount; ++i)
     {
-        printk("buddy %u\n", i);
+        printk("buddy %u (normal): \n", i);
         buddyInfo(pageManager.zoneAllocators[i].manager);
     }
     return;
 }
 
+
+void PrintBuddyDescriptor(uint16_t buddyID)
+{
+    if(buddyID > pageManager.zoneCount) return;
+    if(buddyID == 0) {
+        buddyLow_info(pageManager.lowZoneAllocator.manager);
+    }
+    else {
+        printk("buddy %u (normal): ", buddyID);
+        buddyInfo(pageManager.zoneAllocators[buddyID - 1].manager);
+    }
+    return;
+}
 
 
 
@@ -387,7 +398,7 @@ void pfa_init(efi_memory_map* map)
     for(uint16_t j = 0; j < tmpCount; ++j) {
         mapZoneToAllocator[j] = (freeZones[j].mem - (freeZones[j].mem % ALLOC_MANAGED_MEM)) >> (BUDDY_TREE_DEPTH + 12ull);
     }
-    // uncomment to see debugging output
+    // // uncomment to see debugging output
     // for(uint64_t i = 0; i < tmpCount; ++i) {
     //     printk("%u | ", mapZoneToAllocator[i]);
     // }
@@ -398,6 +409,7 @@ void pfa_init(efi_memory_map* map)
     mem_zone zoneStack[tmpCount];
     for(uint16_t i = 0; i < totalAllocators; ++i)
     {
+        // printk("gdt %X %X\n", *(uint64_t*)( ((uint64_t)&map->mmap) + 144));
         tmpVar = 0;
         for(uint16_t j = 0; j < tmpCount; ++j) { // find the free regions for this allocator.
             if(!(mapZoneToAllocator[j] == i)) 
@@ -405,9 +417,13 @@ void pfa_init(efi_memory_map* map)
             zoneStack[tmpVar] = freeZones[j];
             ++tmpVar;
         }
+        // printk("gdt %X\n", *(uint64_t*)( ((uint64_t)&map->mmap) + 144) );
+
         // printk("%p AT %p %u\n", pageManager.zoneAllocators[i].manager, (void*)(ALLOC_MANAGED_MEM * i), tmpVar);
         buddy_alloc_init_free_regions(pageManager.zoneAllocators[i].manager, (void*)(ALLOC_MANAGED_MEM * i), zoneStack, (uint16_t)tmpVar);
         memset(zoneStack, 0, sizeof(mem_zone) * tmpCount); // reset the stack.
+
+        // printk("gdt %X\n", *(uint64_t*)( ((uint64_t)&map->mmap) + 144) );
     }
     lowmem_buddy_init_free_regions(pageManager.lowZoneAllocator.manager, 0, lowMemZones, under4MiB);
 
@@ -435,7 +451,7 @@ void pfa_init(efi_memory_map* map)
 void* pfa_alloc_pages(IN uint32_t count, uint8_t type)
 {
     count = (uint32_t)round2(count);
-    if(count * PAGE_SIZE > ALLOC_MANAGED_MEM) return nullptr;
+    if(count * PAGE_SIZE > ALLOC_MANAGED_MEM || count == 0) return nullptr;
     // printk("REQUESTED %u\n", count);
 
 

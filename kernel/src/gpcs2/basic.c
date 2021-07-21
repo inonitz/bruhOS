@@ -67,8 +67,8 @@ vec2us framebufferWriteCharBmFontRGB(
     IN char_t         ch
 ) 
 {
-	uint32_t  masks[8] 		= {0};
-	uint32_t* pixel_address = (uint32_t*)fb->start + (uint32_t)(offset.x + fb->dims.x * offset.y);
+	uint32_t  masks[8] = {0};
+	uint32_t* pixel_address = (uint32_t*)fb->start + (uint32_t)(offset.x + fb->dims.x * offset.y); 
 	uint8_t*  chline        = &style->GlyphBitmaps[(uint32_t)style->GlyphBytesWidth * style->GlyphHeight * (uint32_t)(ch - 32)]; // get character bitmap
 
 	// draw the charcter.

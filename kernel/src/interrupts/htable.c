@@ -3,7 +3,14 @@
 
 
 static irqHandler handleTable[224];
-
+// IDEA: There should be a Table for owner/device strings, where each device would acquire an index,
+// represnting their own string.
+// Moreover, every handle should be populated with a Table Index, describing who is holding that entry.
+// will be very useful for debugging!!!
+// struct {
+//     irqHandler hdl;
+//     char_t*    owner;
+// } handleTable[224];
 
 void init_IRQHandleTable()
 {

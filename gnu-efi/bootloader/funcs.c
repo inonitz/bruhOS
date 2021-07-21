@@ -1,5 +1,12 @@
 #include "funcs.h"
 #include <elf.h>
+#include "../../shared/uefi.h"
+
+
+
+#define TSS_X86_64_SIZE 0x68
+#define GDT_ENTRY_SIZE  0x08
+#define AP_CORE_STACK_SIZE (8 * EFI_PAGE_SIZE)
 
 
 
@@ -21,7 +28,7 @@ void findFileInternal(EFI_FILE_HANDLE current_dir, CHAR16* filename, EFI_FILE_HA
 
         ondebug(
             Print(L"%s %u %u\n", fileinf->FileName, fileinfsize, !!(fileinf->Attribute & EFI_FILE_DIRECTORY));
-            gBS->Stall(500000);
+            // gBS->Stall(500000);
         );
 
 
@@ -93,7 +100,7 @@ void PrintAvailableVideoModes(IN EFI_GRAPHICS_OUTPUT_PROTOCOL* gop)
 			gop_mode->VerticalResolution,
             pixel_formats[gop_mode->PixelFormat]
 		);
-		gBS->Stall(100000 * 2);
+		// gBS->Stall(100000 * 2);
 	}
 }
 
@@ -146,7 +153,7 @@ void initialize_screenbuffer(
     }   
     else {
         Print(L"    Framebuffer isn't set to %ux%u, searching for possible configuration...\n", dimensions.x, dimensions.y);
-        gBS->Stall(100000 * 50);
+        // gBS->Stall(100000 * 50);
         modecount = gop->Mode->MaxMode;
         for (; i < modecount && !found_mode; ++i) {
             status = gop->QueryMode(gop, i, &infSize, &gop_mode);
@@ -213,12 +220,13 @@ id_string* memoryTypeString(uint32_t id, id_string* arr, uint8_t len) {
 }
 
 
-#define ENTRY_AT(header, i) (efi_mem_descriptor*)((uint64_t)header->map.mmap + ((uint64_t)(i) * header->map.entry_size))         
+#define ENTRY_AT(MAP, i) (efi_mem_descriptor*)((uint64_t)header->map.mmap + ((uint64_t)(i) * header->map.entry_size))         
+#define MAP_ENTRY_AT(MAP, i) (efi_mem_descriptor*)((uint64_t)MAP->mmap + ((uint64_t)(i) * MAP->entry_size))         
 
 
-void PrintMemMapDescriptors(kernel_header_t* hdr)
+void PrintMemMapDescriptors(efi_memory_map* map)
 {
-    const uint64_t      dscs = hdr->map.map_size / hdr->map.entry_size;    
+    const uint64_t      dscs = map->map_size / map->entry_size;    
     efi_mem_descriptor* dsc  = 0;
 
     id_string mem_string[18] = {
@@ -242,20 +250,20 @@ void PrintMemMapDescriptors(kernel_header_t* hdr)
         { BOOT_MEMORY_MAP_TYPE, L"EfiOSLoaderMemoryMap      " }
     };
     Print(L"EFI Memory Map Description:\n");
-    Print(L"Map Size: 0x%X; Used: 0x%X.\nEntry Size: 0x%X\n", hdr->map.map_size, hdr->map.used_size, hdr->map.entry_size);
+    Print(L"Map Size: 0x%X; Used: 0x%X.\nEntry Size: 0x%X\n", map->map_size, map->used_size, map->entry_size);
     Print(L"memory type                | p          | v          | pages    ||\n");
 
 
     for(uint16_t i = 0; i < dscs; ++i)
     {
-        dsc = ENTRY_AT(hdr, i);
+        dsc = MAP_ENTRY_AT(map, i);
         Print(L"%s | 0x%l8x | 0x%l8x | %8x ||\n", 
             memoryTypeString(dsc->memtype, &mem_string[0], 18u)->str,
             dsc->physAddr, 
             dsc->virtAddr, 
             dsc->pages
         );
-        gBS->Stall(100000);
+        // gBS->Stall(100000);
     }
     return;
 }
@@ -348,176 +356,53 @@ void tableInfo(PageTable* table)
     for(uint16_t i = 0; i < 4096u; ++i)
     {
         Print(L"%4u: %l10x ", i, table[i]);
-        gBS->Stall(2500);
+        // gBS->Stall(2500);
         if((i+1) % 4 == 0) { Print(L"\n"); }
     }
 }
 
 
 
+// static void __print_header(kernel_header_t* hdr)
+// {
+//     Print(L"\nKernel Header Contents:\n");
+//     Print(L"	Memory Map:\n		Address:    0x%lx\n		Used  Size: 0x%lx\n		Total Size: 0x%lx\n		Entry Size: 0x%lx\n	Memory Config:\n		physical Kernel Start: 0x%lx\n		virtual  Kernel Start: 0x%lx\n		PML4 Address:		   0x%lx\n		PML4 Size:             0x%lx\n		Kernel Stack Address:  0x%lx\n		Kernel Stack Size:     0x%lx (bytes)\n		RIP Identity Mapping:  0x%lx\n		RIP Page-Map Address:  0x%lx\n		RIP Page-Map Size:     0x%lx\n		Per-Core Stacks Start: 0x%lx\n		Per-Core TSS Segments: 0x%lx\n	Framebuffer:\n		Virtual Start: 0x%lx\n		Dimensions: %ux%u\n	ACPI Config:\n		XSDT(? => bool(%u)) Physical Address: 0x%lx\n		Processor Count: 					  %u\n\n	GDT Virtual Address: 				  0x%lx\n	EFI Runtime Services Virtual Address: 0x%lx\n",
+//         hdr->map.mmap,
+//         hdr->map.used_size,
+//         hdr->map.map_size,
+//         hdr->map.entry_size,
 
-void __attribute__((noreturn)) enablePagingJumpToElf64Ver2(
-    kernel_header_t* header,
-    __kernel_entry   entry, 
-    uint64_t         physStart, 
-    uint64_t         virtStart
-) {
-    const uint16_t      dscs        = (uint16_t)(header->map.used_size / header->map.entry_size);    
-    efi_mem_descriptor* dsc         = header->map.mmap;
+//         hdr->memcfg.physicalAddress,
+//         hdr->memcfg.virtualAddress,
+//         hdr->memcfg.addressPML4,
+//         hdr->memcfg.sizePML4,
+//         hdr->memcfg.rbpAddress,
+//         hdr->memcfg.rbpSize,
+//         hdr->memcfg.ident_rip,
+//         hdr->memcfg.ident_rip_addr,
+//         hdr->memcfg.ident_rip_size,
+//         hdr->memcfg.percpuRBP,
+//         hdr->memcfg.percpuTSS,
 
-    uint64_t            toVirtual   = virtStart - physStart; // where physical memory starts now.
-    PageTable*          PML4;
+//         hdr->screen.start,
+//         hdr->screen.dims.x,
+//         hdr->screen.dims.y,
 
-    uint64_t            rip         = 0;
-    uint64_t            fbSize      = 0;
-    kernel_header_t*    newHeader   = 0;
+//         hdr->acpi.extended,
+//         hdr->acpi.address,
+//         hdr->acpi.procCount,
 
-    efi_mem_descriptor* biggestFree = header->map.mmap;
-    uint64_t            biFreePages = 0;
-    uint16_t            biFreeIdx   = 0;
-    bool_t              usable      = 0;
-    efi_mem_descriptor* prev;
-    efi_mem_descriptor* pageTables;
-    efi_mem_descriptor* leftOverFree;
-
-    page*               pageStack;
-    
-    
-    // fix virtual addresses inside the memory map.
-    for(uint16_t i = 0; i < dscs; ++i)
-    {
-        dsc           = ENTRY_AT(header, i);
-        dsc->virtAddr = dsc->physAddr + toVirtual * !(dsc->memtype == EfiRuntimeServicesCode || dsc->memtype == EfiRuntimeServicesData);
-        // find the biggest free region for allocation. we can fairly assume there is enough RAM.
-        usable      = (dsc->memtype == EfiConventionalMemory) || (dsc->memtype == EfiBootServicesCode) || (dsc->memtype == EfiBootServicesData);
-        usable     *= (dsc->pages > biggestFree->pages);
-
-        biFreeIdx = i * usable + biFreeIdx * !usable;
-        // if(dsc->pages > biggestFree->pages) 
-        //     biFreeIdx = i;
-        biggestFree = (efi_mem_descriptor*)( (uint64_t)dsc * usable + (uint64_t)biggestFree * !usable );
-    }
-    biFreePages = biggestFree->pages;
-
-
-    // map the whole address space, besides the paging tables descriptor.
-    pageStack = (page*)biggestFree->physAddr;
-    PML4      = (PageTable*)ALLOC_PAGE(pageStack);
-    SetMem(PML4, 4096, 0x00);
-    for(uint16_t i = 0; i < dscs; ++i)
-    {
-        dsc = ENTRY_AT(header, i);
-        if(__builtin_expect(dsc == biggestFree, FALSE))
-            continue;
-
-        for(uint64_t pc = 0; pc < dsc->pages; ++pc) {
-            pageStack = mapPages(PML4, pageStack, dsc->physAddr + pc * 4096, dsc->virtAddr + pc * 4096, 0);
-        }        
-    }
-
-
-
-    // map the next Page-worth of instructions.
-    __asm__ volatile("lea (%%rip), %0" : "=r"(rip));
-    pageStack = mapPages(PML4, pageStack, rip, rip, 0);
-
-
-
-    // map the framebuffer to the higher half.
-    fbSize = (uint64_t)header->screen.dims.x * (uint64_t)header->screen.dims.y * sizeof(uint32_t);
-    for(uint64_t i = 0; i < fbSize; i += 4096) 
-    {
-        pageStack = mapPages(PML4, pageStack, 
-            (uint64_t)header->screen.start + i, 
-            (uint64_t)header->screen.start + toVirtual + i, 
-            0
-        );
-    }
-
-
-
-    // map the page tables we used - identity mapping (1:1).
-    for(uint64_t ptable = biggestFree->physAddr; ptable < (uint64_t)pageStack; ptable += 4096) {
-        pageStack = mapPages(PML4, pageStack, ptable, ptable, 0);
-    }
-
-
-
-    // Move all entries from idx biFreeIdx to the right by 1.
-    for(uint16_t i = dscs; i > biFreeIdx; --i)
-    {
-        prev = ENTRY_AT(header, i - 1);
-        dsc  = ENTRY_AT(header, i    );
-        *dsc = *prev;
-    }
-
-    // update descriptor for pageTables.
-    pageTables = ENTRY_AT(header, biFreeIdx);
-    pageTables->memtype  = BOOT_PAGING_MEM_TYPE;
-    pageTables->virtAddr = pageTables->physAddr;
-    pageTables->pages    = ((uint64_t)pageStack - pageTables->physAddr) >> 12;
-
-    // update descriptor for the left over pages inside biggestFree.
-    leftOverFree = ENTRY_AT(header, biFreeIdx+1);
-    leftOverFree->memtype  = EfiConventionalMemory;
-    leftOverFree->physAddr = pageTables->physAddr   + pageTables->pages;
-    leftOverFree->virtAddr = leftOverFree->physAddr + toVirtual;
-    leftOverFree->pages    = biFreePages - pageTables->pages;
-
-    // map leftover pages.
-    for(uint64_t i = 0 ; i < leftOverFree->pages; ++i) {
-        pageStack = mapPages(PML4, pageStack, leftOverFree->physAddr + (i << 12), leftOverFree->virtAddr + (i << 12), 0);
-    }
-
-    // since some new pageTables might've been created, we need to remap them to their identity mapping.
-    for(uint64_t remap = leftOverFree->physAddr; remap < (uint64_t)pageStack; remap += 4096) {
-        pageStack = mapPages(PML4, pageStack, leftOverFree->physAddr + remap, leftOverFree->physAddr + remap, 0);
-    }
-
-    
-    // map our kernel header because it can't be a stack variable (I haven't mapped the stack of the previous function)
-    // since we need to update leftOverFree && pageTables, I do this to account for the newHeader Page.
-    newHeader = (kernel_header_t*)ALLOC_PAGE(pageStack); 
-    SetMem(newHeader, 4096, 0x00);
-    pageStack = mapPages(PML4, pageStack, (uint64_t)newHeader, (uint64_t)newHeader + toVirtual, 0); 
-    CopyMem(newHeader, header, sizeof(kernel_header_t));
-
-
-    // update the entries in the descriptors.
-    leftOverFree->pages -= ((uint64_t)pageStack - leftOverFree->physAddr) >> 12;
-    pageTables->pages   += ((uint64_t)pageStack - leftOverFree->physAddr) >> 12;
-
-    // update the pointers/offsets in the FREE_MEMORY descriptor.
-    leftOverFree->physAddr = pageTables->physAddr + (pageTables->pages << 12);
-    leftOverFree->virtAddr = leftOverFree->physAddr + toVirtual;
- 
-
-
-    // remap pointers in the kernel header
-    newHeader->acpi.address      += toVirtual;
-    newHeader->map.mmap           = (efi_mem_descriptor*)((char*)newHeader->map.mmap     + toVirtual); // ?
-    newHeader->map.used_size     += newHeader->map.entry_size;
-    newHeader->screen.start       = (void*)              ((char*)newHeader->screen.start + toVirtual);
-    newHeader->pml4.virtualOffset = toVirtual;
-    newHeader->pml4.pml4_addr     = PML4;
-    newHeader->pml4.pml4_size     = pageTables->pages;
-    newHeader                     = (kernel_header_t*)((uint64_t)newHeader + toVirtual);
-
-
-
-    __asm__ volatile("movq %0, %%rdi\n\t" : : "r"(newHeader)); // set variables before switching paging directories
-    __asm__ volatile("movq %0, %%rcx\n\t" : : "r"(entry));     // ^^^^
-    __asm__ volatile("movq %0, %%cr3\n\t" : : "r" (PML4));     // switch to new paging directory.
-    __asm__ volatile("jmp *%rcx\n\t");                         // jump to kernel entry with header pointer in rdi.
-    // __asm__ volatile("movq $0xDEADBEEFBBBB, %r15");            // < was used previously for testing that it worked.
-    pauseloop();
-}
+//         hdr->gdt,
+//         hdr->efi_rt
+//     );
+// }
 
 
 
 
 void __attribute__((noreturn)) enablePagingJumpToElf64Ver3(
     kernel_header_t* header,
+    kernel_header_t* hHalfHdr,
     __kernel_entry   entry, 
     uint64_t         physStart, 
     uint64_t         virtStart
@@ -543,6 +428,7 @@ void __attribute__((noreturn)) enablePagingJumpToElf64Ver3(
     page*               pageStack;
     page*               ident_rip;
     
+
     // fix virtual addresses inside the memory map.
     for(uint16_t i = 0; i < dscs; ++i)
     {
@@ -553,6 +439,17 @@ void __attribute__((noreturn)) enablePagingJumpToElf64Ver3(
         usable       *= (dsc->pages > biggestFree->pages);
         biFreeIdx     = i * usable + biFreeIdx * !usable;
         biggestFree   = (efi_mem_descriptor*)( (uint64_t)dsc * usable + (uint64_t)biggestFree * !usable );
+
+        // if(dsc->memtype == BOOT_ELF_MEM_TYPE)
+        // {
+        //     __asm__ volatile(
+        //         "mov %0, %%r12\n\t"
+        //         "mov %1, %%r13\n\t"
+        //         "mov %2, %%r14\n\t"
+        //         "mov %3, %%r15\n\t"
+        //         "hlt" : : "r"(dsc->pages), "r"(dsc->physAddr), "r"(dsc->virtAddr), "r"(toVirtual)
+        //     );
+        // }
     }
     biFreePages = biggestFree->pages;
 
@@ -570,14 +467,13 @@ void __attribute__((noreturn)) enablePagingJumpToElf64Ver3(
     }
 
 
-
     // map the next Page-worth of instructions.
     __asm__ volatile("lea (%%rip), %0" : "=r"(rip));
     ident_rip = pageStack;
     pageStack = mapPages(PML4, ident_rip, rip, rip, 0);
-    header->pml4.rip_ipage = ident_rip;
-    header->pml4.rip_isize = ((uint64_t)pageStack - (uint64_t)ident_rip) >> 12;
-
+    header->memcfg.ident_rip      = (void*)rip;
+    header->memcfg.ident_rip_addr = ident_rip;
+    header->memcfg.ident_rip_size = ((uint64_t)pageStack - (uint64_t)ident_rip) >> 12;
 
 
     // map the framebuffer to the higher half.
@@ -593,13 +489,9 @@ void __attribute__((noreturn)) enablePagingJumpToElf64Ver3(
 
 
 
-    // map our kernel header because it can't be a stack variable (I haven't mapped the stack of the previous function)
-    // since we need to update leftOverFree && pageTables, I do this to account for the newHeader Page.
-    newHeader = (kernel_header_t*)ALLOC_PAGE(pageStack); 
-    SetMem(newHeader, 4096, 0x00);
-    pageStack = mapPages(PML4, pageStack, (uint64_t)newHeader, (uint64_t)newHeader + toVirtual, 0); 
-    CopyMem(newHeader, header, sizeof(kernel_header_t));
-
+    // update our kernel header to a known location in virtual memory.
+    // because hHalfHdr is just beside the kernel, its also mapped in virtual mem.
+    CopyMem(hHalfHdr, header, sizeof(kernel_header_t));
 
 
     // Move all entries from idx biFreeIdx to the right by 1.
@@ -612,8 +504,8 @@ void __attribute__((noreturn)) enablePagingJumpToElf64Ver3(
 
     // update descriptor for pageTables.
     pageTables = ENTRY_AT(header, biFreeIdx);
-    pageTables->memtype  = BOOT_PAGING_MEM_TYPE;
-    pageTables->pages    = ((uint64_t)pageStack - pageTables->physAddr) >> 12;
+    pageTables->memtype = BOOT_PAGING_MEM_TYPE;
+    pageTables->pages   = ((uint64_t)pageStack - pageTables->physAddr) >> 12;
 
     // update descriptor for the left over pages inside biggestFree.
     leftOverFree = ENTRY_AT(header, biFreeIdx+1);
@@ -622,24 +514,31 @@ void __attribute__((noreturn)) enablePagingJumpToElf64Ver3(
     leftOverFree->virtAddr = leftOverFree->physAddr + toVirtual;
     leftOverFree->pages    = biFreePages - pageTables->pages;
 
-
+    // PrintMemMapDescriptors(&header->map);
 
     // remap pointers in the kernel header
-    newHeader->acpi.address      += toVirtual;
-    newHeader->map.mmap           = (efi_mem_descriptor*)((char*)newHeader->map.mmap     + toVirtual); // ?
-    newHeader->map.used_size     += newHeader->map.entry_size;
-    newHeader->screen.start       = (void*)              ((char*)newHeader->screen.start + toVirtual);
-    newHeader->pml4.virtualOffset = toVirtual;
-    newHeader->pml4.pml4_addr     = PML4;
-    newHeader->pml4.pml4_size     = pageTables->pages;
-    newHeader                     = (kernel_header_t*)((uint64_t)newHeader + toVirtual);
+    newHeader = hHalfHdr;
+    newHeader->acpi.address            += toVirtual;
+    newHeader->memcfg.percpuRBP        += toVirtual;
+    newHeader->memcfg.percpuTSS        += toVirtual;
+    newHeader->gdt                     += toVirtual;
+    newHeader->map.mmap                 = (efi_mem_descriptor*)((char*)newHeader->map.mmap + toVirtual);
+    newHeader->map.used_size           += newHeader->map.entry_size;
+    newHeader->screen.start             = (void*)((char*)newHeader->screen.start + toVirtual);
+    newHeader->memcfg.physicalAddress   = physStart;
+    newHeader->memcfg.virtualAddress    = virtStart;
+    newHeader->memcfg.addressPML4       = PML4;
+    newHeader->memcfg.sizePML4          = pageTables->pages;
+    newHeader                           = (kernel_header_t*)((uint64_t)newHeader + toVirtual);
 
-
+    // __print_header(header);
+    // __print_header(hHalfHdr);
 
     __asm__ volatile("movq %0, %%rdi\n\t" : : "r"(newHeader)); // set variables before switching paging directories
     __asm__ volatile("movq %0, %%rcx\n\t" : : "r"(entry));     // ^^^^
     __asm__ volatile("movq %0, %%cr3\n\t" : : "r" (PML4));     // switch to new paging directory.
-    // __asm__ volatile("movq $0xDEADBEEFBBBB, %r15");            // < was used previously for testing that it worked.
+    // __asm__ volatile("movq $0xDEADBEEFCCCCCCCC, %r15");        // < was used previously for testing that it worked.
+    // __asm__ volatile("hlt");
     __asm__ volatile("jmp *%rcx\n\t");                         // jump to kernel entry with header pointer in rdi.
     pauseloop();
 }
@@ -723,16 +622,20 @@ Elf64_Shdr probeSection(
 
 void* loadElf64(
     EFI_FILE_HANDLE e_handle, 
+    uint64_t        cpu_core_count,
     uint64_t*       loaded_address, 
     uint64_t*       load_address, 
     uint64_t*       loaded_size,
     uint64_t*       progStack,
-    uint64_t*       progStackSize
+    uint64_t*       progStackSize,
+    uint64_t*       apCoreStackOff,
+    uint64_t*       apTssOff,
+    uint64_t*       gdtOff,
+    uint64_t*       higherHalfKhdr
 ) {
-    EFI_STATUS status = EFI_SUCCESS;
-    uint64_t    tmp   = 0;
-
-    Elf64_Ehdr  ehdr;       // elf header 
+    EFI_STATUS  status = EFI_SUCCESS;
+    uint64_t    tmp    = 0;
+    Elf64_Ehdr  ehdr;      // elf header 
     Elf64_Phdr* phdrtable; // program header table
     Elf64_Shdr  sSec;      // stack section-header.
     Elf64_Addr  physoff;   // physical offset of each program header
@@ -742,8 +645,8 @@ void* loadElf64(
     tmp    = sizeof(Elf64_Ehdr);
     status = e_handle->Read(e_handle, &tmp, &ehdr);
     Print(L"\nloading ELF File... \n");
-    CHECKERR(status, Print(L"couldn't read elf64 header"))
-    CHECKERR(!verifyElf64Header(&ehdr), Print(L"\nCouldn't load Elf64 File -> Header is invalid\n"))
+    CHECKERR(status, Print(L"   couldn't read elf64 header"))
+    CHECKERR(!verifyElf64Header(&ehdr), Print(L"\n    Couldn't load Elf64 File -> Header is invalid\n"))
     Print(L"    Elf64 header verified successfully\n");
     
 
@@ -761,34 +664,85 @@ void* loadElf64(
     e_handle->Read(e_handle, &tmp, phdrtable);     // read the table into the buffer
 
     // // get the total size of all executable sections. then allocate all needed memory (at once)
-    Elf64_Addr phdrt_end = (Elf64_Addr)phdrtable + tmp;
-    Elf64_Addr ptload    = 0;
-    tmp                  = 0;
+    Elf64_Addr phdrt_end  = (Elf64_Addr)phdrtable + tmp;
+    Elf64_Addr ptload     = 0;
+    uint64_t   kernelSize = 0;
+
 
     // total amount of pages needed to load the executable segments.
-    for (Elf64_Phdr* h = phdrtable; (Elf64_Addr)h < phdrt_end; tmp += (h->p_type == PT_LOAD) * ((h->p_memsz + 0xfffllu) >> 12llu), ++h); 
+    for (Elf64_Phdr* h = phdrtable; (Elf64_Addr)h < phdrt_end; kernelSize +=  h->p_memsz * (h->p_type == PT_LOAD), ++h); 
     CHECKERR(tmp == 0, {
         Print(L"    Couldn't Load ELF64 File into memory - No PT_LOAD (Executable) Section. Exiting...\n");
     })
+    
 
-    status  = gBS->AllocatePages(AllocateAnyPages, BOOT_ELF_MEM_TYPE, tmp, &ptload);
+
+    // TSS, 32KiB Stack & GDT TSS Entry per AP Core. 
+    uint64_t gdtSize     = GDT_ENTRY_SIZE * (5 + cpu_core_count);
+    uint64_t totalStacks = AP_CORE_STACK_SIZE * cpu_core_count;
+    uint64_t totalTSS    = TSS_X86_64_SIZE * cpu_core_count;
+
+    // The total Amount of memory needed is:
+    // SIZE = sizeof(Kernel) + sizeof(totalTSS + totalStacks + gdtSize) + sizeof(KernelHeader).
+    // Order in Memory: (0)| Kernel | Stacks | TSS | GDT | Header |(SIZE)
+    tmp = kernelSize + gdtSize + totalStacks + totalTSS + sizeof(kernel_header_t);
+    tmp = (tmp >> EFI_PAGE_SHIFT) + !!(tmp & 0xfff); // convert to pages.
+
+
+    status = gBS->AllocatePages(AllocateAnyPages, BOOT_ELF_MEM_TYPE, tmp, &ptload);
     CHECKERR(status, { 
-        Print(L"    couldn't load all executable sections into memory. exiting...\n");
-        ondebug(Print(L"    tried to allocate %llu KB\n", tmp * 4ul);)
+        Print(L"    Tried to allocate %llu KB\ncouldn't load all executable sections into memory. exiting...\n", tmp * 4ul);
     })
-    ondebug(Print(L"    allocated %llu KB in address %X\n", tmp * 4ul, ptload);)
+    ondebug(Print(L"    Allocated %llu KB in address %X\n", tmp * 4ul, ptload);)
 
-    // clear the buffer we just allocated.
-    SetMem((void*)ptload, tmp, 0x00u); 
-    for (Elf64_Phdr* h = phdrtable; (Elf64_Addr)h < phdrt_end; ++h) {
-        if(h->p_type == PT_LOAD) {
-            *load_address = h->p_vaddr;
-            break;
+
+    SetMem((void*)ptload, tmp, 0x00u); // clear the buffer we just allocated.
+    *loaded_address = ptload;
+    *loaded_size    = tmp << EFI_PAGE_SHIFT;
+    *apCoreStackOff = ptload + *loaded_size;
+    *apTssOff       = *apCoreStackOff + totalStacks;
+    *gdtOff         = *apTssOff + totalTSS;
+    *higherHalfKhdr = *gdtOff + gdtSize;
+    ondebug(
+        Print(L"loaded_address: %lx\nloaded_size:    %lx\napCoreStackOff: %lx\napTssOff:		%lx\nGdtOff:			%lx\nhigherHalfKhdr: %lx\n",
+            *loaded_address,
+            *loaded_size,
+            *apCoreStackOff,
+            *apTssOff,
+            *gdtOff,
+            *higherHalfKhdr
+        );
+    )
+
+
+
+
+    // initialize OUT variables.
+    // 1. get symbol table.
+    // 2. get string table.
+    // 3. if string_table[symbol.name] == "__kernel_start"
+    // 4.   set loaded_address to symbol.value;
+    Elf64_Shdr symtab   = probeSection(e_handle, &ehdr, ".symtab", 8);
+    Elf64_Shdr strtab   = probeSection(e_handle, &ehdr, ".strtab", 8);
+    Elf64_Sym* symbols  = AllocatePool(symtab.sh_size);
+    uint8_t*   strings  = AllocatePool(strtab.sh_size);
+    bool_t     foundVMA = FALSE;
+
+    e_handle->SetPosition(e_handle, symtab.sh_offset); 
+    e_handle->Read(e_handle, &symtab.sh_size, symbols);
+    e_handle->SetPosition(e_handle, strtab.sh_offset); 
+    e_handle->Read(e_handle, &strtab.sh_size, strings);
+
+    for(uint64_t sym = 0; !foundVMA && sym < symtab.sh_size / symtab.sh_entsize; ++sym)
+    {
+        if(memcmp((uint8_t*)"__kernel_start", strings + symbols[sym].st_name, 13)) {
+            foundVMA = TRUE;
+            *load_address = symbols[sym].st_value;
         }
     }
-    *loaded_address = ptload;
-    *loaded_size    = tmp;
-    
+    FreePool(symbols);
+    FreePool(strings);
+
 
     // put each PT_LOAD section in their respective offset.
     for (Elf64_Phdr* h = phdrtable; (Elf64_Addr)h < phdrt_end; ++h)
@@ -801,7 +755,7 @@ void* loadElf64(
             e_handle->Read(e_handle, &tmp, (void*)physoff);            // load the phdr into the memory region allocated.
             // SetMem((void*)(physoff + tmp), h->p_memsz - tmp, 0x00);    // if(h->p_memsz > h->p_filesz) we have a .bss section that needs to be initialized (0)
             Print(L"    PT_LOAD section loaded at %X (%X Bytes). offset: %X\n", physoff, tmp, ptload);
-            ondebug(
+            // ondebug(
                 Print(L"    PT_LOAD Section Info: \n        Offset: %lu\n        Virtual Address: %lx    Physical Address: %lx\n        File Size: %X (Bytes)\n        Memory Size: %X (Bytes)\n        Alignment: %u Bytes\n        pages allocated at: %lx\n", 
                     h->p_offset,
                     h->p_vaddr,
@@ -811,16 +765,46 @@ void* loadElf64(
                     h->p_align, 
                     physoff
                 );
-            )        
+            // )        
        }
     }
-
 
     Print(L"    Program headers loaded Successfully,\nEntry is At (Virtual Address) %lx\n", ehdr.e_entry);
     FreePool(phdrtable);
     return (void*)ehdr.e_entry;
 }
 
+
+
+
+uint64_t get_core_count()
+{
+    // the CPU Cores need Individual Structs, such as stacks.
+    // We'll find the Core count and allocate accordingly.
+    EFI_STATUS                       status  = EFI_SUCCESS;
+    EFI_GUID                         mpsvsg  = EFI_MP_SERVICES_PROTOCOL_GUID;
+    Efi_mp_services*                 mpsvs   = NULL;
+    uint64_t                         cores   = 0;
+    uint64_t                         enabled = 0;
+
+    Print(L"Finding Core Count through MP Services...\n");
+    
+    status = uefi_call_wrapper(gBS->LocateProtocol, 3, &mpsvsg, NULL, (void**)&mpsvs);
+    if(status) {
+        Print(L"   Couldn't find Core count! - MP Services aren't available\n");
+        return 0xFAFAFAFAFAFAFAFA;
+    }
+
+    status = uefi_call_wrapper(mpsvs->GetNumberOfProcessors, 3, mpsvs, &cores, &enabled);
+    if(status) {
+        Print(L"   Couldn't find Core Count! - function call FAILED (GetNumberOfProcessors())");
+        return 0xFAFAFAFAFAFAFAFA;
+    }
+
+
+    Print(L"    Processor Core-Count is %u\n", cores);
+    return cores;
+}
 
 
 
@@ -841,61 +825,16 @@ void get_verify_acpi_rsdp(OUT RSDPdescriptor20** dsc)
         CHECKERR(status, Print(L"   Couldn't find ACPI_1.0 ==> This System doesn't support ACPI"))
     }
     
-    Print(L"    Found RSDP Descriptor at address %X in memory\n", tmp);
+    Print(L"    Found RSDP Descriptor at address %X in memory\n    ", tmp);
     for(uint8_t i = 0; i < (uint8_t)sizeof(RSDPdescriptor20); ++i)
     {
         checksum += tmp[i];
-        DEBUG( Print(L"%x ", tmp[i]); )
+        ondebug( Print(L"%x ", tmp[i]); )
     }
     CHECKERR(checksum, Print(L"    RSDP descriptor Checksum Failed, Table is invalid. Sum: %u\n", checksum))
-    Print(L"    RSDP Descriptor for ACPI_v%u Table Checksum Verified Successfully\n", ((RSDPdescriptor20*)tmp)->first.revision);
+    Print(L"\n    RSDP Descriptor for ACPI_v%u Table Checksum Verified Successfully\n", ((RSDPdescriptor20*)tmp)->first.revision);
 
     *dsc = (RSDPdescriptor20*)tmp;
     return;
 }
 
-
-
-
-/* 
-    // // We split the memory descriptor biggestFree into 2, because some pages of it are used.
-    // // move every entry from [biFreeIdx, dscs - 1] => [biFreeIdx + 1, dscs]; 
-    // // entry[dscs] is free since map_size > used_size.
-    // for(uint16_t i = dscs; i > biFreeIdx; --i)
-    // {
-    //     dsc  = ENTRY_AT(header, i);
-    //     prev = ENTRY_AT(header, i - 1);
-    //     *dsc = *prev;
-    // }
-
-     
-    // // biggestFree is now essentially the pageStack descriptor. This entry hasn't been modified yet, only copied.
-    // biggestFree->memtype  = BOOT_PAGING_MEM_TYPE;
-    // biggestFree->virtAddr = biggestFree->physAddr;
-    // biggestFree->pages    = ((uint64_t)pageStack - biggestFree->physAddr) >> 12; // &a[i] - &a[0] = i;
-
-
-    // // this is the next entry after pageStack, meaning the copied biggestFree.
-    // dsc           = ENTRY_AT(header, biFreeIdx+1); 
-    // dsc->memtype  = EfiConventionalMemory;
-    // dsc->physAddr = biggestFree->physAddr + (biggestFree->pages << 12); // the offset to the free memory is now different.
-    // dsc->virtAddr = dsc->physAddr + toVirtual;                          // update to virtual memory offset.
-    // dsc->pages    = dsc->pages - biggestFree->pages;                    // == biggestRegion.Total - biggestRegion.usedForStack.
-
-
-    // tmp_addr = (uint64_t)pageStack;                                     // keep the end of the pageStack.    
-    // for(uint64_t i = 0; i < dsc->pages; ++i) {                          // map the free region that is left, into the higher half.
-    //     pageStack = mapPages(PML4, pageStack, dsc->physAddr + (i << 12), dsc->virtAddr + (i << 12), 0);
-    // }
-    // __asm__ volatile("int $0x03");
-
-
-    // // since we used more pages for mapping, we'll map these pages too until we don't need to anymore.
-    // for(uint64_t ptable = tmp_addr; ptable < (uint64_t)pageStack; ptable += 4096) {
-    //     pageStack = mapPages(PML4, pageStack, ptable, ptable, 0);
-    // }
-    // dsc->physAddr += ( ( (uint64_t)pageStack - tmp_addr ) << 12);       // += new_pages_allocated * sizeof(Page);
-    // dsc->virtAddr += ( ( (uint64_t)pageStack - tmp_addr ) << 12);       // += new_pages_allocated * sizeof(Page);
-    // dsc->pages    -=   ( (uint64_t)pageStack - tmp_addr );              // -= new_pages_allocated
-    
-*/

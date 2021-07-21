@@ -35,8 +35,8 @@ void init_graphics_lib(IN framebuffer_t* init_front_buffer)
     );
     local_console.cursor_pos = win_offset;
     local_console.style      = &FontStyle_Consolas12;
-    // load_fontBuffer();
-
+    
+    
     system_status(SUCCESS, "graphics initialization Succeeded");    
     printk(". Screen is %ux%u pixels (width X height)\n", 
         init_front_buffer->dims.x, 

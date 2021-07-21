@@ -40,10 +40,16 @@ void toVirtual(void* address, uint64_t pages);
 
 /* 
     * Does (almost) the same thing as toVirtual().
-    * uint16_t flags - attributes that'll be set for every allocated page table/table entries.
+    * uint64_t flags - attributes that'll be set for every allocated page table/table entries.
     *                  look in paging.h for more info about available flags, etc...
 */
-void toVirtualFlag(void* address, uint32_t pages, uint16_t flags);
+void toVirtualFlag(void* address, uint32_t pages, uint64_t flags);
+
+
+/* 
+    * Does the same thing as map_vtop(). this is a wrapper around map_vtop().
+*/
+void vtopFlag(void* virt, void* phys, uint32_t pages, uint64_t flags);
 
 
 /* 
@@ -51,5 +57,12 @@ void toVirtualFlag(void* address, uint32_t pages, uint16_t flags);
     * Same as toVirtual(), but does the reverse.
 */
 void unVirtual(void* virtaddr, uint64_t pages);
+
+
+/* 
+    * wrapper function for getCurrentCR3() in paging.h
+*/
+uint64_t getCR3();
+
 
 #endif

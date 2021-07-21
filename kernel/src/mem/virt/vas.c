@@ -39,7 +39,7 @@ void* vas_alloc(vas_man_t* vas, void* address, uint32_t pages, paging_flags_t fl
         return nullptr;
     }
 
-    toVirtualFlag(address, pages, flags.u16); // map the allocation to the virtual address space.
+    toVirtualFlag(address, pages, flags.qword.u64); // map the allocation to the virtual address space.
     return address;
 }
 

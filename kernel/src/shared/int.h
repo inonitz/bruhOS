@@ -34,7 +34,7 @@
 #define __naked                __attribute__((naked))
 #define noret                  __attribute__((noreturn))
 #define __noinline             __attribute__((noinline))
-#define nooptimize             __attribute__((optimize("O0")))
+#define __noopt                __attribute__((optimize("O0")))
 #define restrict 
 #define allocator              __attribute__((malloc))
 #define align(size)            __attribute__((aligned(size)))
@@ -87,6 +87,8 @@
 #define LENGTH(__array) (size_t)(sizeof(__array) / sizeof(*__array)) // intended for C style arrays
 #define boolean(__smnt) (!!(__smnt))
 #define isnull(__var)  !(!!(__var)) // if var is 0 ==> !var = 1.
+#define __always_false(condition) (FALSE)
+#define __always_true(condition)  (TRUE)
 
 
 // useful types (already defined in stdint.h)
@@ -117,6 +119,55 @@ typedef uint64_t		   virtual_address;
 typedef struct             string { uint8_t* data;				} string;
 typedef struct             buffer { void*    data; size_t size; } buffer;
 
+
+typedef struct __lowhigh_word
+{
+    union {
+        struct pack {
+            uint8_t l;
+            uint8_t h;
+        };
+        uint16_t u16;
+    };
+} WORD;
+
+
+typedef struct __lowhigh_dword
+{
+    union {
+        struct pack {
+            WORD l;
+            WORD h;
+        };
+        uint32_t u32;
+    };
+} DWORD;
+
+
+typedef struct __lowhigh_qword
+{
+    union {
+        struct pack {
+            DWORD l;
+            DWORD h;
+        };
+        uint64_t u64;
+    };
+} QWORD;
+
+
+#ifdef __x86_64__
+typedef struct __lowhigh_pword
+{
+    union {
+        struct pack {
+            QWORD l;
+            QWORD h;
+        };
+        __int128_t u128;
+    };
+} PWORD;
+#endif
 
 
 #endif

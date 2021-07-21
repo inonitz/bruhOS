@@ -8,6 +8,14 @@ noret void hang() {
 }
 
 
+void pausewhile(bool_t condition)
+{
+	while(condition) {
+		__asm__ volatile("pause" : : : "memory");
+	}
+}
+
+
 void kernelErrorReport(
 	const char_t*  filename, 
 	const char_t*  funcname, 
@@ -70,13 +78,13 @@ void kernelErrorReport(
 void system_status(bool_t status, char_t* message)
 {
     uint64_t statusColor = status * BRIGHT_RED +  !status * NEON_GREEN;
-    char_t* msg[2] = {
+    static const char_t* msg[2] = {
         "GOOD",
         "FAIL"
     };
     statusColor <<= 32;
-	puts("["); printkcol(statusColor, msg[boolean(status)]); puts("] ");
-	if(message != nullptr) {
+	puts("["); printkcol(statusColor, (char_t*)msg[boolean(status)]); puts("] ");
+	if(unlikely(message != nullptr)) {
 		printk(message);
 	}
 	return;

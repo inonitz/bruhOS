@@ -10,6 +10,7 @@
 #define BOOT_ELF_MEM_TYPE    0x80696969
 #define BOOT_PAGING_MEM_TYPE 0x80AAAAAA
 #define BOOT_MEMORY_MAP_TYPE 0xBEEFBEEF
+#define PERCPU_STACK_SIZE    0x8000
 
 
 typedef unsigned long long size_t;
@@ -94,35 +95,37 @@ typedef struct __attribute__((packed, aligned(16))) __framebuffer_t {
 #endif
 
 
-typedef struct {
-    uint64_t rbpAddress;
-    uint64_t size;
-} stack_info_t;
-
-
-typedef struct __regular_or_extended_acpi_description_table
+typedef struct __advanced_configuration_and_power_interface_config
 {
-    uint64_t address;
-    bool_t   extended; // if extended is > 0, the address points to a XSDT table in memory. else, RSDT (first 32 bits).
-} ACPI_DESC_TABLE;
+    uint64_t        address;  
+    bool_t          extended;   // address == RSDT / XSDT
+    uint8_t         padding[3];
+    uint32_t        procCount;  // cores on the CPU
+} acpiCfg;
 
 
-typedef struct __paging_relevant_data
+typedef struct __attribute__((packed, aligned(8))) __memory_related_data
 {
-    uint64_t virtualOffset; // physical_address + virtualOffset = virtual_address (FOR ALL MEMORY!)
-    void*    pml4_addr;     // the physical address of the page tables in memory. CR3 register Value, if you will
-    uint64_t pml4_size;     // the size in bytes (total) of the paging tables used.
-    void*    rip_ipage;     // the physical address of the pages used for mapping RIP in the bootloader. kernel should remove these pages. 
-    uint64_t rip_isize;     // the amount of pages that were used for the RIP pointer.
-} PAGING_DATA;
+    uint64_t physicalAddress; // the location in which the kernel was allocated.
+    uint64_t virtualAddress;  // the location in which the kernel is mapped in the virtual address space.
+    void*    addressPML4;     // the physical address of the page tables in memory. CR3 register Value, if you will
+    uint64_t sizePML4;        // the size in bytes (total) of the paging tables used.
+    uint64_t rbpAddress;      // the location of the kernel stack in virtual Memory.
+    uint64_t rbpSize;         // the size of the kernel stack.
+    void*    ident_rip;       // the address that was identity mapped. look below for more info.
+    void*    ident_rip_addr;  // the physical address of the pages used for mapping RIP in the bootloader. kernel should remove these pages. 
+    uint64_t ident_rip_size;  // the amount of pages that were used for the RIP pointer.
+    void*    percpuRBP;       // the (physical) start of all per-cpu stacks. every Stack is 32KiB. (macro defined at top)
+    void*    percpuTSS;       // the (physical) start of all per-cpu TSS's.
+} memConfig;
 
 
 typedef struct __kernel_header_t {
 	efi_memory_map        map;
+    memConfig             memcfg;
 	framebuffer_t         screen;
-    ACPI_DESC_TABLE       acpi;
-    PAGING_DATA           pml4;
-    stack_info_t          stack;
+    acpiCfg               acpi;
+    void*                 gdt;    // convert to GDT* to use in gdt.c
     void*                 efi_rt; // convert to Efi_runtime_services* to use.
 } kernel_header_t;
 
