@@ -43,16 +43,16 @@ typedef struct __spinlock_type
     * Otherwise, it waits until the lock is available, after which it aquires it.
     * spinlock_t* sl - the address of the spinlock to grab.
 */
-static void lock(spinlock_t sl)
+static void lock(spinlock_t* sl)
 {
     for(;;)
     {
-        if(!atomic_exchange_ret_explicit_u8(&sl.flag, TRUE, memory_model_acquire)) {
+        if(!atomic_exchange_ret_explicit_u8(sl->flag, TRUE, memory_model_acquire)) {
             return;
         }
 
 
-        while(atomic_load_explicit_u8(&sl.flag, memory_model_relaxed)) {
+        while(atomic_load_explicit_u8(sl->flag, memory_model_relaxed)) {
             __asm__ volatile("pause" : : : "memory");
         }
     }
@@ -66,15 +66,15 @@ static void lock(spinlock_t sl)
     * TRUE  - Lock Acquired successfully.
     * FALSE - failed to acquire the lock, someone is using it.
 */
-static __force_inline bool_t try_lock(spinlock_t sl)
+static __force_inline bool_t try_lock(spinlock_t* sl)
 {
-    return !atomic_load_u8(&sl.flag) && !atomic_exchange_ret_u8(&sl.flag, TRUE);
+    return !atomic_load_u8(sl->flag) && !atomic_exchange_ret_u8(sl->flag, TRUE);
 }
 
 
-static __force_inline void unlock(spinlock_t sl)
+static __force_inline void unlock(spinlock_t* sl)
 {
-    atomic_cmpxchg_u8(&sl.flag, &sl.flag, FALSE);
+    atomic_cmpxchg_u8(sl->flag, sl->flag, FALSE);
     return;
 }
 
