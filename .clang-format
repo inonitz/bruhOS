@@ -1,0 +1,63 @@
+BasedOnStyle: LLVM
+Language: Cpp
+
+IndentWidth: 4
+TabWidth: 4
+UseTab: ForIndentation
+
+IndentAccessModifiers: false
+SeparateDefinitionBlocks: Always
+MaxEmptyLinesToKeep: 2
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+    AfterFunction: false
+    BeforeCatch: false
+    BeforeElse: false
+    AfterEnum: false
+    AfterStruct: false
+    SplitEmptyFunction: false
+
+AllowShortIfStatementsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortBlocksOnASingleLine: false
+
+AlwaysBreakAfterReturnType: None
+AlwaysBreakTemplateDeclarations: Yes
+
+AlignAfterOpenBracket: BlockIndent
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+AlignOperands: true
+AlignTrailingComments: true
+AlignEscapedNewlines: Left
+AlignConsecutiveMacros: true
+
+ReflowComments: false
+KeepEmptyLinesAtTheStartOfBlocks: true
+
+ColumnLimit: 0
+
+PointerAlignment: Left
+DerivePointerAlignment: false
+SpaceBeforeParens: ControlStatements
+SpacesInCStyleCastParentheses: false
+SpaceAfterCStyleCast: true
+SpacesInParentheses: false
+SpacesInAngles: false
+SpaceBeforeAssignmentOperators: true
+
+BinPackArguments: false
+BinPackParameters: false
+
+PenaltyBreakBeforeFirstCallParameter: 1
+PenaltyBreakAssignment: 10
+PenaltyBreakComment: 100
+PenaltyReturnTypeOnItsOwnLine: 100
+
+IncludeBlocks: Preserve
+SortIncludes: false
+
+IndentPPDirectives: AfterHash
+MacroBlockBegin: "^#(\\s*)?(if|ifdef|ifndef)"
+MacroBlockEnd: "^#(\\s*)?endif"

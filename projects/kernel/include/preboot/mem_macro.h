@@ -1,0 +1,19 @@
+#ifndef __KERNEL_C_DEFINITION_PREBOOT_MEMORY_MAP_MACROS__
+#define __KERNEL_C_DEFINITION_PREBOOT_MEMORY_MAP_MACROS__
+
+
+#ifdef BOOT_ELF_MEM_TYPE
+#   error "BOOT_ELF_MEM_TYPE Macro Should NOT be defined!"
+#endif
+#ifdef BOOT_PAGING_MEM_TYPE
+#   error "BOOT_PAGING_MEM_TYPE Macro Should NOT be defined!"
+#endif
+#ifdef BOOT_MEMORY_MAP_TYPE
+#   error "BOOT_MEMORY_MAP_TYPE Macro Should NOT be defined!"
+#endif
+#define BOOT_ELF_MEM_TYPE    0x80696969
+#define BOOT_PAGING_MEM_TYPE 0x80AAAAAA
+#define BOOT_MEMORY_MAP_TYPE 0xBEEFBEEF
+
+
+#endif /* __KERNEL_C_DEFINITION_PREBOOT_MEMORY_MAP_MACROS__ */

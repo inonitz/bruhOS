@@ -1,0 +1,184 @@
+#include <smp/smp.h>
+#include <smp/symbols.h>  
+
+#include <acpi/acpi.h>
+#include <acpi/lapic.h>
+
+#include <device/hpet.h>
+#include <device/lapict.h>
+#include <device/msr.h>
+
+#include <mem/map_ptr.h>
+#include <mem/phys/pmm.h>
+
+#include <std/error.h>
+#include <std/error_macro.h>
+#include <std/halt.h>
+#include <std/math.h>
+#include <std/pause.h>
+#include <std/string.h>
+
+
+static MADT_t*    localMADT;
+static uint16_t   ncpus = 0;
+static atomic8u_t done  = 0;
+
+
+static void smp_main(trampoline_data* data)
+{
+    atomic_add_fetch_u16(&ncpus, 1);
+    lapic_init();
+
+    init_lapic_timer();
+    set_lapic_timer_state(LAPIC_TIMER_STATE_ONE_SHOT);
+
+    wrmsr(IA32_MSR_ECX_STAR, ((uint64_t)GDT_CS_USER << 56) | ((uint64_t)GDT_CS_KERNEL << 40) );    // set STAR MSR
+    wrmsr(IA32_MSR_ECX_LSTAR, 0); // reset LSTAR MSR
+    wrmsr(IA32_MSR_ECX_CSTAR, 0); // reset CSTAR MSR
+    wrmsr(IA32_MSR_ECX_FMASK, rdmsr(IA32_MSR_ECX_FMASK) & 0x00000000FFFFFFFF); // set FMASK MSR
+    
+    
+    lock(&data->lock);
+    printk("INITIALIZED CPU SUCCESSFULLY! ");
+    unlock(&data->lock);
+
+    done = BOOLEAN_TRUE;
+    hang();
+}
+
+
+static bool_t wakeup_processor(uint8_t lapic_id, uint64_t __beginning, trampoline_data* trmpln)
+{
+    lapic_send_init(lapic_id); // send INIT IPI Assert & Deassert
+    hcountns(1000000);          // wait 10ms
+
+    for(uint8_t j = 0; j < 2; ++j) {
+        if(j == 1) { 
+            system_status(KERNEL_FAILURE, NULLSTR);
+            printk("Retrying... ");
+        }
+
+        lapic_send_startup(lapic_id, __beginning); // send startup
+        pausewhile(lapic_pending());               // wait for receivement
+        if(trmpln->ready != '!') {                 // if it didn't wakeup yet
+            hcountns(200000);                      // wait 200µs
+            j += (trmpln->ready == '!');           // if we woke up, we exit the loop.
+        }
+    }
+
+
+    return (trmpln->ready == '!'); // check AP core init status
+}
+
+
+void smp_init(kernel_header_t* khdr)
+{
+    uint64_t         tbegin;
+    uint64_t         tsize;
+    uint64_t         bsp;
+    uint64_t         ap;
+    uint64_t         alloc_low;
+    trampoline_data* init;
+    far_ptr32_t*     toProt;
+    far_ptr64_t*     toLong;
+    uint32_t*        protGdtBase;
+    uint8_t*         protGdtFlags;
+    uint64_t         madt_len;
+    int_cnt_header*  hdr; 
+    int_cnt_header*  end;
+
+
+    bsp    = lapic_read_reg(LAPIC_ID);
+    tsize  = roundN(&__trampoline_end - &__trampoline_start, PAGE_SIZE) >> 12;
+    tbegin = (uint64_t)getKernelStart() + (uint64_t)&__trampoline_start;
+
+
+    // alloc and map trampoline
+    alloc_low = (uint64_t)pfa_alloc_pages(tsize, DMA_LOW);
+    tsize    *= PAGE_SIZE;
+    memcpy(
+        VIRT_TYPE(alloc_low, void*), 
+        (void*)tbegin,
+        tsize
+    );
+    vtopFlag((void*)alloc_low, (void*)alloc_low, tsize >> 12, 0x1b);
+
+    
+
+    init          = (trampoline_data*)(alloc_low + &local_targs);         // trampoline data
+    toProt        = (far_ptr32_t*    )(alloc_low + &farPointer32);        // for jumping to protected mode.
+    toLong        = (far_ptr64_t*    )(alloc_low + &farPointer64);        // for jumping to long      mode.
+    protGdtBase   = (uint32_t*)(alloc_low + &ApStartGdt  + sizeof(WORD)); // temporary long & protected mode GDT.
+    protGdtFlags  = (uint8_t*) (alloc_low + &ApStartGdtCs_48_55);         // bits 48->55 in the CS segment.
+    toProt->ptr  += (uint32_t)alloc_low;                                  // update the base address, we can't do this in the trampoline.
+    toLong->ptr  += (uint32_t)alloc_low;                                  // update the base address, we can't do this in the trampoline.
+    *protGdtBase += (uint32_t)alloc_low;                                  // update the base address, we can't do this in the trampoline.
+
+    init->ready     = BOOLEAN_FALSE;
+    init->lock.flag = BOOLEAN_FALSE;
+    init->tssOff    = GDT_TS0;
+    init->pml4      = getCR3();
+    init->rbp64     = (uint64_t)khdr->memcfg.percpuRBP + __KERNEL_PERCPU_STACK_SIZE; // top of stack.
+    init->gdt64     = getKernelGDTP();
+    init->idt64     = getKernelIDTR();
+    init->entry     = (uint64_t)smp_main;
+
+    debug_printk("TRAMPOLINE CONFIG:\n    Address:         %x\n    Ready:           %u\n    TSS Offset:      %x\n    AP Core PML4:    %x\n    AP Core Stack:   %X\n    AP Core GDT(64): %X\n    AP Core IDT(64): %X\n    AP Core Main:    %X\n",
+        alloc_low,
+        init->ready,
+        init->tssOff,
+        init->pml4,
+        init->rbp64,
+        init->gdt64,
+        init->idt64,
+        init->entry
+    )
+
+    madt_len = localMADT->hdr.length - sizeof(localMADT->hdr) - 8;    
+    hdr      = &localMADT->intcont[0];
+    end      = (int_cnt_header*)((uint64_t)hdr + madt_len);
+    for(; hdr < end; hdr = (int_cnt_header*)((uint64_t)hdr + hdr->length)) 
+    {
+        if(hdr->int_type != INT_CONTROLLER_PROCESSOR_LOCAL_APIC) 
+            continue;
+        
+        ap = ((LAPIC_t*)hdr)->apic_id;
+        if(unlikely(ap == bsp)) 
+            continue;
+
+        
+        printk_align_format(3); // I wouldn't expect CPU's with > 1000 cores.
+        printk("       waking up AP Core %u ... ", ap);
+        printk_align_format(0);
+        if(wakeup_processor(ap, alloc_low, init)) {
+            while(!done) { // wait for the AP Core to finish init.
+                __asm__ volatile("pause");
+            }
+            system_status(KERNEL_SUCCESS, NULLSTR);
+            putln();
+        }
+        
+
+        done          = BOOLEAN_FALSE;
+        init->ready   = BOOLEAN_FALSE;                  // reset ready status
+        init->tssOff += __KERNEL_PERCPU_TSS_ENTRY_SIZE; // goto next tss Offset
+        init->rbp64  += __KERNEL_PERCPU_STACK_SIZE;     // goto next Stack Pointer [RBP].
+        *protGdtFlags = 0xCF;                           // reset CS Segment flags back to Prot Mode.
+    }
+
+
+    tsize >>= LOG2_PAGE_SIZE;
+    pfa_free ((void*)alloc_low, tsize);
+    unVirtual((void*)alloc_low, tsize); // this needs to be flushed across all AP core's from the TLB.
+
+    system_status(KERNEL_SUCCESS, NULLSTR);
+    printk("Successfully Initialized %u AP Cores - %u Active.\n", ncpus, ncpus + 1);
+
+    return;
+}
+
+
+void set_madt(MADT_t* madt)
+{
+    localMADT = madt;
+}

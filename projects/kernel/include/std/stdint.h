@@ -1,0 +1,10 @@
+#ifndef __KERNEL_C_DEFINITION_STDINT_DEFINITION__
+#define __KERNEL_C_DEFINITION_STDINT_DEFINITION__
+
+
+#ifndef __KERNEL_PREBOOT_RESOLVE_TYPE_CONFLICTS_WITH_EFI__ /* seriously this sucks */
+#   include <stdint.h>
+#endif
+
+
+#endif /* __KERNEL_C_DEFINITION_STDINT_DEFINITION__ */

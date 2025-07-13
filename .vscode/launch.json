@@ -2,35 +2,46 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Kernel",
-            "type": "cppdbg",
+            "type": "lldb",
             "request": "launch",
-            "program": "${workspaceFolder}/kernel/bin/kernel.elf",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "MIMode": "gdb",
-            "miDebuggerPath": "/usr/bin/gdb",
-            "targetArchitecture": "x64",
-            "customLaunchSetupCommands": [
-                {
-                    "text" : "target remote localhost:1234",
-                    "description": "Connect to QEMU"
-                },
-                {
-                    "test" : "symbol-file kernel.elf",
-                    "description": "Get symbols"
-                }
+            "name": "LLDB Wait For Qemu (Bootloader)",
+            "targetCreateCommands": [
+                "target create --no-dependents --arch x86_64 C:/CTools/Projects/bruhOS/build/bin/Debug_amd64_bootloader/bootx64.efi --symfile C:/CTools/Projects/bruhOS/build/bin/Debug_amd64_bootloader/bootx64.pdb",
+                "target modules load --file bootx64.efi .text 0xEA5f000"
             ],
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
+            "processCreateCommands": [
+                "gdb-remote localhost:1234",
+                "watchpoint set expression -w modify -s 8 -- 0x10000"
             ],
-            "preLaunchTask": ""
+            // Useful Procedures:
+            // target modules ... ADDR = 
+            //     1. StartBin = starting address (link addr) of the binary
+            //     2. TextAddr = starting address of the .text section.
+            //     3. offset_to_text = addr(.text) - addr(start) [ TextAddr - StartBin ]
+            //     4. right 'continue' in the lldb console, wait for the loaded_image_base
+            //          to be printed on screen.
+            //     * ADDR = loaded_image_base + offset_to_text
+            // 
+            // "breakpoint set -a ADDR_TO_BREAK_ON" - 
+            //      * ADDR_TO_BREAK_ON = same procedure as above, replace addr(.text) with desired instruction addr
+            // 
+            // memory read --size 1 --format x --count 16 ADDR
+        },
+
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "LLDB Wait For Qemu (Kernel)",
+            "targetCreateCommands": [
+                "target create --no-dependents --arch x86_64 C:/CTools/Projects/bruhOS/build/bin/Debug_amd64_kernel/kernel.elf",
+                // target modules load --file kernel.elf 0xffffff8000000000
+                // Not really necessary ^
+            ],
+            "processCreateCommands": [
+                "gdb-remote localhost:1234",
+                // "breakpoint set --name _start",
+                "breakpoint set --name actual_start"
+            ]
         }
     ]
 }

@@ -1,0 +1,17 @@
+---
+Checks: "-*,
+        llvm-*,
+        bugprone-*,
+        clang-analyzer-*,
+        clang-diagnostic-*,
+        concurrency-*,
+        performance-*,
+        portability-*,
+        readability-*,
+        -readability-redundant-control-flow
+"
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+FormatStyle: none
+
+        # modernize-*,
