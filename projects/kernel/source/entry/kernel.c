@@ -19,7 +19,7 @@
 
 
 int __noreturn __naked _start(__unused kernel_header_t* data);
-int __noreturn __attribute__((sysv_abi)) actual_start(kernel_header_t* data);
+int __noreturn __abi_sysv actual_start(kernel_header_t* data);
 
 
 int __noreturn __naked _start(__unused kernel_header_t* data)
@@ -39,7 +39,7 @@ int __noreturn __naked _start(__unused kernel_header_t* data)
 }
 
 
-int __noreturn __attribute__((sysv_abi)) actual_start(kernel_header_t* data)
+int __noreturn __abi_sysv actual_start(kernel_header_t* data)
 {
     __kernel_init_basic(data);        // init stack pointer, bss, ...
     init_graphics_lib(&data->screen); // init graphics
