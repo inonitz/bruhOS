@@ -46,7 +46,7 @@ int noret __naked _start(kernel_header_t* data)
     system_status(SUCCESS, "Interrupt Managers Initialized Successfully\n");
 
     
-    pcie_init();
+    // pcie_init();
     // create_kernel_process(data->pml4.addressPML4, BSP_ID);
 
 
