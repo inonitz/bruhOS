@@ -3,6 +3,7 @@ build/
 
 # Makefiles
 Makefile
+*.make
 
 # Ninja Build Files
 .ninja_deps

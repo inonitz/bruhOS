@@ -33,4 +33,4 @@ local function add_custom_gcc_toolset (name, prefix)
     premake.tools[name] = new_toolset
 end
 
-add_custom_gcc_toolset("gcc_cross_elf64", string.gsub( os.getenv("ELF64_CROSS_GCC_PATH"), "\\", "/" ) .. "//")
+add_custom_gcc_toolset("gcc_cross_elf64", string.gsub( os.getenv("ELF64_CROSS_GCC_BINARY_PATH"), "\\", "/" ) .. "//")
