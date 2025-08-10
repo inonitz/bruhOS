@@ -89,6 +89,19 @@ Originally I only used a makefile, but I've graduated from that since then :)
   - **Do Note that ELF-Cross-Tools is used for the kernel, and msys2-mingw64-clang is used for the bootloader (I have not found a better setup yet...)**
 
 
+### Installation without compiling
+* clone the dev branch
+```sh
+git clone -b dev https://github.com/inonitz/PrimOS.git
+```
+
+* run the batch/sh file in [misc/working_example](https://github.com/inonitz/PrimOS/tree/dev/misc/working_example)
+```sh
+cd misc/working_example
+./run.bat
+./run.sh
+```
+
 ### Installation
 ```sh
 git clone -b legacy https://github.com/inonitz/PrimOS.git
