@@ -8,7 +8,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-<h3 align="center">BruhOS</h3>
+<h3 align="center">PrimOS</h3>
 
   <p align="center">
     Operating System Bootloader & Kernel
@@ -27,10 +27,10 @@ Do note that, while the final goal was (obviously...) a little too ambitious, mo
 * A Simple OS kernel, featuring:
     - Simple Font & Text Rendering, enabled by [UEFI-GraphicsOutputProtocol](https://wiki.osdev.org/GOP)
     - IA-32e Virtual Memory Support at the [Higher Half](https://wiki.osdev.org/Higher_Half_Kernel) - Kernel resides in the last 512GiB of the Virtual Address Space
-    - Basic Utility Libraries, including but not limited to [prink](https://github.com/inonitz/bruhOS/blob/main/projects/kernel/include/std/io.h)
+    - Basic Utility Libraries, including but not limited to [prink](https://github.com/inonitz/PrimOS/blob/main/projects/kernel/include/std/io.h)
     - Global Descriptor Table (Kind of required but i'll mention it anyways ;) 
     - An Interrupt Descriptor Table
-        * I have an abstraction to dynamically manage interrupts, see [router.h](https://github.com/inonitz/bruhOS/blob/main/projects/kernel/include/interrupts/router.h)
+        * I have an abstraction to dynamically manage interrupts, see [router.h](https://github.com/inonitz/PrimOS/blob/main/projects/kernel/include/interrupts/router.h)
     - Basic ACPI Support, specifically with the I/O APIC & the Local APIC
     - Kernel Timers using HPET & Local APIC Drivers
     - A Physical Memory Manager using a Page-Granular (4096 Byte) Buddy Allocator Array
@@ -41,8 +41,8 @@ Do note that, while the final goal was (obviously...) a little too ambitious, mo
         * Stack
         * Many more scheduling structures... (That I've yet to implement & test :) )
 
-#### Currently the up-to-date branch is [master](https://github.com/inonitz/bruhOS/tree/master)
-**[NOTE]:** I'll eventually migrate 'master' to an up-to-date 'dev' branch and a legacy 'master', containing the unmodified code from ~4 Years ago when I initially finished the project 
+#### Currently the up-to-date branch is [dev](https://github.com/inonitz/PrimOS/tree/dev)
+* the 'legacy' branch contains the unmodified code I wrote back in 2021
 
 
 <!-- ABOUT THE PROJECT -->
@@ -91,10 +91,10 @@ Originally I only used a makefile, but I've graduated from that since then :)
 
 ### Installation
 ```sh
-git clone -b master https://github.com/inonitz/bruhOS.git
+git clone -b master https://github.com/inonitz/PrimOS.git
 # In the future
-git clone -b legacy https://github.com/inonitz/bruhOS.git
-git clone -b dev https://github.com/inonitz/bruhOS.git
+git clone -b legacy https://github.com/inonitz/PrimOS.git
+git clone -b dev https://github.com/inonitz/PrimOS.git
 # Don't forget to add your own remote repo
 git remote set-url origin your_github_username/your_fancy_os_kernel_name
 git remote -v
