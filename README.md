@@ -91,8 +91,6 @@ Originally I only used a makefile, but I've graduated from that since then :)
 
 ### Installation
 ```sh
-git clone -b master https://github.com/inonitz/PrimOS.git
-# In the future
 git clone -b legacy https://github.com/inonitz/PrimOS.git
 git clone -b dev https://github.com/inonitz/PrimOS.git
 # Don't forget to add your own remote repo
@@ -117,7 +115,7 @@ call ```premake5 --help``` in the root of the repository
 ```
 #### The following commands build the whole project:
 ```sh
-premake5 ecc && premake5 gmake
+premake5 --cc=choose_specific_compiler ecc && premake5 --cc=choose_specific_compiler gmake
 make config=Debug_amd64 -j 16 kernelimage
 ```
 #### The following 3 targets are defined in the makefiles:
