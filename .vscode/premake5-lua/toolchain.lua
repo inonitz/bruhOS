@@ -1,4 +1,4 @@
-local function add_custom_gcc_toolset (name, prefix)
+local function add_custom_gcc_toolset (name, toolset_path_prefix, name_prefix)
     local gcc                         = premake.tools.gcc
     local new_toolset                 = {}  
     new_toolset.getcflags             = gcc.getcflags
@@ -13,19 +13,19 @@ local function add_custom_gcc_toolset (name, prefix)
     new_toolset.getlinks              = gcc.getlinks
     new_toolset.getmakesettings       = gcc.getmakesettings
     new_toolset.getrunpathdirs        = gcc.getrunpathdirs
-    new_toolset.toolset_prefix        = prefix
+    new_toolset.toolset_prefix        = toolset_path_prefix .. name_prefix
     new_toolset.shared                = gcc.shared
     new_toolset.shared.compileas      = gcc.shared.compileas
 
     function new_toolset.gettoolname (cfg, tool)
         if tool == "cc" then
-            name = new_toolset.toolset_prefix .. "x86_64-elf-gcc"  
+            name = new_toolset.toolset_prefix .. "gcc"  
         elseif tool == "cxx" then
-            name = new_toolset.toolset_prefix .. "x86_64-elf-g++"
+            name = new_toolset.toolset_prefix .. "g++"
         elseif tool == "ar" then
-            name = new_toolset.toolset_prefix .. "x86_64-elf-ar"
+            name = new_toolset.toolset_prefix .. "ar"
         elseif tool == "ld" then
-            name = new_toolset.toolset_prefix .. "x86_64-elf-ld"
+            name = new_toolset.toolset_prefix .. "ld"
         end
         return name
     end  
@@ -33,4 +33,13 @@ local function add_custom_gcc_toolset (name, prefix)
     premake.tools[name] = new_toolset
 end
 
-add_custom_gcc_toolset("gcc_cross_elf64", string.gsub( os.getenv("ELF64_CROSS_GCC_BINARY_PATH"), "\\", "/" ) .. "//")
+
+
+-- Need to check this works without the hack in windows
+if os.target() == "windows" then
+    add_custom_gcc_toolset("gcc_cross_elf64", string.gsub( os.getenv("ELF64_CROSS_GCC_BINARY_PATH"), "\\", "/" ) .. "//", "x86_64-elf-")
+elseif os.target() == "linux" then
+    add_custom_gcc_toolset("gcc_cross_elf64", os.getenv("ELF64_CROSS_GCC_BINARY_PATH") .. "/", "x86_64-linux-")
+end
+
+print(os.target()
