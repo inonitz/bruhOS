@@ -14,6 +14,9 @@ struct __attribute__((packed, aligned(16))) vec4
     int64_t v[2];
 };
 
+extern "C" {
+
+
 void memcpy_v0(char_t* dst, char_t* src, uint64_t amount)
 {
     for(uint64_t i = 0; i < amount >> 4; ++i)
@@ -41,6 +44,9 @@ void memcpy_v1(char_t* dst, char_t* src, uint64_t amount)
 		((char*)src)[i] = ((char*)dst)[i];
 	}
 }
+
+
+} /* extern "C" */
 
 
 int main()
@@ -113,4 +119,6 @@ int main()
         avg5 = 0;
     }
 
+
+    return 0;
 }

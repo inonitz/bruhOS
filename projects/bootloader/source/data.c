@@ -17,7 +17,6 @@ Revision History
 --*/
 
 
-#include "efibind.h"
 #include "efierr.h"
 #include "lib.h"
 
@@ -220,7 +219,7 @@ EFI_GUID ShellParametersProtocolGuid     = EFI_SHELL_PARAMETERS_PROTOCOL_GUID;
 EFI_GUID ShellDynamicCommandProtocolGuid = EFI_SHELL_DYNAMIC_COMMAND_PROTOCOL_GUID;
 
 
-INTN CompareGuid (IN EFI_GUID *Guid1, IN EFI_GUID *Guid2)
+INTN CompareGuid_2 (IN EFI_GUID *Guid1, IN EFI_GUID *Guid2)
 {
     INT32* g1;
     INT32* g2;
@@ -249,7 +248,7 @@ EFI_STATUS LibGetSystemConfigurationTable(
     UINTN Index;
 
     for(Index=0;Index<ST->NumberOfTableEntries;Index++) {
-        if (CompareGuid(TableGuid, &(ST->ConfigurationTable[Index].VendorGuid)) == 0) {
+        if (CompareGuid_2(TableGuid, &(ST->ConfigurationTable[Index].VendorGuid)) == 0) {
             *Table = ST->ConfigurationTable[Index].VendorTable;
             return EFI_SUCCESS;
         }

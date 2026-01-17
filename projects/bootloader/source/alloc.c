@@ -1,11 +1,10 @@
-#include "efibind.h"
+#include <x86_64/efibind.h>
 #include <bootloader/alloc.h>
 #include <bootloader/err.h>
 
 #include <bootloader/lib.h>
 
 #include <bootloader/debug_print.h>
-
 
 
 void* allocatePool(uint64_t size)

@@ -1,4 +1,4 @@
-#include "efibind.h"
+#include <x86_64/efibind.h>
 #include <bootloader/memorymap.h>
 #include <bootloader/lib.h>
 

@@ -1,4 +1,4 @@
-#include "efibind.h"
+#include <x86_64/efibind.h>
 #include <bootloader/pause.h>
 #include <bootloader/lib.h>
 

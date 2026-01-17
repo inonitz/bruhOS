@@ -1,5 +1,4 @@
 #include "bootloader/string.h"
-#include "efibind.h"
 #include <bootloader/bool_macro.h>
 
 #include <bootloader/pause.h>

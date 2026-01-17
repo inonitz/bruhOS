@@ -127,10 +127,10 @@
 #       pragma message WARN("Macro __force_inline already defined")
 #   else
 // #       define __force_inline __attribute__((always_inline))
-#       if defined( __GNUC__ ) && !defined(__MINGW__) && !defined(_WIN32)
-#           define __force_inline inline __attribute__((always_inline))
-#       elif defined( __clang__ )
+#       if defined( __clang__ )
 #           define __force_inline __attribute__((always_inline))
+#       elif defined( __GNUC__ ) && !defined(__MINGW__) && !defined(_WIN32)
+#           define __force_inline inline __attribute__((always_inline))
 #       endif
 #   endif /* defined __force_inline */
 

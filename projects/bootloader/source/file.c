@@ -1,4 +1,3 @@
-#include "efibind.h"
 #include <bootloader/file.h>
 
 #include <bootloader/pause.h>

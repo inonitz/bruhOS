@@ -7,7 +7,11 @@
 #define TREE_DEPTH	     16ull
 #define TREE_SIZE	     (-1 + (1ull << (TREE_DEPTH + 1ull)))
 #define boolean(arg)     (!!(arg))
- 
+
+
+/*
+    Testing the "fast" version, vs the readable version and seeing performance differences
+*/
 extern "C" 
 {
 

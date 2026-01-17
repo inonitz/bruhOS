@@ -3,12 +3,12 @@ build/
 
 # Makefiles
 Makefile
-*.make
 
 # Ninja Build Files
 .ninja_deps
 .ninja_log
 *.ninja
+
 
 # Visual Studio Code files
 # .vscode/launch.json
@@ -16,6 +16,8 @@ Makefile
 
 # clangd Compilation Database
 .vscode/compile_commands
+.cache
+.cache/*
 
 # Visual Studio files
 .vs/
@@ -26,3 +28,4 @@ Makefile
 
 
 # misc
+imgui.ini

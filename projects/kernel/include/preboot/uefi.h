@@ -222,10 +222,10 @@ typedef efi_status (efi_api* Efi_mp_services_padding) (
 );
 
 
-struct _EFI_MP_SERVICES_PROTOCOL {
+typedef struct _EFI_MP_SERVICES_PROTOCOL {
     Efi_mp_services_get_number_of_processors GetNumberOfProcessors;
     Efi_mp_services_padding                  unused[6];               
-};
+} EFI_MP_SERVICES_PROTOCOL;
 
 
 #endif /* __UEFI_RUNTIME_SERVICES_STRUCTURE__ */

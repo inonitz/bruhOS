@@ -8,7 +8,7 @@
 #include <bootloader/debug_print.h>
 #include <bootloader/bool_macro.h>
 
-#include <preboot/uefi.h>
+// #include <preboot/uefi.h>
 
 
 
@@ -51,9 +51,11 @@ uint32_t get_core_count(void)
 {
     // the CPU Cores need Individual Structures in memory, such as stacks.
     // We'll find the Core count and allocate accordingly.
+
     EFI_STATUS                       status  = EFI_SUCCESS;
     EFI_GUID                         mpsvsg  = EFI_MP_SERVICES_PROTOCOL_GUID;
-    Efi_mp_services*                 mpsvs   = (Efi_mp_services*)NULL;
+    EFI_MP_SERVICES_PROTOCOL*        mpsvs   = (EFI_MP_SERVICES_PROTOCOL*)NULL;
+    // Efi_mp_services*                 mpsvs   = (Efi_mp_services*)NULL;
     uint64_t                         cores   = 0;
     uint64_t                         enabled = 0;
     
@@ -61,7 +63,6 @@ uint32_t get_core_count(void)
     printb(L"Finding Core Count through MP Services...\n\r");
     status = uefi_call_wrapper(gBS->LocateProtocol, 3, &mpsvsg, NULL,(void**)&mpsvs);
     CHECKERRFMT_NOEXIT(status, L"   get_core_count() -> MP Services aren't available\n\r");
-
     status = mpsvs->GetNumberOfProcessors(mpsvs, &cores, &enabled);
     CHECKERRFMT_NOEXIT(status, L"   get_core_count() -> GetNumberOfProcessors() Failed\n\r");
 
