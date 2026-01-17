@@ -1,0 +1,9 @@
+
+# [submodule "blt"]
+# 	path = dependencies/blt
+# 	url = https://github.com/LLNL/blt.git
+
+[submodule "dependencies/gnu-efi"]
+	path = dependencies/gnu-efi
+	url = https://github.com/ncroxon/gnu-efi
+
