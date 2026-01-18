@@ -384,7 +384,9 @@ static void mapMemoryMapToVirtualMemory(
     const uint64_t      dscs = (map->used_size / map->entry_size);
     efi_mem_descriptor* dsc  = map->mmap;
     uint64_t            pageCount = 0;
+#ifdef _DEBUG
     uint64_t            pageTotal = 0;
+#endif
     physical_address    addrp     = 0;
     virtual_address     addrv     = 0;
 
@@ -395,7 +397,9 @@ static void mapMemoryMapToVirtualMemory(
         pageCount = dsc->pages; 
         addrp     = dsc->physAddr;
         addrv     = dsc->virtAddr;
+#ifdef _DEBUG
         pageTotal += pageCount;
+#endif
         for(uint64_t page = 0; page < pageCount; ++page) 
         {
             mapPages(pml4Table, pageStack, 

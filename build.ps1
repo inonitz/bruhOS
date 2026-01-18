@@ -1,20 +1,17 @@
 param(
     [Parameter(Mandatory=$true)]
-    [ValidateSet("debug","debug_perf","release","release_dbginfo","release_perf")]
+    [ValidateSet("debug", "debug_perf", "release", "release_dbginfo", "release_perf")]
     [string]$BuildType,
 
     [Parameter(Mandatory=$true)]
-    [ValidateSet("shared","static")]
-    [string]$LinkType,
-
-    [Parameter(Mandatory=$true)]
-    [ValidateSet("run","cleanbuild","build")]
+    [ValidateSet("run", "configure", "cleanbuild", "build")]
     [string]$Action,
 
     [switch]$DryRun,
 
     [switch]$Help
 )
+
 
 $ErrorActionPreference = "Stop"
 
@@ -45,18 +42,16 @@ function Show-Help {
     Write-Host "Usage: .\build_script.ps1 -BuildType <BuildType> -LinkType <LinkType> -Action <Action> [-DryRun] [-Help]"
     Write-Host ""
     Write-Host "Parameters:"
-    Write-Host "  -BuildType <BuildType>  : The build type. Possible values:"
-    Write-Host "                             debug, debug_perf, release, release_dbginfo, release_perf"
-    Write-Host "  -LinkType <LinkType>    : The type of linking. Possible values:"
-    Write-Host "                             shared, static"
+    Write-Host "  -BuildType <BuildType>  : Possible Values are:"
+    Write-Host "                            debug, debug_perf, release, release_dbginfo, release_perf"
     Write-Host "  -Action <Action>        : The action to perform. Possible values:"
-    Write-Host "                             run, cleanbuild, build"
+    Write-Host "                             run, configure, cleanbuild, build"
     Write-Host "  -DryRun                 : (Optional) If set, simulates the actions without executing them."
     Write-Host "  -Help                   : (Optional) Displays this help message."
     Write-Host ""
     Write-Host "Examples:"
-    Write-Host "  .\build_script.ps1 -BuildType debug -LinkType shared -Action build"
-    Write-Host "  .\build_script.ps1 -BuildType release_perf -LinkType static -Action cleanbuild -DryRun"
+    Write-Host "  .\build_script.ps1 -BuildType debug -Action build"
+    Write-Host "  .\build_script.ps1 -BuildType release_perf -Action cleanbuild -DryRun"
 }
 
 
@@ -68,27 +63,22 @@ if ($Help) {
 
 
 
-$PROJECT_NAME = "hydrogen_atom_electron_cloud"
+$PROJECT_NAME = "all"
 $CMAKE_ARGLIST = @(
     "-DCMAKE_C_COMPILER=clang"
     "-DCMAKE_CXX_COMPILER=clang++"
+    "-DCMAKE_TOOLCHAIN_FILE=freestanding-toolchain.cmake"
     "-DCMAKE_EXPORT_COMPILE_COMMANDS=1"
-    "-DGIT_SUBMODULE=1"
     "-DCMAKE_COLOR_DIAGNOSTICS=ON"
-    "-DSDLSHADERCROSS_DXC=OFF"
-    "-DSDL3_DIR=dependencies/SDL3"
-    "-Dspirv_cross_c_shared_DIR=${env:VULKAN_SDK}\Lib\spirv_cross_c_shared\cmake" # << This is what fixed it for me. The Problem: https://vulkan.lunarg.com/issue/view/66fef9a807baa3c85a20d08a
-    "-Dshaderc_combined_DIR=${env:VULKAN_SDK}\Lib\cmake"
-
-    # "-DCMAKE_PREFIX_PATH=${env:VULKAN_SDK_PATH};${env:VULKAN_SDK_PATH}\Lib\cmake" # This is the problem, cmake doesn't find the /cmake dir
 )
 
 
-$CMAKE_ROOT_BUILD_DIR = "build"
-$CMAKE_INTRMD_BUILD_DIR = ""
-$CLEAN_CURRENT_ROOT_BUILD_DIR = $true
-$RUN_BINARY_FLAG = $false
-$BUILD_BINARIES_FLAG = $false
+$CMAKE_ROOT_BUILD_DIR         = "build"
+$CMAKE_INTRMD_BUILD_DIR       = ""
+$CLEAN_CURRENT_ROOT_BUILD_DIR = $false
+$CONFIGURE_CMAKE_FLAG         = $false
+$BUILD_BINARIES_FLAG          = $false
+$RUN_BINARY_FLAG              = $false
 
 
 switch ($BuildType) {
@@ -116,30 +106,40 @@ switch ($BuildType) {
     }
 }
 
-switch ($LinkType) {
-    "shared" {
-        $CMAKE_ARGLIST += "-DBUILD_SHARED_LIBS=1"
-        $CMAKE_INTRMD_BUILD_DIR = Join-Path $CMAKE_INTRMD_BUILD_DIR "shared"
-    }
-    "static" {
-        $CMAKE_ARGLIST += "-DBUILD_SHARED_LIBS=0"
-        $CMAKE_INTRMD_BUILD_DIR = Join-Path $CMAKE_INTRMD_BUILD_DIR "static"
-    }
-}
+# switch ($LinkType) {
+#     "shared" {
+#         $CMAKE_ARGLIST += "-DBUILD_SHARED_LIBS=1"
+#         $CMAKE_INTRMD_BUILD_DIR = Join-Path $CMAKE_INTRMD_BUILD_DIR "shared"
+#     }
+#     "static" {
+#         $CMAKE_ARGLIST += "-DBUILD_SHARED_LIBS=0"
+#         $CMAKE_INTRMD_BUILD_DIR = Join-Path $CMAKE_INTRMD_BUILD_DIR "static"
+#     }
+# }
 
 switch ($Action) {
     "run" {
         $CLEAN_CURRENT_ROOT_BUILD_DIR = $false
+        $CONFIGURE_CMAKE_FLAG = $false
         $BUILD_BINARIES_FLAG = $false
         $RUN_BINARY_FLAG = $true
     }
+    "configure" {
+        $CLEAN_CURRENT_ROOT_BUILD_DIR = $false
+        $CONFIGURE_CMAKE_FLAG = $true
+        $BUILD_BINARIES_FLAG = $false
+        $RUN_BINARY_FLAG = $false
+        $CMAKE_ARGLIST += "-DGIT_SUBMODULE=ON"
+    }
     "cleanbuild" {
         $CLEAN_CURRENT_ROOT_BUILD_DIR = $true
-        $BUILD_BINARIES_FLAG = $true
+        $CONFIGURE_CMAKE_FLAG = $false
+        $BUILD_BINARIES_FLAG = $false
         $RUN_BINARY_FLAG = $false
     }
     "build" {
         $CLEAN_CURRENT_ROOT_BUILD_DIR = $false
+        $CONFIGURE_CMAKE_FLAG = $false
         $BUILD_BINARIES_FLAG = $true
         $RUN_BINARY_FLAG = $false
     }
@@ -150,7 +150,6 @@ $CMAKE_INTRMD_BUILD_DIR = $CMAKE_INTRMD_BUILD_DIR.Trim([char[]]"\/")
 $CMAKE_FINAL_BUILD_DIR = Join-Path $CMAKE_ROOT_BUILD_DIR $CMAKE_INTRMD_BUILD_DIR
 Write-Host "======== DRY RUN: $DryRun ========"
 Write-Host "Build Type      : $BuildType"
-Write-Host "Link Type       : $LinkType"
 Write-Host "Action          : $Action"
 Write-Host "Final Build Dir : $CMAKE_FINAL_BUILD_DIR"
 Write-Host "CMake Arguments : $($CMAKE_ARGLIST -join ' ')"
@@ -183,9 +182,6 @@ function RunOrEcho {
 
 
 
-
-# --- Simulate Execution ---
-
 if (-not (Test-Path $CMAKE_ROOT_BUILD_DIR)) {
     $mkdir_p_option_equiv = {
         New-Item -ItemType Directory -Path $CMAKE_ROOT_BUILD_DIR | Out-Null
@@ -194,6 +190,7 @@ if (-not (Test-Path $CMAKE_ROOT_BUILD_DIR)) {
     RunOrEcho -Description "Create directory '$CMAKE_ROOT_BUILD_DIR'" -Codeblock $mkdir_p_option_equiv
 }
 
+
 if ($CLEAN_CURRENT_ROOT_BUILD_DIR -and (Test-Path $CMAKE_FINAL_BUILD_DIR)) {
     $remove_build_dir_recurse = { 
         Remove-Item -Recurse -Force $CMAKE_FINAL_BUILD_DIR 
@@ -201,26 +198,32 @@ if ($CLEAN_CURRENT_ROOT_BUILD_DIR -and (Test-Path $CMAKE_FINAL_BUILD_DIR)) {
     RunOrEcho -Description "Remove build directory '$CMAKE_FINAL_BUILD_DIR'" -Codeblock $remove_build_dir_recurse
 }
 
-if ($BUILD_BINARIES_FLAG) {
-    $cmakeCmd = "cmake -S . -B '$CMAKE_FINAL_BUILD_DIR' -G 'Ninja'"
-    $cmakeCmd = -join($cmakeCmd, " ", $CMAKE_ARGLIST)
-    
+
+if($CONFIGURE_CMAKE_FLAG) {
     $mkdir_p_option_equiv = {
         # New-Item -ItemType Directory -Path $CMAKE_FINAL_BUILD_DIR -Force | Out-Null 
         New-Item -ItemType Directory -Path $CMAKE_FINAL_BUILD_DIR -Force
     }
 
+
+    $cmakeCmd = "cmake -S . -B '$CMAKE_FINAL_BUILD_DIR' -G 'Ninja'"
+    $cmakeCmd = -join($cmakeCmd, " ", $CMAKE_ARGLIST)
     $cmakePrepareBuild = {
         cmake -S "." -B $CMAKE_FINAL_BUILD_DIR -G "Ninja" $CMAKE_ARGLIST
-    }
-
-    $build_with_ninja = {
-        ninja $PROJECT_NAME
     }
 
 
     RunOrEcho -Description "Create Final build directory '$CMAKE_FINAL_BUILD_DIR'" -Codeblock $mkdir_p_option_equiv
     RunOrEcho -Description $cmakeCmd -Codeblock $cmakePrepareBuild
+}
+
+
+if ($BUILD_BINARIES_FLAG) {
+    $build_with_ninja = {
+        ninja $PROJECT_NAME
+    }
+
+
     if(-not $DryRun) {
         Push-Location $CMAKE_FINAL_BUILD_DIR
     }

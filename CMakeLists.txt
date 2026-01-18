@@ -54,17 +54,19 @@ set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}" CACHE INTERNAL "")
 
 
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_C_STANDARD_REQUIRED     ON)
 set(CMAKE_C_EXTENSIONS            OFF)
-set(CMAKE_CXX_STANDARD_REQUIRED   ON)
-set(CMAKE_CXX_EXTENSIONS          OFF)
 if(NOT DEFINED CMAKE_C_STANDARD)
     set(CMAKE_C_STANDARD 11)
 endif()
-if(NOT DEFINED CMAKE_CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD 17)
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    add_compile_options(-fdiagnostics-color=always)
+
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    add_compile_options(-fcolor-diagnostics)
+
 endif()
+
 
 # default build type unless user defined
 if(NOT DEFINED CMAKE_BUILD_TYPE)
@@ -92,6 +94,3 @@ add_subdirectory(projects/kernel)
 add_subdirectory(projects/bootloader)
 # add_subdirectory(projects/tests)
 add_subdirectory(dependencies)
-# add_subdirectory(dependencies/SDL)
-# add_subdirectory(dependencies/SDL_shadercross)
-# add_subdirectory(dependencies/shaderc)

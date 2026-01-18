@@ -175,7 +175,7 @@
 #define VMM_TABLE_ENTRY_GET_NOEXECUTE_FLAG(entry)   (0x0000000000000001 & ( (entry) >> VMM_TABLE_ENTRY_NOEXECUTE_SHIFT   ) )
 #define VMM_TABLE_ENTRY_GET_ADDRESS(entry)          (0xffffffffff       & ( (entry) >> VMM_TABLE_ENTRY_ADDRESS_SHIFT     ) )
 
-#define VMM_TABLE_ENTRY_SET_PRESENT_FLAG(entry, flag)      (  ( (entry) & (~(0x0000000000000001 << VMM_TABLE_ENTRY_PRESENT_SHIFT     )) ) | ( ((flag) & 0x0000000000000001) << VMM_TABLE_ENTRY_PRESENT_SHSHIFT   )  )
+#define VMM_TABLE_ENTRY_SET_PRESENT_FLAG(entry, flag)      (  ( (entry) & (~(0x0000000000000001 << VMM_TABLE_ENTRY_PRESENT_SHIFT     )) ) | ( ((flag) & 0x0000000000000001) << VMM_TABLE_ENTRY_PRESENT_SHIFT     )  )
 #define VMM_TABLE_ENTRY_SET_READWRITE_FLAG(entry, flag)    (  ( (entry) & (~(0x0000000000000001 << VMM_TABLE_ENTRY_PRESENT_SHIFT     )) ) | ( ((flag) & 0x0000000000000001) << VMM_TABLE_ENTRY_PRESENT_SHIFT     )  )
 #define VMM_TABLE_ENTRY_SET_USERACCESS_FLAG(entry, flag)   (  ( (entry) & (~(0x0000000000000001 << VMM_TABLE_ENTRY_USERACCESS_SHIFT  )) ) | ( ((flag) & 0x0000000000000001) << VMM_TABLE_ENTRY_USERACCESS_SHIFT  )  )
 #define VMM_TABLE_ENTRY_SET_WRITETHROUGH_FLAG(entry, flag) (  ( (entry) & (~(0x0000000000000001 << VMM_TABLE_ENTRY_WRITETHROUGH_SHIFT)) ) | ( ((flag) & 0x0000000000000001) << VMM_TABLE_ENTRY_WRITETHROUGH_SHIFT)  )
@@ -241,6 +241,16 @@ typedef struct alignsz(PAGE_SIZE) __PageMapLevel4_type {
 typedef struct alignsz(PAGE_SIZE) __GenericPageTable_type {
     genericPageTableEntry entry[512];
 } genericPageTable;
+
+
+/* 
+    * Planning for this to take care of the tables of each process.
+    * In progress, might delete / heavily edit later.
+*/
+typedef struct __VMM_PageTableManager
+{
+    genericPageTable* PML4Table;
+} TableManager;
 
 
 

@@ -64,7 +64,7 @@ set(EFI_APP_CFLAGS
 
 set(EFI_APP_LINKFLAGS
     -target x86_64-unknown-windows
-    -fuse-ld=lld-link
+    # -fuse-ld=lld-link
     -fPIC
     # -nostdlib
     # -nostdinc
@@ -99,6 +99,7 @@ target_link_libraries(${EXECUTABLE_FULL_NAME} PRIVATE KERNEL::kernel_headers)
 # The minimum C/C++ versions required
 target_compile_features(${EXECUTABLE_FULL_NAME} PUBLIC c_std_11)
 set_target_properties(${EXECUTABLE_FULL_NAME} PROPERTIES 
+    LINKER                    ${CMAKE_BOOTLOADER_LINKER}
     C_VISIBILITY_PRESET       hidden
     CXX_VISIBILITY_PRESET     hidden
     VISIBILITY_INLINES_HIDDEN ON

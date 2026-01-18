@@ -1,7 +1,7 @@
 #ifndef __BOOTLOADER_C_DEFINITION_LOAD_ELF_KERNEL__
 #define __BOOTLOADER_C_DEFINITION_LOAD_ELF_KERNEL__
-#include <bootloader/funcargtype.h>
 #include <bootloader/api.h>
+#include <bootloader/funcargtype.h>
 
 
 typedef struct __elf64_loaded_program_with_multicore_stacks

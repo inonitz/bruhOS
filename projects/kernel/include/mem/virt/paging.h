@@ -1,6 +1,6 @@
 #ifndef ___KERNEL_C_DEFINITION_PAGING_HEADER__
 #define ___KERNEL_C_DEFINITION_PAGING_HEADER__
-#include <mem/virt/types.h>
+#include <mem/virt/types2.h>
 #include <std/argprefix.h>
 
 

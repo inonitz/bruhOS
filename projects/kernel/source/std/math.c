@@ -11,7 +11,7 @@ KERNEL_STATIC_ASSERT(
 KERNEL_STATIC_ASSERT(
     __builtin_types_compatible_p(uint64_t, unsigned long),
     Kernel_log2ul_MakeSure_CountLeadingZeros_TypesAreEquivalentAndCanBeConverted, 
-    "log2ul - Types uint64_t & long Are Not Equivalent and Can't be converted - may exhibit undefined behaviour"
+    "log2ul - Types uint64_t & long long Are Not Equivalent and Can't be converted - may exhibit undefined behaviour"
 );
 
 
@@ -52,7 +52,7 @@ uint32_t log2ui(uint32_t bits)
 
 uint64_t log2ul(uint64_t bits) 
 {
-	int result = __builtin_clzll((unsigned long long)bits); /* always positive */
+	int result = __builtin_clzll((unsigned long)bits); /* always positive */
 
 	return (uint64_t)( (8 * sizeof(uint64_t)) - (uint32_t)result );
 }

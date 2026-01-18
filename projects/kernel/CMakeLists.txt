@@ -6,6 +6,23 @@ project(kernel
 )
 
 
+# The issue is that Windows-Hosted Clang defaults to gcc for linking on x86_64-unknown-none-elf targets
+# More Specifically, the clang Driver redirects to gcc. 
+# ld.lld can link the files perfectly fine, we do not need gcc for this.
+# Therefore, the only good way I found for now (-fuse-ld=... doesn't work) 
+# is to override the linker rule & executable for this specific project
+# See:
+# https://forum.osdev.org/viewtopic.php?t=56486
+# 
+set(CMAKE_LINKER
+    ${CMAKE_KERNEL_LINKER}
+)
+set(CMAKE_C_LINK_EXECUTABLE
+    "<CMAKE_LINKER> <FLAGS> <CMAKE_C_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>"
+)
+
+
+
 set(EXECUTABLE_FULL_NAME
     ${PROJECT_NAME}.elf
 )
@@ -51,6 +68,7 @@ set(SOURCES
     # source/smp/old_smp/smp.oldc
     # source/smp/old_smp/startup16.asm
     # source/smp/old_smp/startup32.asm
+    source/smp/old.s
     source/smp/smp.c
     source/std/bit.c
     source/std/error.c
@@ -161,6 +179,8 @@ set(
 
 
 set(KERNEL_CFLAGS 
+    $<$<COMPILE_LANGUAGE:C>:-target x86_64-unknown-none-elf>
+    # $<$<COMPILE_LANGUAGE:C>:-fPIC>
     $<$<COMPILE_LANGUAGE:C>:-ffreestanding>
     $<$<COMPILE_LANGUAGE:C>:-mcmodel=large>
     $<$<COMPILE_LANGUAGE:C>:-nostdlib>
@@ -182,17 +202,31 @@ set(KERNEL_CFLAGS
 )
 
 
+# set(KERNEL_LINKFLAGS 
+#     -target x86_64-unknown-none-elf
+#     -ffreestanding
+#     -mcmodel=large
+#     -fPIC
+#     -static
+#     -nostdlib
+#     -nostdinc
+#     -nostartfiles
+#     --gcc-toolchain=""
+#     -Wl,-T,${KERNEL_LD_SCRIPT_FULLNAME}
+#     -Wl,--no-gcc-toolchain
+#     -Wl,--no-standard-libraries
+#     -v
+# )
 set(KERNEL_LINKFLAGS 
-    -target x86_64-unknown-unknown-windows-gnu
-    -ffreestanding
-    -mcmodel=large
-    -fPIC
-    -static
-    -nostdlib
-    -nostdinc
-    -Wl,-T,${KERNEL_LD_SCRIPT_FULLNAME}
-    -v
+    # --pie
+    --static
+    --nostdlib
+    --no-dependent-libraries
+    --script=${KERNEL_LD_SCRIPT_FULLNAME}
+    --verbose
 )
+
+
 
 
 add_executable(${EXECUTABLE_FULL_NAME})
@@ -208,14 +242,13 @@ target_sources(${EXECUTABLE_FULL_NAME} PRIVATE ${HEADERS})
 # The minimum C/C++ versions required
 target_compile_features(${EXECUTABLE_FULL_NAME} PUBLIC c_std_11)
 set_target_properties(${EXECUTABLE_FULL_NAME} PROPERTIES 
+    LINKER                    ${CMAKE_KERNEL_LINKER}
     C_VISIBILITY_PRESET       hidden
     CXX_VISIBILITY_PRESET     hidden
     VISIBILITY_INLINES_HIDDEN ON
     SUFFIX                    ""
     LINK_DEPENDS              ${KERNEL_LD_SCRIPT_FULLNAME}
 )
-
-
 
 
 add_library(${PROJECT_NAME}_headers INTERFACE)
