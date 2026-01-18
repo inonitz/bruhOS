@@ -14,6 +14,7 @@ project(kernel
 # See:
 # https://forum.osdev.org/viewtopic.php?t=56486
 # 
+#
 set(CMAKE_LINKER
     ${CMAKE_KERNEL_LINKER}
 )
