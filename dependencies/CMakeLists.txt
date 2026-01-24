@@ -7,6 +7,30 @@ project(
 )
 
 
+set(BOOTLOADER_STARTUP_NSH_FULLPATH
+    ${CMAKE_CURRENT_SOURCE_DIR}/startup.nsh
+    PARENT_SCOPE
+)
+set(BOOTLOADER_OVMF_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/ovmf
+)
+set(BOOTLOADER_OVMF_EFI_CODE
+    ${BOOTLOADER_OVMF_DIR}/CODE_EFI.fd
+    PARENT_SCOPE
+)
+set(BOOTLOADER_OVMF_EFI_VARS
+    ${BOOTLOADER_OVMF_DIR}/VARS_EFI.fd
+    PARENT_SCOPE
+)
+
+# set_property(GLOBAL PROPERTY 
+#     GLOBAL_BOOTLOADER_STARTUP_NSH_PATH "${BOOTLOADER_STARTUP_NSH_FULLPATH}"
+# )
+
+
+
+
+
 add_library(${PROJECT_NAME} INTERFACE)
 add_library(GNU-EFI::gnu-efi ALIAS ${PROJECT_NAME})
 
@@ -26,6 +50,7 @@ target_compile_options(${PROJECT_NAME} INTERFACE
     -fno-stack-protector
     -fshort-wchar
     -mno-red-zone
+    -mno-stack-arg-probe
 )
 
 target_link_options(${PROJECT_NAME} INTERFACE

@@ -136,21 +136,21 @@ void enablePagingJumpToEntry(
     */
     debug_printb(L"\
     Memory Configuration:\n\t\
-      kstartp                 : %p\n\t\
-      kstartv                 : %p\n\t\
-      krbptopv                : %p\n\t\
-      kpercpu_rbpv            : %p\n\t\
-      kpercpu_tssv            : %p\n\t\
-      kgdtv                   : %p\n\t\
-      efi_rtp                 : %p\n\t\
-      pml4                    : %p\n\t\
-      bl_ripv                 : %p\n\t\
-      bl_rip_pagetable_buf    : %p\n\t\
-      krbpsize                : %x\n\t\
-      pml4size                : %x\n\t\
-      bl_rip_pagetable_bufsize: %x\n\t\
-      reserved1               : %u\n\t\
-      kendoffset              : %x\n\t",
+        kstartp                 : %p\n\t\
+        kstartv                 : %p\n\t\
+        krbptopv                : %p\n\t\
+        kpercpu_rbpv            : %p\n\t\
+        kpercpu_tssv            : %p\n\t\
+        kgdtv                   : %p\n\t\
+        efi_rtp                 : %p\n\t\
+        pml4                    : %p\n\t\
+        bl_ripv                 : %p\n\t\
+        bl_rip_pagetable_buf    : %p\n\t\
+        krbpsize                : %x\n\t\
+        pml4size                : %x\n\t\
+        bl_rip_pagetable_bufsize: %x\n\t\
+        reserved1               : %u\n\t\
+        kendoffset              : %x\n\t",
         oldHeader->memcfg.kstartp,
         oldHeader->memcfg.kstartv,
         oldHeader->memcfg.krbptopv,
@@ -202,6 +202,7 @@ void enablePagingJumpToEntry(
         virtualoffset
     );
 
+
     /* Print extra data before exitBootServices() ... */
     // debug_printb(L"entry @%p\n\rnewHeader @%p (physical)\n\r", entry, newHeader);
     // dumpMemoryMap(&oldHeader->map);
@@ -239,7 +240,7 @@ void enablePagingJumpToEntry(
 
     __asm__ volatile("movq %0, %%rdi\n\t" : : "r"(newHeader));
     __asm__ volatile("movq %0, %%rcx\n\t" : : "r"(entry));
-    __asm__ volatile("movq %0, %%cr3\n\t" : : "r" (pml4));     
+    __asm__ volatile("movq %0, %%cr3\n\t" : : "r" (pml4));
     __asm__ volatile("jmp *%rcx\n\t");
     /* 
         Set Variables RDI & RCX before switching page directories

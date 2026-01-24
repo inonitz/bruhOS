@@ -25,5 +25,8 @@
     "lldb.consoleMode": "commands",
     "lldb.adapterEnv": {
         "LLDB_USE_NATIVE_PDB_READER": "yes"
+    },
+    "cmake.configureSettings": {
+        "CMAKE_TOOLCHAIN_FILE": "${workspaceFolder}/freestanding-toolchain.cmake"
     }
 }

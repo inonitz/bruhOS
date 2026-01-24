@@ -1,4 +1,7 @@
-cmake_minimum_required(VERSION 3.14..4.0)
+cmake_minimum_required(VERSION 3.8..4.0)
+include(GenerateLinkerScript.cmake)
+
+
 project(kernel
     VERSION 0.0.1
     DESCRIPTION "x86_64 Monolithic Kernel Written in C & Intel-NASM Syntax"
@@ -9,11 +12,10 @@ project(kernel
 # The issue is that Windows-Hosted Clang defaults to gcc for linking on x86_64-unknown-none-elf targets
 # More Specifically, the clang Driver redirects to gcc. 
 # ld.lld can link the files perfectly fine, we do not need gcc for this.
-# Therefore, the only good way I found for now (-fuse-ld=... doesn't work) 
+# Unfortunately, the only good way I found for now (-fuse-ld=... doesn't work) 
 # is to override the linker rule & executable for this specific project
 # See:
 # https://forum.osdev.org/viewtopic.php?t=56486
-# 
 #
 set(CMAKE_LINKER
     ${CMAKE_KERNEL_LINKER}
@@ -23,9 +25,63 @@ set(CMAKE_C_LINK_EXECUTABLE
 )
 
 
+set(APCORE_TRAMPOLINE_TARGET 
+    ap_startup_obj
+)
 
-set(EXECUTABLE_FULL_NAME
-    ${PROJECT_NAME}.elf
+set(KERNEL_LINKER_SCRIPT_GENERATED_FULLNAME
+    ""
+)
+
+
+
+
+set(KERNEL_CFLAGS 
+    $<$<COMPILE_LANGUAGE:C>:-target x86_64-unknown-none-elf>
+    # $<$<COMPILE_LANGUAGE:C>:-fPIC>
+    $<$<COMPILE_LANGUAGE:C>:-ffreestanding>
+    $<$<COMPILE_LANGUAGE:C>:-mcmodel=large>
+    $<$<COMPILE_LANGUAGE:C>:-nostdlib>
+    $<$<COMPILE_LANGUAGE:C>:-Os>
+    $<$<COMPILE_LANGUAGE:C>:-fno-exceptions>
+    $<$<COMPILE_LANGUAGE:C>:-fshort-wchar>
+    $<$<COMPILE_LANGUAGE:C>:-mno-red-zone>
+    $<$<COMPILE_LANGUAGE:C>:-mgeneral-regs-only>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-missing-braces>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-unused-variable>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-unused-function>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-unused-but-set-variable>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-reserved-macro-identifier>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-reserved-identifier>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-declaration-after-statement>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-padded-bitfield>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-padded>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-packed>
+)
+
+
+# These are flags that the clang driver understands, not ld.lld
+# set(KERNEL_LINKFLAGS 
+#     -target x86_64-unknown-none-elf
+#     -ffreestanding
+#     -mcmodel=large
+#     -fPIC
+#     -static
+#     -nostdlib
+#     -nostdinc
+#     -nostartfiles
+#     --gcc-toolchain=""
+#     -Wl,-T,${KERNEL_LD_SCRIPT_FULLNAME}
+#     -Wl,--no-gcc-toolchain
+#     -Wl,--no-standard-libraries
+#     -v
+# )
+set(KERNEL_LINKFLAGS 
+    # --pie
+    --static
+    --nostdlib
+    --no-dependent-libraries
+    --verbose
 )
 
 
@@ -65,11 +121,6 @@ set(SOURCES
     source/mem/virt/vas.c
     source/mem/virt/vas_node_alloc.c
     source/scheduler/context_switch.s
-    # source/smp/old_smp/old.asm
-    # source/smp/old_smp/smp.oldc
-    # source/smp/old_smp/startup16.asm
-    # source/smp/old_smp/startup32.asm
-    source/smp/old.s
     source/smp/smp.c
     source/std/bit.c
     source/std/error.c
@@ -173,85 +224,44 @@ set(HEADERS
 )
 
 
-set(
-    KERNEL_LD_SCRIPT_FULLNAME 
-    "${CMAKE_CURRENT_SOURCE_DIR}/kernel.ld"
+
+# The AP-Core Trampoline Target Definition
+add_library(${APCORE_TRAMPOLINE_TARGET} OBJECT 
+    source/smp/smp.asm
 )
 
 
-set(KERNEL_CFLAGS 
-    $<$<COMPILE_LANGUAGE:C>:-target x86_64-unknown-none-elf>
-    # $<$<COMPILE_LANGUAGE:C>:-fPIC>
-    $<$<COMPILE_LANGUAGE:C>:-ffreestanding>
-    $<$<COMPILE_LANGUAGE:C>:-mcmodel=large>
-    $<$<COMPILE_LANGUAGE:C>:-nostdlib>
-    $<$<COMPILE_LANGUAGE:C>:-Os>
-    $<$<COMPILE_LANGUAGE:C>:-fno-exceptions>
-    $<$<COMPILE_LANGUAGE:C>:-fshort-wchar>
-    $<$<COMPILE_LANGUAGE:C>:-mno-red-zone>
-    $<$<COMPILE_LANGUAGE:C>:-mgeneral-regs-only>
-    $<$<COMPILE_LANGUAGE:C>:-Wno-missing-braces>
-    $<$<COMPILE_LANGUAGE:C>:-Wno-unused-variable>
-    $<$<COMPILE_LANGUAGE:C>:-Wno-unused-function>
-    $<$<COMPILE_LANGUAGE:C>:-Wno-unused-but-set-variable>
-    $<$<COMPILE_LANGUAGE:C>:-Wno-reserved-macro-identifier>
-    $<$<COMPILE_LANGUAGE:C>:-Wno-reserved-identifier>
-    $<$<COMPILE_LANGUAGE:C>:-Wno-declaration-after-statement>
-    $<$<COMPILE_LANGUAGE:C>:-Wno-padded-bitfield>
-    $<$<COMPILE_LANGUAGE:C>:-Wno-padded>
-    $<$<COMPILE_LANGUAGE:C>:-Wno-packed>
-)
-
-
-# set(KERNEL_LINKFLAGS 
-#     -target x86_64-unknown-none-elf
-#     -ffreestanding
-#     -mcmodel=large
-#     -fPIC
-#     -static
-#     -nostdlib
-#     -nostdinc
-#     -nostartfiles
-#     --gcc-toolchain=""
-#     -Wl,-T,${KERNEL_LD_SCRIPT_FULLNAME}
-#     -Wl,--no-gcc-toolchain
-#     -Wl,--no-standard-libraries
-#     -v
-# )
-set(KERNEL_LINKFLAGS 
-    # --pie
-    --static
-    --nostdlib
-    --no-dependent-libraries
-    --script=${KERNEL_LD_SCRIPT_FULLNAME}
-    --verbose
-)
+generate_linker_script_pre_link_time(KERNEL_LINKER_SCRIPT_GENERATED_FULLNAME ${APCORE_TRAMPOLINE_TARGET})
 
 
 
-
-add_executable(${EXECUTABLE_FULL_NAME})
-target_include_directories(${EXECUTABLE_FULL_NAME} PUBLIC 
+# The Kernel Target definition
+add_executable(${PROJECT_NAME})
+target_include_directories(${PROJECT_NAME} PUBLIC 
     $<$<COMPILE_LANGUAGE:C>:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
-target_compile_options(${EXECUTABLE_FULL_NAME} PRIVATE ${KERNEL_CFLAGS})
-target_link_options(${EXECUTABLE_FULL_NAME} PRIVATE ${KERNEL_LINKFLAGS})
-target_sources(${EXECUTABLE_FULL_NAME} PRIVATE ${SOURCES})
-target_sources(${EXECUTABLE_FULL_NAME} PRIVATE ${HEADERS})
-# target_link_libraries(${EXECUTABLE_FULL_NAME} PRIVATE )
+target_compile_features(${PROJECT_NAME} PUBLIC c_std_11)
+target_compile_options(${PROJECT_NAME} PRIVATE ${KERNEL_CFLAGS})
+target_link_options(${PROJECT_NAME} PRIVATE ${KERNEL_LINKFLAGS})
+target_link_options(${PROJECT_NAME} PRIVATE 
+    --script=${KERNEL_LINKER_SCRIPT_GENERATED_FULLNAME}
+)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${APCORE_TRAMPOLINE_TARGET})
 
-# The minimum C/C++ versions required
-target_compile_features(${EXECUTABLE_FULL_NAME} PUBLIC c_std_11)
-set_target_properties(${EXECUTABLE_FULL_NAME} PROPERTIES 
+target_sources(${PROJECT_NAME} PRIVATE ${SOURCES})
+target_sources(${PROJECT_NAME} PRIVATE ${HEADERS})
+
+set_target_properties(${PROJECT_NAME} PROPERTIES 
     LINKER                    ${CMAKE_KERNEL_LINKER}
     C_VISIBILITY_PRESET       hidden
     CXX_VISIBILITY_PRESET     hidden
     VISIBILITY_INLINES_HIDDEN ON
-    SUFFIX                    ""
-    LINK_DEPENDS              ${KERNEL_LD_SCRIPT_FULLNAME}
+    SUFFIX                    ".elf"
+    LINK_DEPENDS              ${KERNEL_LINKER_SCRIPT_GENERATED_FULLNAME}
 )
 
 
+# Kernel Headers INTERFACE library, for the bootloader to interface with some required kernel structs
 add_library(${PROJECT_NAME}_headers INTERFACE)
 add_library(KERNEL::kernel_headers ALIAS ${PROJECT_NAME}_headers)
 target_include_directories(${PROJECT_NAME}_headers INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")

@@ -6,6 +6,21 @@ project(bootloader
 )
 
 
+# set(CMAKE_LINKER
+#     ${CMAKE_BOOTLOADER_LINKER}
+# )
+# set(CMAKE_C_LINK_EXECUTABLE
+#     "<CMAKE_LINKER> <FLAGS> <CMAKE_C_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> /out:<TARGET> <LINK_LIBRARIES>"
+# )
+
+
+
+
+set(PROJECT_NAME
+    ${PROJECT_NAME}
+)
+
+
 set(SOURCES
     source/acpi.c
     source/alloc.c
@@ -62,47 +77,64 @@ set(EFI_APP_CFLAGS
     $<$<COMPILE_LANGUAGE:C>:-mno-red-zone>
 )
 
+# set(EFI_APP_LINKFLAGS
+#     -target x86_64-unknown-windows
+#     -fuse-ld=lld-link
+#     -fPIC
+#     # -nostdlib
+#     # -nostdinc
+#     # -Wl,-subsystem,efi_application
+#     # -Wl,-entry,efi_main
+#     # -Wl,-image-base,0
+#     # -Wl,-no-reloc
+#     -Wl,/nodefaultlib
+#     -Wl,/subsystem:efi_application
+#     -Wl,/entry:efi_main
+#     -Wl,/base:0
+#     -Wl,/fixed
+#     -v
+# )
+
+
+# set(EFI_APP_LINKFLAGS
+#     -Wl,/nodefaultlib
+#     -Wl,/subsystem:efi_application
+#     -Wl,/entry:efi_main
+#     -Wl,/fixed:no
+#     -Wl,/verbose
+#     # /debug
+# )
+
 set(EFI_APP_LINKFLAGS
-    -target x86_64-unknown-windows
-    # -fuse-ld=lld-link
-    -fPIC
-    # -nostdlib
-    # -nostdinc
-    # -Wl,-subsystem,efi_application
-    # -Wl,-entry,efi_main
-    # -Wl,-image-base,0
-    # -Wl,-no-reloc
-    -Wl,/nodefaultlib
-    -Wl,/subsystem:efi_application
-    -Wl,/entry:efi_main
-    -Wl,/base:0
-    -Wl,/fixed
+    --target=x86_64-unknown-windows
+    -nostdlib
+    -Wl,-entry:efi_main
+    -Wl,-subsystem:efi_application
+    -fuse-ld=lld-link
 )
 
 
-set(EXECUTABLE_FULL_NAME
-    ${PROJECT_NAME}.efi
-)
-
-
-add_executable(${EXECUTABLE_FULL_NAME})
-target_include_directories(${EXECUTABLE_FULL_NAME} PUBLIC 
+add_executable(${PROJECT_NAME})
+target_include_directories(${PROJECT_NAME} PUBLIC 
     $<$<COMPILE_LANGUAGE:C>:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
-target_compile_options(${EXECUTABLE_FULL_NAME} PRIVATE ${EFI_APP_CFLAGS})
-target_link_options(${EXECUTABLE_FULL_NAME} PRIVATE ${EFI_APP_LINKFLAGS})
-target_sources(${EXECUTABLE_FULL_NAME} PRIVATE ${SOURCES})
-target_sources(${EXECUTABLE_FULL_NAME} PRIVATE ${HEADERS})
-target_link_libraries(${EXECUTABLE_FULL_NAME} PRIVATE GNU-EFI::gnu-efi)
-target_link_libraries(${EXECUTABLE_FULL_NAME} PRIVATE KERNEL::kernel_headers)
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    $<IF:$<CONFIG:Debug>,_DEBUG=1,NDEBUG=1>
+)
+target_compile_options(${PROJECT_NAME} PRIVATE ${EFI_APP_CFLAGS})
+target_link_options(${PROJECT_NAME} PRIVATE ${EFI_APP_LINKFLAGS})
+target_sources(${PROJECT_NAME} PRIVATE ${SOURCES})
+target_sources(${PROJECT_NAME} PRIVATE ${HEADERS})
+target_link_libraries(${PROJECT_NAME} PRIVATE GNU-EFI::gnu-efi)
+target_link_libraries(${PROJECT_NAME} PRIVATE KERNEL::kernel_headers)
 
 # The minimum C/C++ versions required
-target_compile_features(${EXECUTABLE_FULL_NAME} PUBLIC c_std_11)
-set_target_properties(${EXECUTABLE_FULL_NAME} PROPERTIES 
+target_compile_features(${PROJECT_NAME} PUBLIC c_std_11)
+set_target_properties(${PROJECT_NAME} PROPERTIES 
     LINKER                    ${CMAKE_BOOTLOADER_LINKER}
     C_VISIBILITY_PRESET       hidden
     CXX_VISIBILITY_PRESET     hidden
     VISIBILITY_INLINES_HIDDEN ON
-    SUFFIX                    ""
+    SUFFIX                    ".efi"
 )
 

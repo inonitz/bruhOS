@@ -1,344 +1,350 @@
 [
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\acpi\\init.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\acpi\\init.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/acpi/init.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/acpi/init.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/bin/nasm -f elf64 -o projects/kernel/CMakeFiles/ap_startup_obj.dir/source/smp/smp.asm.obj /home/mintgs/workspaces/primOS/projects/kernel/source/smp/smp.asm",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/smp/smp.asm",
+  "output": "projects/kernel/CMakeFiles/ap_startup_obj.dir/source/smp/smp.asm.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\acpi\\ioapic.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\acpi\\ioapic.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/acpi/ioapic.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/acpi/ioapic.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/acpi/init.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/acpi/init.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/acpi/init.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/acpi/init.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\acpi\\lapic.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\acpi\\lapic.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/acpi/lapic.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/acpi/lapic.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/acpi/ioapic.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/acpi/ioapic.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/acpi/ioapic.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/acpi/ioapic.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\acpi\\pic.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\acpi\\pic.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/acpi/pic.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/acpi/pic.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/acpi/lapic.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/acpi/lapic.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/acpi/lapic.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/acpi/lapic.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\PROGRA~1\\NASM\\nasm.exe -f elf64 -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\acpi\\picdisable.s.obj C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\acpi\\picdisable.s",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/acpi/picdisable.s",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/acpi/picdisable.s.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/acpi/pic.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/acpi/pic.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/acpi/pic.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/acpi/pic.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\device\\hpet.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\device\\hpet.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/device/hpet.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/device/hpet.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/bin/nasm -f elf64 -o projects/kernel/CMakeFiles/kernel.dir/source/acpi/picdisable.s.obj /home/mintgs/workspaces/primOS/projects/kernel/source/acpi/picdisable.s",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/acpi/picdisable.s",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/acpi/picdisable.s.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\device\\lapict.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\device\\lapict.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/device/lapict.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/device/lapict.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/device/hpet.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/device/hpet.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/device/hpet.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/device/hpet.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\entry\\entry.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\entry\\entry.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/entry/entry.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/entry/entry.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/device/lapict.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/device/lapict.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/device/lapict.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/device/lapict.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\entry\\kernel.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\entry\\kernel.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/entry/kernel.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/entry/kernel.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/entry/entry.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/entry/entry.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/entry/entry.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/entry/entry.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\gpcs2\\blit.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\gpcs2\\blit.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/gpcs2/blit.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/gpcs2/blit.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/entry/kernel.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/entry/kernel.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/entry/kernel.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/entry/kernel.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\gpcs2\\console\\console.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\gpcs2\\console\\console.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/gpcs2/console/console.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/gpcs2/console/console.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/gpcs2/blit.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/gpcs2/blit.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/gpcs2/blit.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/gpcs2/blit.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\gpcs2\\console\\user_ifce.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\gpcs2\\console\\user_ifce.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/gpcs2/console/user_ifce.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/gpcs2/console/user_ifce.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/gpcs2/console/console.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/gpcs2/console/console.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/gpcs2/console/console.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/gpcs2/console/console.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\gpcs2\\fonts\\Consolas12_bmp.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\gpcs2\\fonts\\Consolas12_bmp.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/gpcs2/fonts/Consolas12_bmp.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/gpcs2/fonts/Consolas12_bmp.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/gpcs2/console/user_ifce.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/gpcs2/console/user_ifce.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/gpcs2/console/user_ifce.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/gpcs2/console/user_ifce.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\gpcs2\\init.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\gpcs2\\init.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/gpcs2/init.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/gpcs2/init.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/gpcs2/fonts/Consolas12_bmp.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/gpcs2/fonts/Consolas12_bmp.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/gpcs2/fonts/Consolas12_bmp.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/gpcs2/fonts/Consolas12_bmp.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\gpcs2\\window.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\gpcs2\\window.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/gpcs2/window.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/gpcs2/window.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/gpcs2/init.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/gpcs2/init.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/gpcs2/init.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/gpcs2/init.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\interrupts\\gdt.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\interrupts\\gdt.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/interrupts/gdt.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/interrupts/gdt.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/gpcs2/window.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/gpcs2/window.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/gpcs2/window.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/gpcs2/window.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\interrupts\\handlers.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\interrupts\\handlers.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/interrupts/handlers.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/interrupts/handlers.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/interrupts/gdt.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/interrupts/gdt.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/interrupts/gdt.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/interrupts/gdt.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\interrupts\\htable.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\interrupts\\htable.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/interrupts/htable.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/interrupts/htable.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/interrupts/handlers.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/interrupts/handlers.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/interrupts/handlers.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/interrupts/handlers.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\interrupts\\idt.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\interrupts\\idt.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/interrupts/idt.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/interrupts/idt.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/interrupts/htable.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/interrupts/htable.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/interrupts/htable.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/interrupts/htable.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\interrupts\\init.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\interrupts\\init.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/interrupts/init.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/interrupts/init.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/interrupts/idt.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/interrupts/idt.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/interrupts/idt.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/interrupts/idt.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\PROGRA~1\\NASM\\nasm.exe -f elf64 -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\interrupts\\inthandlers.s.obj C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\interrupts\\inthandlers.s",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/interrupts/inthandlers.s",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/interrupts/inthandlers.s.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/interrupts/init.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/interrupts/init.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/interrupts/init.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/interrupts/init.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\PROGRA~1\\NASM\\nasm.exe -f elf64 -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\interrupts\\load_gdt.s.obj C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\interrupts\\load_gdt.s",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/interrupts/load_gdt.s",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/interrupts/load_gdt.s.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/bin/nasm -f elf64 -o projects/kernel/CMakeFiles/kernel.dir/source/interrupts/inthandlers.s.obj /home/mintgs/workspaces/primOS/projects/kernel/source/interrupts/inthandlers.s",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/interrupts/inthandlers.s",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/interrupts/inthandlers.s.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\interrupts\\router.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\interrupts\\router.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/interrupts/router.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/interrupts/router.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/bin/nasm -f elf64 -o projects/kernel/CMakeFiles/kernel.dir/source/interrupts/load_gdt.s.obj /home/mintgs/workspaces/primOS/projects/kernel/source/interrupts/load_gdt.s",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/interrupts/load_gdt.s",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/interrupts/load_gdt.s.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\mem\\map_ptr.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\mem\\map_ptr.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/mem/map_ptr.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/mem/map_ptr.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/interrupts/router.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/interrupts/router.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/interrupts/router.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/interrupts/router.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\mem\\phys\\buddy.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\mem\\phys\\buddy.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/mem/phys/buddy.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/mem/phys/buddy.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/mem/map_ptr.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/mem/map_ptr.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/mem/map_ptr.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/mem/map_ptr.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\mem\\phys\\buddyLow.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\mem\\phys\\buddyLow.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/mem/phys/buddyLow.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/mem/phys/buddyLow.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/mem/phys/buddy.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/mem/phys/buddy.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/mem/phys/buddy.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/mem/phys/buddy.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\mem\\phys\\pmm.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\mem\\phys\\pmm.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/mem/phys/pmm.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/mem/phys/pmm.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/mem/phys/buddyLow.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/mem/phys/buddyLow.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/mem/phys/buddyLow.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/mem/phys/buddyLow.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\mem\\virt\\avl\\avl_tree.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\mem\\virt\\avl\\avl_tree.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/mem/virt/avl/avl_tree.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/mem/virt/avl/avl_tree.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/mem/phys/pmm.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/mem/phys/pmm.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/mem/phys/pmm.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/mem/phys/pmm.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\mem\\virt\\paging.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\mem\\virt\\paging.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/mem/virt/paging.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/mem/virt/paging.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/mem/virt/avl/avl_tree.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/mem/virt/avl/avl_tree.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/mem/virt/avl/avl_tree.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/mem/virt/avl/avl_tree.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\mem\\virt\\vas.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\mem\\virt\\vas.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/mem/virt/vas.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/mem/virt/vas.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/mem/virt/paging.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/mem/virt/paging.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/mem/virt/paging.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/mem/virt/paging.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\mem\\virt\\vas_node_alloc.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\mem\\virt\\vas_node_alloc.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/mem/virt/vas_node_alloc.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/mem/virt/vas_node_alloc.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/mem/virt/vas.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/mem/virt/vas.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/mem/virt/vas.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/mem/virt/vas.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\PROGRA~1\\NASM\\nasm.exe -f elf64 -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\scheduler\\context_switch.s.obj C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\scheduler\\context_switch.s",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/scheduler/context_switch.s",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/scheduler/context_switch.s.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/mem/virt/vas_node_alloc.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/mem/virt/vas_node_alloc.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/mem/virt/vas_node_alloc.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/mem/virt/vas_node_alloc.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\smp\\smp.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\smp\\smp.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/smp/smp.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/smp/smp.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/bin/nasm -f elf64 -o projects/kernel/CMakeFiles/kernel.dir/source/scheduler/context_switch.s.obj /home/mintgs/workspaces/primOS/projects/kernel/source/scheduler/context_switch.s",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/scheduler/context_switch.s",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/scheduler/context_switch.s.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\std\\bit.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\std\\bit.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/std/bit.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/std/bit.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/smp/smp.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/smp/smp.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/smp/smp.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/smp/smp.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\std\\error.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\std\\error.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/std/error.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/std/error.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/std/bit.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/std/bit.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/std/bit.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/std/bit.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\std\\halt.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\std\\halt.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/std/halt.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/std/halt.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/std/error.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/std/error.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/std/error.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/std/error.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\std\\io.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\std\\io.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/std/io.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/std/io.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/std/halt.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/std/halt.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/std/halt.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/std/halt.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\std\\math.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\std\\math.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/std/math.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/std/math.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/std/io.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/std/io.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/std/io.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/std/io.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\std\\panic.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\std\\panic.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/std/panic.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/std/panic.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/std/math.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/std/math.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/std/math.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/std/math.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\std\\pause.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\std\\pause.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/std/pause.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/std/pause.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/std/panic.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/std/panic.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/std/panic.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/std/panic.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects\\kernel\\CMakeFiles\\kernel.elf.dir\\source\\std\\string.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\kernel\\source\\std\\string.c",
-  "file": "C:/CTools/Projects/primOS/projects/kernel/source/std/string.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/kernel/CMakeFiles/kernel.elf.dir/source/std/string.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/std/pause.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/std/pause.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/std/pause.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/std/pause.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/bootloader/include -IC:/CTools/Projects/primOS/dependencies/gnu-efi/inc -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -o projects\\bootloader\\CMakeFiles\\bootloader.efi.dir\\source\\acpi.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\bootloader\\source\\acpi.c",
-  "file": "C:/CTools/Projects/primOS/projects/bootloader/source/acpi.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/bootloader/CMakeFiles/bootloader.efi.dir/source/acpi.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -target x86_64-unknown-none-elf -ffreestanding -mcmodel=large -nostdlib -Os -fno-exceptions -fshort-wchar -mno-red-zone -mgeneral-regs-only -Wno-missing-braces -Wno-unused-variable -Wno-unused-function -Wno-unused-but-set-variable -Wno-reserved-macro-identifier -Wno-reserved-identifier -Wno-declaration-after-statement -Wno-padded-bitfield -Wno-padded -Wno-packed -o projects/kernel/CMakeFiles/kernel.dir/source/std/string.c.obj -c /home/mintgs/workspaces/primOS/projects/kernel/source/std/string.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/kernel/source/std/string.c",
+  "output": "projects/kernel/CMakeFiles/kernel.dir/source/std/string.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/bootloader/include -IC:/CTools/Projects/primOS/dependencies/gnu-efi/inc -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -o projects\\bootloader\\CMakeFiles\\bootloader.efi.dir\\source\\alloc.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\bootloader\\source\\alloc.c",
-  "file": "C:/CTools/Projects/primOS/projects/bootloader/source/alloc.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/bootloader/CMakeFiles/bootloader.efi.dir/source/alloc.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -D_DEBUG=1 -I/home/mintgs/workspaces/primOS/projects/bootloader/include -I/home/mintgs/workspaces/primOS/dependencies/gnu-efi/inc -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -mno-stack-arg-probe -o projects/bootloader/CMakeFiles/bootloader.dir/source/acpi.c.obj -c /home/mintgs/workspaces/primOS/projects/bootloader/source/acpi.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/bootloader/source/acpi.c",
+  "output": "projects/bootloader/CMakeFiles/bootloader.dir/source/acpi.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/bootloader/include -IC:/CTools/Projects/primOS/dependencies/gnu-efi/inc -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -o projects\\bootloader\\CMakeFiles\\bootloader.efi.dir\\source\\data.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\bootloader\\source\\data.c",
-  "file": "C:/CTools/Projects/primOS/projects/bootloader/source/data.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/bootloader/CMakeFiles/bootloader.efi.dir/source/data.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -D_DEBUG=1 -I/home/mintgs/workspaces/primOS/projects/bootloader/include -I/home/mintgs/workspaces/primOS/dependencies/gnu-efi/inc -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -mno-stack-arg-probe -o projects/bootloader/CMakeFiles/bootloader.dir/source/alloc.c.obj -c /home/mintgs/workspaces/primOS/projects/bootloader/source/alloc.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/bootloader/source/alloc.c",
+  "output": "projects/bootloader/CMakeFiles/bootloader.dir/source/alloc.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/bootloader/include -IC:/CTools/Projects/primOS/dependencies/gnu-efi/inc -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -o projects\\bootloader\\CMakeFiles\\bootloader.efi.dir\\source\\elfutil.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\bootloader\\source\\elfutil.c",
-  "file": "C:/CTools/Projects/primOS/projects/bootloader/source/elfutil.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/bootloader/CMakeFiles/bootloader.efi.dir/source/elfutil.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -D_DEBUG=1 -I/home/mintgs/workspaces/primOS/projects/bootloader/include -I/home/mintgs/workspaces/primOS/dependencies/gnu-efi/inc -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -mno-stack-arg-probe -o projects/bootloader/CMakeFiles/bootloader.dir/source/data.c.obj -c /home/mintgs/workspaces/primOS/projects/bootloader/source/data.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/bootloader/source/data.c",
+  "output": "projects/bootloader/CMakeFiles/bootloader.dir/source/data.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/bootloader/include -IC:/CTools/Projects/primOS/dependencies/gnu-efi/inc -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -o projects\\bootloader\\CMakeFiles\\bootloader.efi.dir\\source\\err.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\bootloader\\source\\err.c",
-  "file": "C:/CTools/Projects/primOS/projects/bootloader/source/err.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/bootloader/CMakeFiles/bootloader.efi.dir/source/err.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -D_DEBUG=1 -I/home/mintgs/workspaces/primOS/projects/bootloader/include -I/home/mintgs/workspaces/primOS/dependencies/gnu-efi/inc -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -mno-stack-arg-probe -o projects/bootloader/CMakeFiles/bootloader.dir/source/elfutil.c.obj -c /home/mintgs/workspaces/primOS/projects/bootloader/source/elfutil.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/bootloader/source/elfutil.c",
+  "output": "projects/bootloader/CMakeFiles/bootloader.dir/source/elfutil.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/bootloader/include -IC:/CTools/Projects/primOS/dependencies/gnu-efi/inc -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -o projects\\bootloader\\CMakeFiles\\bootloader.efi.dir\\source\\exitbootservices.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\bootloader\\source\\exitbootservices.c",
-  "file": "C:/CTools/Projects/primOS/projects/bootloader/source/exitbootservices.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/bootloader/CMakeFiles/bootloader.efi.dir/source/exitbootservices.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -D_DEBUG=1 -I/home/mintgs/workspaces/primOS/projects/bootloader/include -I/home/mintgs/workspaces/primOS/dependencies/gnu-efi/inc -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -mno-stack-arg-probe -o projects/bootloader/CMakeFiles/bootloader.dir/source/err.c.obj -c /home/mintgs/workspaces/primOS/projects/bootloader/source/err.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/bootloader/source/err.c",
+  "output": "projects/bootloader/CMakeFiles/bootloader.dir/source/err.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/bootloader/include -IC:/CTools/Projects/primOS/dependencies/gnu-efi/inc -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -o projects\\bootloader\\CMakeFiles\\bootloader.efi.dir\\source\\exitloader.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\bootloader\\source\\exitloader.c",
-  "file": "C:/CTools/Projects/primOS/projects/bootloader/source/exitloader.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/bootloader/CMakeFiles/bootloader.efi.dir/source/exitloader.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -D_DEBUG=1 -I/home/mintgs/workspaces/primOS/projects/bootloader/include -I/home/mintgs/workspaces/primOS/dependencies/gnu-efi/inc -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -mno-stack-arg-probe -o projects/bootloader/CMakeFiles/bootloader.dir/source/exitbootservices.c.obj -c /home/mintgs/workspaces/primOS/projects/bootloader/source/exitbootservices.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/bootloader/source/exitbootservices.c",
+  "output": "projects/bootloader/CMakeFiles/bootloader.dir/source/exitbootservices.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/bootloader/include -IC:/CTools/Projects/primOS/dependencies/gnu-efi/inc -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -o projects\\bootloader\\CMakeFiles\\bootloader.efi.dir\\source\\file.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\bootloader\\source\\file.c",
-  "file": "C:/CTools/Projects/primOS/projects/bootloader/source/file.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/bootloader/CMakeFiles/bootloader.efi.dir/source/file.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -D_DEBUG=1 -I/home/mintgs/workspaces/primOS/projects/bootloader/include -I/home/mintgs/workspaces/primOS/dependencies/gnu-efi/inc -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -mno-stack-arg-probe -o projects/bootloader/CMakeFiles/bootloader.dir/source/exitloader.c.obj -c /home/mintgs/workspaces/primOS/projects/bootloader/source/exitloader.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/bootloader/source/exitloader.c",
+  "output": "projects/bootloader/CMakeFiles/bootloader.dir/source/exitloader.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/bootloader/include -IC:/CTools/Projects/primOS/dependencies/gnu-efi/inc -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -o projects\\bootloader\\CMakeFiles\\bootloader.efi.dir\\source\\loadkernel.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\bootloader\\source\\loadkernel.c",
-  "file": "C:/CTools/Projects/primOS/projects/bootloader/source/loadkernel.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/bootloader/CMakeFiles/bootloader.efi.dir/source/loadkernel.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -D_DEBUG=1 -I/home/mintgs/workspaces/primOS/projects/bootloader/include -I/home/mintgs/workspaces/primOS/dependencies/gnu-efi/inc -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -mno-stack-arg-probe -o projects/bootloader/CMakeFiles/bootloader.dir/source/file.c.obj -c /home/mintgs/workspaces/primOS/projects/bootloader/source/file.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/bootloader/source/file.c",
+  "output": "projects/bootloader/CMakeFiles/bootloader.dir/source/file.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/bootloader/include -IC:/CTools/Projects/primOS/dependencies/gnu-efi/inc -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -o projects\\bootloader\\CMakeFiles\\bootloader.efi.dir\\source\\main.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\bootloader\\source\\main.c",
-  "file": "C:/CTools/Projects/primOS/projects/bootloader/source/main.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/bootloader/CMakeFiles/bootloader.efi.dir/source/main.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -D_DEBUG=1 -I/home/mintgs/workspaces/primOS/projects/bootloader/include -I/home/mintgs/workspaces/primOS/dependencies/gnu-efi/inc -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -mno-stack-arg-probe -o projects/bootloader/CMakeFiles/bootloader.dir/source/loadkernel.c.obj -c /home/mintgs/workspaces/primOS/projects/bootloader/source/loadkernel.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/bootloader/source/loadkernel.c",
+  "output": "projects/bootloader/CMakeFiles/bootloader.dir/source/loadkernel.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/bootloader/include -IC:/CTools/Projects/primOS/dependencies/gnu-efi/inc -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -o projects\\bootloader\\CMakeFiles\\bootloader.efi.dir\\source\\memorymap.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\bootloader\\source\\memorymap.c",
-  "file": "C:/CTools/Projects/primOS/projects/bootloader/source/memorymap.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/bootloader/CMakeFiles/bootloader.efi.dir/source/memorymap.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -D_DEBUG=1 -I/home/mintgs/workspaces/primOS/projects/bootloader/include -I/home/mintgs/workspaces/primOS/dependencies/gnu-efi/inc -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -mno-stack-arg-probe -o projects/bootloader/CMakeFiles/bootloader.dir/source/main.c.obj -c /home/mintgs/workspaces/primOS/projects/bootloader/source/main.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/bootloader/source/main.c",
+  "output": "projects/bootloader/CMakeFiles/bootloader.dir/source/main.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/bootloader/include -IC:/CTools/Projects/primOS/dependencies/gnu-efi/inc -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -o projects\\bootloader\\CMakeFiles\\bootloader.efi.dir\\source\\pause.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\bootloader\\source\\pause.c",
-  "file": "C:/CTools/Projects/primOS/projects/bootloader/source/pause.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/bootloader/CMakeFiles/bootloader.efi.dir/source/pause.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -D_DEBUG=1 -I/home/mintgs/workspaces/primOS/projects/bootloader/include -I/home/mintgs/workspaces/primOS/dependencies/gnu-efi/inc -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -mno-stack-arg-probe -o projects/bootloader/CMakeFiles/bootloader.dir/source/memorymap.c.obj -c /home/mintgs/workspaces/primOS/projects/bootloader/source/memorymap.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/bootloader/source/memorymap.c",
+  "output": "projects/bootloader/CMakeFiles/bootloader.dir/source/memorymap.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/bootloader/include -IC:/CTools/Projects/primOS/dependencies/gnu-efi/inc -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -o projects\\bootloader\\CMakeFiles\\bootloader.efi.dir\\source\\print.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\bootloader\\source\\print.c",
-  "file": "C:/CTools/Projects/primOS/projects/bootloader/source/print.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/bootloader/CMakeFiles/bootloader.efi.dir/source/print.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -D_DEBUG=1 -I/home/mintgs/workspaces/primOS/projects/bootloader/include -I/home/mintgs/workspaces/primOS/dependencies/gnu-efi/inc -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -mno-stack-arg-probe -o projects/bootloader/CMakeFiles/bootloader.dir/source/pause.c.obj -c /home/mintgs/workspaces/primOS/projects/bootloader/source/pause.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/bootloader/source/pause.c",
+  "output": "projects/bootloader/CMakeFiles/bootloader.dir/source/pause.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/bootloader/include -IC:/CTools/Projects/primOS/dependencies/gnu-efi/inc -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -o projects\\bootloader\\CMakeFiles\\bootloader.efi.dir\\source\\rtdata.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\bootloader\\source\\rtdata.c",
-  "file": "C:/CTools/Projects/primOS/projects/bootloader/source/rtdata.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/bootloader/CMakeFiles/bootloader.efi.dir/source/rtdata.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -D_DEBUG=1 -I/home/mintgs/workspaces/primOS/projects/bootloader/include -I/home/mintgs/workspaces/primOS/dependencies/gnu-efi/inc -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -mno-stack-arg-probe -o projects/bootloader/CMakeFiles/bootloader.dir/source/print.c.obj -c /home/mintgs/workspaces/primOS/projects/bootloader/source/print.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/bootloader/source/print.c",
+  "output": "projects/bootloader/CMakeFiles/bootloader.dir/source/print.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/bootloader/include -IC:/CTools/Projects/primOS/dependencies/gnu-efi/inc -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -o projects\\bootloader\\CMakeFiles\\bootloader.efi.dir\\source\\string.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\bootloader\\source\\string.c",
-  "file": "C:/CTools/Projects/primOS/projects/bootloader/source/string.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/bootloader/CMakeFiles/bootloader.efi.dir/source/string.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -D_DEBUG=1 -I/home/mintgs/workspaces/primOS/projects/bootloader/include -I/home/mintgs/workspaces/primOS/dependencies/gnu-efi/inc -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -mno-stack-arg-probe -o projects/bootloader/CMakeFiles/bootloader.dir/source/rtdata.c.obj -c /home/mintgs/workspaces/primOS/projects/bootloader/source/rtdata.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/bootloader/source/rtdata.c",
+  "output": "projects/bootloader/CMakeFiles/bootloader.dir/source/rtdata.c.obj"
 },
 {
-  "directory": "C:/CTools/Projects/primOS/build/debug",
-  "command": "C:\\CTools\\llvm\\bin\\clang.exe -IC:/CTools/Projects/primOS/projects/bootloader/include -IC:/CTools/Projects/primOS/dependencies/gnu-efi/inc -IC:/CTools/Projects/primOS/projects/kernel/include -std=c11 -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -o projects\\bootloader\\CMakeFiles\\bootloader.efi.dir\\source\\video.c.obj -c C:\\CTools\\Projects\\primOS\\projects\\bootloader\\source\\video.c",
-  "file": "C:/CTools/Projects/primOS/projects/bootloader/source/video.c",
-  "output": "C:/CTools/Projects/primOS/build/debug/projects/bootloader/CMakeFiles/bootloader.efi.dir/source/video.c.obj"
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -D_DEBUG=1 -I/home/mintgs/workspaces/primOS/projects/bootloader/include -I/home/mintgs/workspaces/primOS/dependencies/gnu-efi/inc -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -mno-stack-arg-probe -o projects/bootloader/CMakeFiles/bootloader.dir/source/string.c.obj -c /home/mintgs/workspaces/primOS/projects/bootloader/source/string.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/bootloader/source/string.c",
+  "output": "projects/bootloader/CMakeFiles/bootloader.dir/source/string.c.obj"
+},
+{
+  "directory": "/home/mintgs/workspaces/primOS/build/debug",
+  "command": "/usr/lib/llvm-20/bin/clang -D_DEBUG=1 -I/home/mintgs/workspaces/primOS/projects/bootloader/include -I/home/mintgs/workspaces/primOS/dependencies/gnu-efi/inc -I/home/mintgs/workspaces/primOS/projects/kernel/include -g -std=c11 -fvisibility=hidden -fcolor-diagnostics -v -O0 -target x86_64-unknown-windows -ffreestanding -fshort-wchar -mno-red-zone -Wall -fno-stack-protector -mno-stack-arg-probe -o projects/bootloader/CMakeFiles/bootloader.dir/source/video.c.obj -c /home/mintgs/workspaces/primOS/projects/bootloader/source/video.c",
+  "file": "/home/mintgs/workspaces/primOS/projects/bootloader/source/video.c",
+  "output": "projects/bootloader/CMakeFiles/bootloader.dir/source/video.c.obj"
 }
 ]

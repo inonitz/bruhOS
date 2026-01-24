@@ -55,10 +55,10 @@ void init_graphics_lib(IN framebuffer_t* init_front_buffer)
     // *( ((uint32_t*)init_front_buffer->start) + 1) = 0x00FF0000; 
     // printk("test\n");
     
-    system_status(KERNEL_SUCCESS, "graphics initialization Succeeded");    
-    printk(". Screen is %ux%u pixels (width X height)\n", 
-        init_front_buffer->dims.x, 
-        init_front_buffer->dims.y
-    );
+    // system_status(KERNEL_SUCCESS, "graphics initialization Succeeded\n");
+    // printk("Screen is %ux%u pixels (width X height)\n", 
+    //     init_front_buffer->dims.x, 
+    //     init_front_buffer->dims.y
+    // );
     return;
 }

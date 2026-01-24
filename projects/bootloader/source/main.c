@@ -155,6 +155,7 @@ EFI_API EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTabl
         &kernelConfigInfo
     );
     (void)(sysvabi_func);
+    debug_printb("\n\n\n\n\n\n\n\n\n\n");
     debug_printb(L"\
 Output From loadElf64:\n\r\
     kpstart, kvstart: %p, %p (%X Bytes)\n\r\

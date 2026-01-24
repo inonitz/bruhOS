@@ -15,6 +15,7 @@ CLEAN_CURRENT_ROOT_BUILD_DIR=true
 CONFIGURE_CMAKE_FLAG=false
 BUILD_BINARIES_FLAG=false
 RUN_BINARY_FLAG=false
+DEBUG_BINARY_FLAG=false
 
 
 if [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
@@ -22,7 +23,7 @@ if [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
     echo ""
     echo "Arguments:"
     echo "  build_type   - Type of build: debug, release, release_dbginfo, debug_perf, release_perf"
-    echo "  action       - Action to take: cleanbuild, configure, build, run"
+    echo "  action       - Action to take: cleanbuild, configure, build, run, rundebugger"
     echo ""
     echo "Options:"
     echo "  help         - Display this help message"
@@ -76,36 +77,49 @@ else
 fi
 
 
-if [ $2 = "cleanbuild" ];
+if [ $2 = "cleanbuild" ]
 then
     CLEAN_CURRENT_ROOT_BUILD_DIR=true
     CONFIGURE_CMAKE_FLAG=false
     BUILD_BINARIES_FLAG=false
     RUN_BINARY_FLAG=false
+    DEBUG_BINARY_FLAG=false
 
-elif [ $2 = "configure" ];
+elif [ $2 = "configure" ]
 then
     CLEAN_CURRENT_ROOT_BUILD_DIR=false
     CONFIGURE_CMAKE_FLAG=true
     BUILD_BINARIES_FLAG=false
     RUN_BINARY_FLAG=false
+    DEBUG_BINARY_FLAG=false
     CMAKE_ARGLIST+=" -DGIT_SUBMODULE=ON"
 
-elif [ $2 = "build" ];
+elif [ $2 = "build" ]
 then
     CLEAN_CURRENT_ROOT_BUILD_DIR=false
     CONFIGURE_CMAKE_FLAG=false
     BUILD_BINARIES_FLAG=true
     RUN_BINARY_FLAG=false
+    DEBUG_BINARY_FLAG=false
 
-elif [ $2 = "run" ];
+elif [ $2 = "run" ]
 then
     CLEAN_CURRENT_ROOT_BUILD_DIR=false
     CONFIGURE_CMAKE_FLAG=false
     BUILD_BINARIES_FLAG=false
     RUN_BINARY_FLAG=true
+    DEBUG_BINARY_FLAG=false
+
+elif [ $2 = "rundebugger" ]
+then
+    CLEAN_CURRENT_ROOT_BUILD_DIR=false
+    CONFIGURE_CMAKE_FLAG=false
+    BUILD_BINARIES_FLAG=false
+    RUN_BINARY_FLAG=true
+    DEBUG_BINARY_FLAG=true
+
 else
-    printf "Unknown Argument %s - valid values are: cleanbuild, configure, build, run\nExiting..." $3
+    printf "Unknown Argument %s - valid values are: cleanbuild, configure, build, run, rundebugger\nExiting..." $3
     exit
 fi
 
@@ -148,7 +162,13 @@ fi
 if [ $RUN_BINARY_FLAG = "true" ];
 then
     cd $CMAKE_FINAL_BUILD_DIR # This assumes we already built
-    ninja run_binary
+
+    if [ $DEBUG_BINARY_FLAG = "true" ];
+    then
+        ninja debug_primOSImage
+    else
+        ninja run_primOSImage
+    fi
 fi
 
 

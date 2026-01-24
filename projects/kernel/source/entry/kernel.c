@@ -1,3 +1,4 @@
+#include "gpcs2/colours.h"
 #include <gpcs2/init.h>
 #include <gpcs2/console/user_ifce.h>
 
@@ -44,12 +45,14 @@ int __noreturn __abi_sysv actual_start(kernel_header_t* data)
     __kernel_init_basic(data);        // init stack pointer, bss, ...
     init_graphics_lib(&data->screen); // init graphics
 
+    
     consoleClearScreen();
     system_status(KERNEL_SUCCESS, NULLSTR);
-    printk("Kernel Loaded Successfully at:\n       %p (Physical)\n       %p (Virtual )\n",
-        getKernelStart() - virtualOffset(),
-        getKernelStart()
-    );
+    printk("test\n %X", 0xfffff800000);
+    // printkcol(__KERNEL_CONSOLE_PURPLE, "Kernel Loaded Successfully at:\n       %p (Physical)\n       %p (Virtual )\n",
+    //     getKernelStart() - virtualOffset(),
+    //     getKernelStart()
+    // );
 
 
     system_status(KERNEL_SUCCESS, NULLSTR);

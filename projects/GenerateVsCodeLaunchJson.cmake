@@ -1,3 +1,9 @@
+
+function(generate_vscode_launchjson full_launch_json_path bootloader_binary bootloader_pdbsymbols kernel_elf_binary)
+    file(GENERATE
+        OUTPUT ${script_full_path}
+        CONTENT
+        "
 {
     "version": "0.2.0",
     "configurations": [
@@ -6,7 +12,7 @@
             "request": "launch",
             "name": "LLDB Wait For Qemu (Bootloader)",
             "targetCreateCommands": [
-                "target create --no-dependents --arch x86_64 C:/CTools/Projects/bruhOS/build/bin/Debug_amd64_bootloader/bootx64.efi --symfile C:/CTools/Projects/bruhOS/build/bin/Debug_amd64_bootloader/bootx64.pdb",
+                "target create --no-dependents --arch x86_64 ${bootloader_binary} --symfile ${bootloader_pdbsymbols}",
                 "target modules load --file bootx64.efi .text 0xEA5f000"
             ],
             "processCreateCommands": [
@@ -33,17 +39,17 @@
             "request": "launch",
             "name": "LLDB Wait For Qemu (Kernel)",
             "targetCreateCommands": [
-                "target create --no-dependents --arch x86_64 ${command:cmake.buildDirectory}/debug/bin/kernel.elf",
+                "target create --no-dependents --arch x86_64 ${kernel_elf_binary}",
+                // target modules load --file kernel.elf 0xffffff8000000000
+                // Not really necessary ^
             ],
             "processCreateCommands": [
                 "gdb-remote localhost:1234",
+                // "breakpoint set --name _start",
                 "breakpoint set --name actual_start"
-            ],
-            "cwd": "${workspaceFolder}",
-            "preLaunchTask": "CMake Build",
-            "terminal": "integrated"
-        
+            ]
         }
-        
     ]
 }
+        "
+    )

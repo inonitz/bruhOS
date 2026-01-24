@@ -229,7 +229,7 @@ void vprintf(const CHAR16* format, va_list args)
 
 void printf(const CHAR16* format, ...)
 {
-	va_list args; 
+	va_list args;
 	va_start(args, format);
 	vprintf(format, args);
 	va_end(args);

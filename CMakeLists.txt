@@ -90,7 +90,5 @@ if(CCACHE_PROGRAM)
 endif()
 
 
-add_subdirectory(projects/kernel)
-add_subdirectory(projects/bootloader)
-# add_subdirectory(projects/tests)
 add_subdirectory(dependencies)
+add_subdirectory(projects)

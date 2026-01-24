@@ -1,12 +1,14 @@
-%define CODE_SEG   0x08
-%define DATA_SEG   0x10
-%define STACK_SIZE 0x400
-DEFAULT REL
+%define CODE_SEG     0x08
+%define DATA_SEG     0x10
+%define STACK_SIZE   0x400
 
 
+
+align 0x1000
 section .text
 [bits 16]
-align 0x1000
+
+
 ApStart16:
     cli 
 
@@ -17,11 +19,8 @@ ApStart16:
 
 
     ; Setup Temporary Stack
-    lea edx, dword [SMP_STACK]
     mov esp, ecx
-    add esp, edx
-    add esp, STACK_SIZE
-    ; add word esp, SMP_STACK + STACK_SIZE
+    add esp, SMP_STACK + STACK_SIZE
     mov ebp, esp
 
 
@@ -50,7 +49,7 @@ ApStart16:
 
 
 [bits 32]
-ApStart32:
+ApPrepare64:
     mov byte [ecx + ApStartGdtCs_48_55], 0xA0 ; Update GDT to kernel segment (for 64-bit)
 
     ; Enable PAE
@@ -132,13 +131,12 @@ ApStart64:
 
 
 
+
+
+
+
+
 section .data
-    global ApStartGdt
-    global ApStartGdtCs_48_55
-    global farPointer32
-    global farPointer64
-
-
     struc trampoline_data
         .ready:   resb 1
         .lock:    resb 1
@@ -152,12 +150,14 @@ section .data
 
 
     align 4
+    global ApStartGdt
     ApStartGdt:
         .size: dw 23
         .base: dd ApStartGdtEntries
 
 
     align 8
+    global ApStartGdtCs_48_55
     ApStartGdtEntries:
         ; NULL - 0x00
         ApStartGdtNull_0_31  dd 0
@@ -179,9 +179,15 @@ section .data
         ApStartGdtDs_48_55 db 0xCF
         ApStartGdtDs_56_63 db 0
 
+    
+
+
+    global farPointer32
+    global farPointer64
+
     align 4
     farPointer32:
-        .address: dd ApStart32
+        .address: dd ApPrepare64
         .segment: dw CODE_SEG
     
     align 8
@@ -190,10 +196,12 @@ section .data
         .segment: dw CODE_SEG
 
 
+
 section .bss
     align 16
     SMP_STACK:
-    resb STACK_SIZE
+        resb STACK_SIZE
+    
 
     global local_targs
     local_targs: 
