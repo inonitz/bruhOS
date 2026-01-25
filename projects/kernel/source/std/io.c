@@ -425,9 +425,10 @@ static void print_internal(const char_t* string, va_list arglist)
 
 				localConsoleWriteString(intToStr);
 				start = ++end; 						// skip format specifier char
-				if(!dontRes) {
-					memset(intToStr, 0x00, ITSbufSize - (uint64_t)(intToStr - intToStrBuffer));
-				}
+				memset(intToStrBuffer, 0x00, ITSbufSize);
+				// if(!dontRes) {
+				// 	memset(intToStr, 0x00, ITSbufSize - (uint64_t)(intToStr - intToStrBuffer));
+				// }
 				break;
 			default:
 			// Should never reach here

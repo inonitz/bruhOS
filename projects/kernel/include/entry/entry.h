@@ -16,7 +16,7 @@ static __force_inline void __kernel_init_basic(kernel_header_t* hdr)
     // set the variable responsible for the virtualOffet() [mem/map_ptr.h] function.
     __mem_virtual_offset = hdr->memcfg.kstartv - hdr->memcfg.kstartp;
     __kheader            = hdr;    
-    memset(&__kernel_bss_start, 0x00, &__kernel_bss_end - &__kernel_bss_start);
+    // memset(&__kernel_bss_start, 0x00, &__kernel_bss_end - &__kernel_bss_start);
 
     // get rid of the instruction pointer mapping, of the bootloader. (Can't do that yet...)
     // memset(hdr->memcfg.ident_rip, 0x00, hdr->memcfg.ident_rip_size * PAGE_SIZE);

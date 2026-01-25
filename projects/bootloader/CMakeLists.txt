@@ -68,6 +68,7 @@ set(HEADERS
 
 
 set(EFI_APP_CFLAGS
+    $<$<AND:$<COMPILE_LANGUAGE:C>,$<CONFIG:Debug>>:-g>
     $<$<COMPILE_LANGUAGE:C>:-v>
     $<$<COMPILE_LANGUAGE:C>:-O0>
     $<$<COMPILE_LANGUAGE:C>:-target x86_64-unknown-windows>

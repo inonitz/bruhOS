@@ -1,3 +1,4 @@
+#include "preboot/memmap.h"
 #include <bootloader/exitloader.h>
 #include <bootloader/string.h>
 #include <bootloader/bool_macro.h>
@@ -10,7 +11,7 @@
 
 
 #define __KERNEL_HEADER_MEMMAP_ENTRY_AT(MAP, i) \
-    ( (efi_mem_descriptor*)((uint8_t*)(MAP)->mmap + (i * (MAP)->entry_size)) )
+    ( (efi_mem_descriptor*)( ((uint8_t*)(MAP)->mmap) + ((i) * (MAP)->entry_size) ) )
 
 #define ALLOCATE_PAGE(PAGE_STACK_TYPE_PTR, type_to_cvt) \
     (type_to_cvt*)allocatePage(PAGE_STACK_TYPE_PTR)
@@ -205,9 +206,9 @@ void enablePagingJumpToEntry(
 
     /* Print extra data before exitBootServices() ... */
     // debug_printb(L"entry @%p\n\rnewHeader @%p (physical)\n\r", entry, newHeader);
-    // dumpMemoryMap(&oldHeader->map);
+    dumpMemoryMap(&oldHeader->map);
     // dumpPageTables(pml4);
-    // print_kernel_header(oldHeader);
+    print_kernel_header(oldHeader);
     exitBootServices(ImageHandle, memoryMapKey);
 
     /* BiggestFreeZone is now the memory-descriptor entry for the paging tables */
@@ -217,7 +218,10 @@ void enablePagingJumpToEntry(
         &pageStack,
         virtualoffset
     );
-
+    /* incase the memoryMap is somehow corrupted - get rid of exitBootServices and dump the map post-finalization */
+    // oldHeader->map.mmap = (efi_mem_descriptor*)((uint8_t*)(oldHeader->map.mmap) - virtualoffset);
+    // dumpMemoryMap(&oldHeader->map);
+    // __asm__ volatile("hlt" :::);
 
     /* 
         this is the last datapoint to update
@@ -341,7 +345,7 @@ static void finalizeMemoryMap(
     remainingMemoryPages->virtAddr = remainingMemoryPages->physAddr + virtualOffset;
     remainingMemoryPages->pages    = latestUsedPageStack->pages; /* whats leftover of the stack */
 
-    ++map->used_size; /* we split an entry to 2 */
+    map->used_size += map->entry_size; /* we split an entry to 2 */
     map->mmap = VIRTUAL (efi_mem_descriptor*)((uint8_t*)map->mmap + virtualOffset); /* update to virtual mapping */
 
     return;

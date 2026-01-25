@@ -105,16 +105,16 @@ void dumpMemoryMap(efi_memory_map* map)
     const uint64_t      dscs = map->used_size / map->entry_size;
     efi_mem_descriptor* dsc  = 0;
 
-    (void)(dscs);
     // pauseforinput();
+    printf(L"dumpMemoryMapBegin()\n\r");
     printf((const CHAR16*)L"EFI Memory Map Description:\n\r");
-    printf((const CHAR16*)L"  Map Size/Used/EntrySize: 0x%x/0x%x/%x\n\r", map->map_size, map->used_size, map->entry_size);
-    for(uint16_t i = 0; i < dscs; ++i)
+    printf((const CHAR16*)L"  Map Addr/Size/Used/EntrySize: %p/0x%x/0x%x/0x%x\n\r", map->mmap, map->map_size, map->used_size, map->entry_size);
+    for(uint64_t i = 0; i < dscs; ++i)
     {
         // pauseforinput();
         dsc = MAP_ENTRY_AT(map, i);
-        printf(L"%u %s | %p | %p | %u\r", 
-            (uint32_t)i,
+        printf(L"%z %s | %p | %p | %u\r", 
+            i,
             memoryTypeString(dsc->memtype),
             dsc->physAddr, 
             dsc->virtAddr, 
@@ -123,8 +123,7 @@ void dumpMemoryMap(efi_memory_map* map)
         // pauseforinput();
         // pause(250000);
     }
-
-
+    printf(L"dumpMemoryMapEnd()\n\r");
     return;
 }
 #pragma GCC diagnostic pop

@@ -265,6 +265,8 @@ if ($RUN_BINARY_FLAG) {
             ninja run_primOSImage
         }
     }
+
+
     Push-Location $CMAKE_FINAL_BUILD_DIR
     RunOrEcho -Description "ninja Run/Debug" -Codeblock $ninja_run_binary_cmake_rule
     Pop-Location
