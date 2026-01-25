@@ -27,23 +27,39 @@
             // 
             // memory read --size 1 --format x --count 16 ADDR
         },
-
         {
             "type": "lldb",
             "request": "launch",
-            "name": "LLDB Wait For Qemu (Kernel)",
+            "name": "LLDB Wait For Qemu (Kernel) (Linux)",
             "targetCreateCommands": [
-                "target create --no-dependents --arch x86_64 ${command:cmake.buildDirectory}/debug/bin/kernel.elf",
+                
             ],
             "processCreateCommands": [
                 "gdb-remote localhost:1234",
                 "breakpoint set --name actual_start"
             ],
             "cwd": "${workspaceFolder}",
-            "preLaunchTask": "CMake Build",
-            "terminal": "integrated"
+            "preLaunchTask": "CMake Build (Linux)"
+            // "terminal": "integrated"
         
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "LLDB Wait For Qemu (Kernel) (Windows)",
+            "targetCreateCommands": [
+                "target create --no-dependents --arch x86_64 ${cwd}/build/debug/bin/kernel.elf",
+            ],
+            "processCreateCommands": [
+                "gdb-remote localhost:1234",
+                "breakpoint set --name actual_start"
+            ],
+            "cwd": "${workspaceFolder}/build/debug",
+            "preLaunchTask": "CMake Build (Windows)"
+            // "terminal": "integrated"
+            // ./build.ps1 build rundebugger is expected to be called from outside
+            // There is still a problem with the debugger not being synced to the C code,
+            // and also to breakpoints...
         }
-        
     ]
 }

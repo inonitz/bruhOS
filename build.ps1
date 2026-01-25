@@ -4,7 +4,7 @@ param(
     [string]$BuildType,
 
     [Parameter(Mandatory=$true)]
-    [ValidateSet("run", "configure", "cleanbuild", "build")]
+    [ValidateSet("cleanbuild", "configure", "build", "run", "rundebugger")]
     [string]$Action,
 
     [switch]$DryRun,
@@ -45,7 +45,7 @@ function Show-Help {
     Write-Host "  -BuildType <BuildType>  : Possible Values are:"
     Write-Host "                            debug, debug_perf, release, release_dbginfo, release_perf"
     Write-Host "  -Action <Action>        : The action to perform. Possible values:"
-    Write-Host "                             run, configure, cleanbuild, build"
+    Write-Host "                             cleanbuild, configure, build, run, rundebugger"
     Write-Host "  -DryRun                 : (Optional) If set, simulates the actions without executing them."
     Write-Host "  -Help                   : (Optional) Displays this help message."
     Write-Host ""
@@ -65,8 +65,6 @@ if ($Help) {
 
 $PROJECT_NAME = "all"
 $CMAKE_ARGLIST = @(
-    "-DCMAKE_C_COMPILER=clang"
-    "-DCMAKE_CXX_COMPILER=clang++"
     "-DCMAKE_TOOLCHAIN_FILE=freestanding-toolchain.cmake"
     "-DCMAKE_EXPORT_COMPILE_COMMANDS=1"
     "-DCMAKE_COLOR_DIAGNOSTICS=ON"
@@ -79,6 +77,7 @@ $CLEAN_CURRENT_ROOT_BUILD_DIR = $false
 $CONFIGURE_CMAKE_FLAG         = $false
 $BUILD_BINARIES_FLAG          = $false
 $RUN_BINARY_FLAG              = $false
+$DEBUG_BINARY_FLAG            = $false
 
 
 switch ($BuildType) {
@@ -106,6 +105,7 @@ switch ($BuildType) {
     }
 }
 
+
 # switch ($LinkType) {
 #     "shared" {
 #         $CMAKE_ARGLIST += "-DBUILD_SHARED_LIBS=1"
@@ -118,30 +118,41 @@ switch ($BuildType) {
 # }
 
 switch ($Action) {
-    "run" {
-        $CLEAN_CURRENT_ROOT_BUILD_DIR = $false
+    "cleanbuild" {
+        $CLEAN_CURRENT_ROOT_BUILD_DIR = $true
         $CONFIGURE_CMAKE_FLAG = $false
         $BUILD_BINARIES_FLAG = $false
-        $RUN_BINARY_FLAG = $true
+        $RUN_BINARY_FLAG = $false
+        $DEBUG_BINARY_FLAG = $false
     }
     "configure" {
         $CLEAN_CURRENT_ROOT_BUILD_DIR = $false
         $CONFIGURE_CMAKE_FLAG = $true
         $BUILD_BINARIES_FLAG = $false
         $RUN_BINARY_FLAG = $false
+        $DEBUG_BINARY_FLAG = $false
         $CMAKE_ARGLIST += "-DGIT_SUBMODULE=ON"
-    }
-    "cleanbuild" {
-        $CLEAN_CURRENT_ROOT_BUILD_DIR = $true
-        $CONFIGURE_CMAKE_FLAG = $false
-        $BUILD_BINARIES_FLAG = $false
-        $RUN_BINARY_FLAG = $false
     }
     "build" {
         $CLEAN_CURRENT_ROOT_BUILD_DIR = $false
         $CONFIGURE_CMAKE_FLAG = $false
         $BUILD_BINARIES_FLAG = $true
         $RUN_BINARY_FLAG = $false
+        $DEBUG_BINARY_FLAG = $false
+    }
+    "run" {
+        $CLEAN_CURRENT_ROOT_BUILD_DIR = $false
+        $CONFIGURE_CMAKE_FLAG = $false
+        $BUILD_BINARIES_FLAG = $false
+        $RUN_BINARY_FLAG = $true
+        $DEBUG_BINARY_FLAG = $false
+    }
+    "rundebugger" {
+        $CLEAN_CURRENT_ROOT_BUILD_DIR = $false
+        $CONFIGURE_CMAKE_FLAG = $false
+        $BUILD_BINARIES_FLAG = $false
+        $RUN_BINARY_FLAG = $true
+        $DEBUG_BINARY_FLAG = $true
     }
 }
 
@@ -243,10 +254,18 @@ if ($BUILD_BINARIES_FLAG) {
 }
 
 if ($RUN_BINARY_FLAG) {
-    $ninja_run_binary_cmake_rule = {
-        ninja run_binary
+    $ninja_run_binary_cmake_rule = {}
+
+    if ($DEBUG_BINARY_FLAG) {
+        $ninja_run_binary_cmake_rule = {
+            ninja debug_primOSImage
+        }
+    } else {
+        $ninja_run_binary_cmake_rule = {
+            ninja run_primOSImage
+        }
     }
     Push-Location $CMAKE_FINAL_BUILD_DIR
-    RunOrEcho -Description "ninja run_binary" -Codeblock $ninja_run_binary_cmake_rule
+    RunOrEcho -Description "ninja Run/Debug" -Codeblock $ninja_run_binary_cmake_rule
     Pop-Location
 }

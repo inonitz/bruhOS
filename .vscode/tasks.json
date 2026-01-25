@@ -2,9 +2,36 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "CMake Build",
+            "label": "CMake Build (Linux)",
             "type": "shell",
             "command": "./build.sh debug build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "CMake Run Debugger (Linux)",
+            "type": "shell",
+            "command": "./build.sh debug rundebugger",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "CMake Build (Windows)",
+            "type": "shell",
+            "command": "./build.ps1 debug build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "CMake Run Debugger (Windows)",
+            "type": "shell",
+            "command": "./build.ps1 debug rundebugger",
             "group": {
                 "kind": "build",
                 "isDefault": true

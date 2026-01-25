@@ -1,0 +1,34 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "freestandingToolchain",
+            "displayName": "LLVM Clang + lld & MTools",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/freestanding-toolchain.cmake"
+            }
+        },
+        {
+            "name": "freestandingToolchain.cmake",
+            "displayName": "Configure preset using toolchain file",
+            "description": "Sets Ninja generator, build and install directory",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/freestanding-toolchain.cmake",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "Build Preset (LLVM Clang + LLD & MTools)",
+            "description": "",
+            "displayName": "",
+            "configurePreset": "freestandingToolchain"
+        }
+    ]
+}

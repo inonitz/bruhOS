@@ -1,4 +1,3 @@
-#include "gpcs2/colours.h"
 #include <gpcs2/init.h>
 #include <gpcs2/console/user_ifce.h>
 
@@ -62,6 +61,17 @@ int __noreturn __abi_sysv actual_start(kernel_header_t* data)
     );
     
 
+    /*
+        Memory Map Being printed is incorrect.
+        This can mean 2 situations:
+            1. (TODO) Looking at the memory directly, the kernel memory map itself is corrupted
+            2. Else, The map itself isn't being processed properly, and is accessing invalid data
+                This, in turn, causes invalid memory reads and possible a triple fault (if we use & record this data)
+            3. Not to mention the code right after, that needs dynamic stack space...
+        Moreover, It seems from testing that printk & the localConsoleWrite(...) have been tested properly,
+        and should not be the root cause of many ongoing issues.
+        Next Get SMP working.
+    */
     pfa_init(&data->map);
     system_status(KERNEL_SUCCESS, "Physical Memory Manager Initialization Succeeded\n");
 

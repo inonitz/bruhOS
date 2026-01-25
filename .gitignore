@@ -16,6 +16,7 @@ Makefile
 
 # clangd Compilation Database
 .vscode/compile_commands
+compile_commands.json
 .cache
 .cache/*
 

@@ -113,7 +113,8 @@ void dumpMemoryMap(efi_memory_map* map)
     {
         // pauseforinput();
         dsc = MAP_ENTRY_AT(map, i);
-        printf((const CHAR16*)L"  %s | %p | %p | %u\n\r", 
+        printf(L"%u %s | %p | %p | %u\r", 
+            (uint32_t)i,
             memoryTypeString(dsc->memtype),
             dsc->physAddr, 
             dsc->virtAddr, 

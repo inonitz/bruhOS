@@ -48,26 +48,66 @@ message(STATUS "AAAAAAAAAAAA
 ")
 
 
-add_custom_command(
-    OUTPUT ${ISO_IMAGE_PATH}
-    COMMAND mkdir -p img
-    COMMAND cd img
-    COMMAND dd if=/dev/zero of=${ISO_IMAGE_NAME} bs=1M count=64
-    COMMAND mformat -F -i "${ISO_IMAGE_NAME}" ::
-    COMMAND mmd -i "${ISO_IMAGE_NAME}" ::/EFI
-    COMMAND mmd -i "${ISO_IMAGE_NAME}" ::/EFI/BOOT
-    COMMAND mcopy -v -i ${ISO_IMAGE_NAME} "${ISO_IMAGE_BOOTLOADER_PATH}" ::/EFI/BOOT/bootx64.efi
-    COMMAND mcopy -v -i ${ISO_IMAGE_NAME} "${ISO_IMAGE_AUTORUN_STARTUP_NSH}" ::
-    COMMAND mcopy -v -i ${ISO_IMAGE_NAME} "${ISO_IMAGE_KERNEL_PATH}" ::
-    COMMAND cp ${ISO_IMAGE_NAME} ${ISO_IMAGE_PATH}
-    COMMAND echo Copied ${ISO_IMAGE_NAME} to ${ISO_IMAGE_PATH}
-    COMMAND cd ../
+if(CMAKE_UNDERLYING_OS_PLATFORM STREQUAL "Linux")
+    add_custom_command(
+        OUTPUT ${ISO_IMAGE_PATH}
+        COMMAND mkdir -p img
+        COMMAND cd img
+        COMMAND dd if=/dev/zero of=${ISO_IMAGE_NAME} bs=1M count=64
+        COMMAND mformat -F -i "${ISO_IMAGE_NAME}" ::
+        COMMAND mmd -i "${ISO_IMAGE_NAME}" ::/EFI
+        COMMAND mmd -i "${ISO_IMAGE_NAME}" ::/EFI/BOOT
+        COMMAND mcopy -v -i ${ISO_IMAGE_NAME} "${ISO_IMAGE_BOOTLOADER_PATH}" ::/EFI/BOOT/bootx64.efi
+        COMMAND mcopy -v -i ${ISO_IMAGE_NAME} "${ISO_IMAGE_AUTORUN_STARTUP_NSH}" ::
+        COMMAND mcopy -v -i ${ISO_IMAGE_NAME} "${ISO_IMAGE_KERNEL_PATH}" ::
+        COMMAND cp ${ISO_IMAGE_NAME} ${ISO_IMAGE_PATH}
+        COMMAND echo Copied ${ISO_IMAGE_NAME} to ${ISO_IMAGE_PATH}
+        COMMAND cd ../
 
-    # 3. Dependencies: This ensures the image rebuilds if the binaries change
-    DEPENDS kernel bootloader "${ISO_IMAGE_AUTORUN_STARTUP_NSH}"
-    COMMENT "Generating bootable EFI kernel image"
-    VERBATIM
-)
+        # 3. Dependencies: This ensures the image rebuilds if the binaries change
+        DEPENDS kernel bootloader "${ISO_IMAGE_AUTORUN_STARTUP_NSH}"
+        COMMENT "Generating bootable EFI kernel image"
+        VERBATIM
+    )
+elseif(CMAKE_UNDERLYING_OS_PLATFORM STREQUAL "Windows")
+    # There is a problem here...
+    # Because mtools & dd can only be Acquired through mingw / msys2 / cygwin,
+    # You need to install either *nix environment manager for everything to work (along with LLVM-Clang):
+    # Specifically for msys2 (ucrt64):
+    #   pacman -S mingw-w64-ucrt-x86_64-mtools
+    # Add the following Installation Folders to your PATH:
+    #   $MSYS_INSTALL_FOLDER\\usr\\bin
+    #   $MSYS_INSTALL_FOLDER\\ucrt64\\bin
+    # usr/bin    - dd
+    # ucrt64/bin - mtools
+
+
+    # Sources for mkdir command:
+    # https://notepad.onghu.com/2022/windows-cmd-send-to-dev-null/
+    # https://stackoverflow.com/questions/905226/what-is-equivalent-to-linux-mkdir-p-in-windows
+    # https://stackoverflow.com/questions/1164049/batch-files-error-handling
+    add_custom_command(
+        OUTPUT ${ISO_IMAGE_PATH}
+        COMMAND mkdir img > NUL 2>&1 || echo ""
+        COMMAND cd img
+        COMMAND dd if=/dev/zero of=${ISO_IMAGE_NAME} bs=1M count=64
+        COMMAND mformat -F -i "${ISO_IMAGE_NAME}" ::
+        COMMAND mmd -i "${ISO_IMAGE_NAME}" ::/EFI
+        COMMAND mmd -i "${ISO_IMAGE_NAME}" ::/EFI/BOOT
+        COMMAND mcopy -v -i ${ISO_IMAGE_NAME} "${ISO_IMAGE_BOOTLOADER_PATH}" ::/EFI/BOOT/bootx64.efi
+        COMMAND mcopy -v -i ${ISO_IMAGE_NAME} "${ISO_IMAGE_AUTORUN_STARTUP_NSH}" ::
+        COMMAND mcopy -v -i ${ISO_IMAGE_NAME} "${ISO_IMAGE_KERNEL_PATH}" ::
+        COMMAND cp ${ISO_IMAGE_NAME} ${ISO_IMAGE_PATH}
+        COMMAND echo Copied ${ISO_IMAGE_NAME} to ${ISO_IMAGE_PATH}
+        COMMAND cd ../
+
+        # 3. Dependencies: This ensures the image rebuilds if the binaries change
+        DEPENDS kernel bootloader "${ISO_IMAGE_AUTORUN_STARTUP_NSH}"
+        COMMENT "Generating bootable EFI kernel image"
+        VERBATIM
+    )
+endif()
+
 
 
 # OVMF Binaries exposed through dependencies/CMakeLists.txt
