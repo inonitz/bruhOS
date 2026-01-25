@@ -43,6 +43,7 @@ set(KERNEL_CFLAGS
     $<$<COMPILE_LANGUAGE:C>:-mcmodel=large>
     $<$<COMPILE_LANGUAGE:C>:-nostdlib>
     $<$<COMPILE_LANGUAGE:C>:-Os>
+    $<$<AND:$<COMPILE_LANGUAGE:C>,$<CONFIG:Debug>>:-g>
     $<$<COMPILE_LANGUAGE:C>:-fno-exceptions>
     $<$<COMPILE_LANGUAGE:C>:-fshort-wchar>
     $<$<COMPILE_LANGUAGE:C>:-mno-red-zone>
@@ -56,6 +57,7 @@ set(KERNEL_CFLAGS
     $<$<COMPILE_LANGUAGE:C>:-Wno-declaration-after-statement>
     $<$<COMPILE_LANGUAGE:C>:-Wno-padded-bitfield>
     $<$<COMPILE_LANGUAGE:C>:-Wno-padded>
+    $<$<COMPILE_LANGUAGE:C>:-Wno-packed>
     $<$<COMPILE_LANGUAGE:C>:-Wno-packed>
 )
 
