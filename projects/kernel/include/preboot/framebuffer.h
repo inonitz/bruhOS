@@ -6,9 +6,6 @@
 #ifndef __KERNEL_CONSOLE_FRAMEBUFFER_TYPE
 #   define __KERNEL_CONSOLE_FRAMEBUFFER_TYPE
 #endif
-#ifndef __KERNEL_CONSOLE_RGB32_UNION_TYPE
-#   define __KERNEL_CONSOLE_RGB32_UNION_TYPE
-#endif
 #include <gpcs2/types.h>
 
 

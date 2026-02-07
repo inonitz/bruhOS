@@ -88,7 +88,7 @@ EFI_API EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTabl
             &max_rows
         );
 
-        debug_printb(L"id=%u -> Attrib %x | Cursor [visible ?=%u] <Row, Col> = <%u, %u> | <RowMax, ColMax> = <%d, %d>\n\r",
+        debug_printb(L"id=%d -> Attrib 0x%d | Cursor [visible ?=%u] <Row, Col> = <%d, %d> | <RowMax, ColMax> = <%u, %u>\n\r",
             SystemTable->ConOut->Mode->Mode,
             SystemTable->ConOut->Mode->Attribute,
             SystemTable->ConOut->Mode->CursorVisible,
@@ -134,7 +134,8 @@ EFI_API EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTabl
     CHECKERRFMT(!blboolean(kernelhandle), L"Couldn't find the kernel to be loaded")
 
 
-    initialize_screenbuffer(0, 0, &initialKernelHdr.screen);
+    // initialize_screenbuffer2(&initialKernelHdr.screen);
+    initialize_screenbuffer2(&initialKernelHdr.screen);
     get_verify_acpi_rsdp(&rsdpaddr);
 
     BOOLEAN rsdpmodern = (rsdpaddr->first.revision == 2);
@@ -214,7 +215,7 @@ Output From loadElf64:\n\r\
     initialKernelHdr.memcfg.reserved1                = 0;
     initialKernelHdr.memcfg.kendoffset               = (uint32_t)kernelConfigInfo.endOffset;
     initialKernelHdr.acpi.address += virtualOffset;
-    initialKernelHdr.screen.start = (uint8_t*)(initialKernelHdr.screen.start) + virtualOffset;
+    initialKernelHdr.screen.m_baseAddress = (uint8_t*)(initialKernelHdr.screen.m_baseAddress) + virtualOffset;
     /* 
         Data left to modify/init in the kernel_header_t: 
         INIT initialKernelHdr->map

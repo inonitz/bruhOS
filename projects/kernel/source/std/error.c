@@ -1,8 +1,8 @@
 #include <std/error.h>
-#include <std/macro.h>
 #include <std/halt.h>
 #include <gpcs2/colours.h>
 #include <gpcs2/console/user_ifce.h>
+#include <std/printfcol.h>
 
 
 
@@ -44,7 +44,7 @@ void kernelErrorReport(
 
 
 	if(boolean(code_section_critical)) {
-		printk("CRITICAL CODE SECTION FAILED IN FILE %s AT FUNCTION %s : LINE %u (ERROR CODE %u, %s)\nERROR MESSAGE: %s\nHALTING EXECUTION.\n", 
+		printf("CRITICAL CODE SECTION FAILED IN FILE %s AT FUNCTION %s : LINE %u (ERROR CODE %u, %s)\nERROR MESSAGE: %s\nHALTING EXECUTION.\n", 
 			filename, 
 			funcname,
 			line, 
@@ -55,7 +55,7 @@ void kernelErrorReport(
 		abshalt();
 	}
 	
-	printk("Kernel FAILED in FILE %s AT FUNCTION %s LINE %u (Error Code %u, %s). Error Message: %s.\n", 
+	printf("Kernel FAILED in FILE %s AT FUNCTION %s LINE %u (Error Code %u, %s). Error Message: %s.\n", 
 		filename,
 		funcname, 
 		line, 
@@ -75,9 +75,11 @@ void system_status(bool_t status, const char_t* message)
         "FAIL"
     };
     statusColor <<= 32;
-	puts("["); printkcol(statusColor, msg[boolean(status)]); puts("] ");
-	if(unlikely(message != NULLPTR)) {
-		printk(message);
+	printf("[");
+	printfcol(statusColor, msg[boolean(status)]);
+	printf("]");
+	if(message != NULLSTR) {
+		printf(": %s\n", message);
 	}
 	return;
 }

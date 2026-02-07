@@ -39,6 +39,73 @@ int __noreturn __naked _start(__unused kernel_header_t* data)
 }
 
 
+static void print_kernel_header(
+    IN kernel_header_t* hdr
+) {
+    printf("Kernel Header Contents:\n");
+    printf("    Memory Map:\n      mmap       : %lp\n      used_size  : %lX\n      map_size   : %lX\n      entry_size : %lX\n\0",
+        hdr->map.mmap,
+        hdr->map.used_size,
+        hdr->map.map_size,
+        hdr->map.entry_size
+    );
+    printf("\
+    Memory Configuration:\n\
+      kstartp                 : %p\n\
+      kstartv                 : %p\n\
+      krbptopv                : %p\n\
+      kpercpu_rbpv            : %p\n\
+      kpercpu_tssv            : %p\n\
+      kgdtv                   : %p\n\
+      efi_rtp                 : %p\n\
+      pml4                    : %p\n\
+      bl_ripv                 : %p\n\
+      bl_rip_pagetable_buf    : %p\n\
+      krbpsize                : %x\n\
+      pml4size                : %x\n\
+      bl_rip_pagetable_bufsize: %x\n\
+      reserved1               : %u\n\
+      kendoffset              : %x\n",
+        hdr->memcfg.kstartp,
+        hdr->memcfg.kstartv,
+        hdr->memcfg.krbptopv,
+        hdr->memcfg.kpercpu_rbpv,
+        hdr->memcfg.kpercpu_tssv,
+        hdr->memcfg.kgdtv,
+        hdr->memcfg.efi_rtp,
+        hdr->memcfg.pml4,
+        hdr->memcfg.bl_ripv,
+        hdr->memcfg.bl_rip_pagetable_buf,
+        hdr->memcfg.krbpsize,
+        hdr->memcfg.pml4size,
+        hdr->memcfg.bl_rip_pagetable_bufsize,
+        hdr->memcfg.reserved1,
+        hdr->memcfg.kendoffset
+    );
+
+    printf("\
+    Framebuffer:\n\t\
+      start : %p\n\t\
+      dims  : (%u, %u)\n\t",
+        hdr->screen.m_baseAddress,
+        hdr->screen.m_width,
+        hdr->screen.m_height
+    );
+    printf("\
+    ACPI Config: %a\n\
+      Physical Address: %p\n\
+      Processor Count : %z\n",
+        hdr->acpi.extended ? "XSDT" : "RSDT",
+        hdr->acpi.address,
+        hdr->acpi.procCount
+    );
+
+
+    return;
+}
+
+
+
 int __noreturn __abi_sysv actual_start(kernel_header_t* data)
 {
     __kernel_init_basic(data);        // init stack pointer, bss, ...
@@ -47,7 +114,9 @@ int __noreturn __abi_sysv actual_start(kernel_header_t* data)
     
     consoleClearScreen();
     system_status(KERNEL_SUCCESS, NULLSTR);
-    printk("test\n %X", 0xfffff800000);
+    print_kernel_header(data);
+    // printk("test\n %X", 0xfffff800000);
+    
     // printkcol(__KERNEL_CONSOLE_PURPLE, "Kernel Loaded Successfully at:\n       %p (Physical)\n       %p (Virtual )\n",
     //     getKernelStart() - virtualOffset(),
     //     getKernelStart()
@@ -55,7 +124,7 @@ int __noreturn __abi_sysv actual_start(kernel_header_t* data)
 
 
     system_status(KERNEL_SUCCESS, NULLSTR);
-    printk("Kernel Stack Located at:\n       %p (Virtual )\n       %u KiB (Size)\n",
+    printf("Kernel Stack Located at:\n       %p (Virtual )\n       %u KiB (Size)\n",
         data->memcfg.krbptopv,
         data->memcfg.krbpsize
     );

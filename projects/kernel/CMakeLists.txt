@@ -131,6 +131,9 @@ set(SOURCES
     source/std/math.c
     source/std/panic.c
     source/std/pause.c
+    source/std/printf.c
+    source/std/printfcol.c
+    source/std/putchar.c
     source/std/string.c
 )
 
@@ -219,6 +222,8 @@ set(HEADERS
     include/std/math.h
     include/std/panic.h
     include/std/pause.h
+    include/std/printf.h
+    include/std/printfcol.h
     include/std/static_assert.h
     include/std/stdint.h
     include/std/string.h

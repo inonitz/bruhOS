@@ -6,8 +6,8 @@
             "request": "launch",
             "name": "LLDB Wait For Qemu (Bootloader)",
             "targetCreateCommands": [
-                "target create --no-dependents --arch x86_64 C:/CTools/Projects/bruhOS/build/bin/Debug_amd64_bootloader/bootx64.efi --symfile C:/CTools/Projects/bruhOS/build/bin/Debug_amd64_bootloader/bootx64.pdb",
-                "target modules load --file bootx64.efi .text 0xEA5f000"
+                "target create --no-dependents --arch x86_64 ${cwd}/build/debug/bin/bootloader.efi --symfile ${cwd}/build/debug/bin/bootloader.pdb",
+                "target modules load --file bootloader.efi .text 0x3E5bb000"
             ],
             "processCreateCommands": [
                 "gdb-remote localhost:1234",
@@ -32,7 +32,7 @@
             "request": "launch",
             "name": "LLDB Wait For Qemu (Kernel) (Linux)",
             "targetCreateCommands": [
-                
+                "target create --no-dependents --arch x86_64 ${cwd}/build/debug/bin/kernel.elf",
             ],
             "processCreateCommands": [
                 "gdb-remote localhost:1234",

@@ -3,7 +3,7 @@
 #include <std/macro.h>
 #include <preboot/kheader.h>
 #include <preboot/linker.h>
-#include <std/io.h>
+#include <std/printf.h>
 #include <std/string.h>
 
 
@@ -28,34 +28,34 @@ static __force_inline void __print_header(kernel_header_t* hdr)
 {
     static const char_t* out = "\
 Memory Map:\n\
-        Address:    %X\n\
-        Used  Size: %X\n\
-        Total Size: %X\n\
-        Entry Size: %X\n\
+        Address:    %lX\n\
+        Used  Size: %lX\n\
+        Total Size: %lX\n\
+        Entry Size: %lX\n\
 Memory Config:\n\
-        physical Kernel Start: %X\n\
-        virtual  Kernel Start: %X\n\
-        PML4 Address:          %X\n\
-        PML4 Size:             %X\n\
-        Kernel Stack Address:  %X\n\
-        Kernel Stack Size:     %X (bytes)\n\
-        RIP Identity Mapping:  %X\n\
-        RIP Page-Map Address:  %X\n\
-        RIP Page-Map Size:     %X\n\
-        Per-Core Stacks Start: %X\n\
-        Per-Core TSS Segments: %X\n\
+        physical Kernel Start: %lX\n\
+        virtual  Kernel Start: %lX\n\
+        PML4 Address:          %lX\n\
+        PML4 Size:             %lX\n\
+        Kernel Stack Address:  %lX\n\
+        Kernel Stack Size:     %lX (bytes)\n\
+        RIP Identity Mapping:  %lX\n\
+        RIP Page-Map Address:  %lX\n\
+        RIP Page-Map Size:     %lX\n\
+        Per-Core Stacks Start: %lX\n\
+        Per-Core TSS Segments: %lX\n\
         Framebuffer:\n\
-            Virtual Start: %X\n\
+            Virtual Start: %lX\n\
             Dimensions: %ux%u\n\
 ACPI Config:\n\
         XSDT: exists ? %u ->\n\
-            Physical Address: %X\n\
+            Physical Address: %lX\n\
         Processor Count:      %u\n\
-        GDT Virtual Address:  %X\n\
-EFI Runtime Services Virtual Address: %X\n";
+        GDT Virtual Address:  %lX\n\
+EFI Runtime Services Virtual Address: %lX\n";
 
-    printk("Kernel Header Contents:\n");
-    printk(out,
+    printf("Kernel Header Contents:\n");
+    printf(out,
         hdr->map.mmap,
         hdr->map.used_size,
         hdr->map.map_size,
@@ -76,9 +76,9 @@ EFI Runtime Services Virtual Address: %X\n";
         hdr->memcfg.kpercpu_rbpv,
         hdr->memcfg.kpercpu_tssv,
 
-        hdr->screen.start,
-        hdr->screen.dims.x,
-        hdr->screen.dims.y,
+        hdr->screen.m_baseAddress,
+        hdr->screen.m_width,
+        hdr->screen.m_height,
 
         hdr->acpi.extended,
         hdr->acpi.address,

@@ -10,38 +10,26 @@ typedef struct pack __unsigned_short_2_element_vector {
 } vec2us;
 #endif
 
-#ifdef __KERNEL_CONSOLE_RGB32_UNION_TYPE
-#ifndef __KERNEL_CONSOLE_RGB32_UNION_TYPE_SIZE_BYTES
-#	define __KERNEL_CONSOLE_RGB32_UNION_TYPE_SIZE_BYTES 4
-#endif
-typedef union rgb32 {
-	struct { uint8_t  r, g, b, res; } channels;
-	uint32_t as_digit;
-} rgb32;
-#endif
-
-#ifdef __KERNEL_CONSOLE_BITMAP_8BIT_TYPE
-typedef struct alignsz(8) bitmap8 {
-	uint8_t* bits;
-	vec2us   dims;
-	uint8_t  reserved[4];
-} bitmap8;
-#endif
-
-#ifdef __KERNEL_CONSOLE_BITMAP_32BIT_TYPE
-typedef struct bitmap32 {
-	uint32_t* buffer;
-	vec2us    dims;
-	uint8_t  reserved[4];
-} bitmap32;
-#endif
-
 #ifdef __KERNEL_CONSOLE_FRAMEBUFFER_TYPE
+typedef struct __individual_pixel_channel_format_type {
+	uint8_t bitWidth;
+	uint8_t bitShift;
+} pixelChannelFormat_t;
+
+
+typedef struct alignsz(8) __uefi_framebuffer_pixel_format_type {
+	uint8_t  			 m_sizeBytes;
+	uint8_t  			 m_enumFormat;
+	pixelChannelFormat_t m_channelFormats[3];
+} pixelMetadata_t;
+
+
 typedef struct alignsz(8) __framebuffer_t {
-	void*   start;
-	vec2us  dims;
-	uint8_t reserved[4];
-    // bytes per pixel in uefi GOP is automatically 4 (byte for each channel), so I'm not using it.
+	void*    m_baseAddress;
+	uint16_t m_width;
+	uint16_t m_height;
+	uint16_t m_pixelsPerScanLine;
+	pixelMetadata_t m_pixelInfo;
 } framebuffer_t;
 #endif
 

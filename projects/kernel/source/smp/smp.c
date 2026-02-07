@@ -16,6 +16,7 @@
 #include <std/halt.h>
 #include <std/math.h>
 #include <std/pause.h>
+#include <std/printf.h>
 #include <std/string.h>
 
 
@@ -39,7 +40,7 @@ static void smp_main(trampoline_data* data)
     
     
     lock(&data->lock);
-    printk("INITIALIZED CPU SUCCESSFULLY! ");
+    printf("INITIALIZED CPU SUCCESSFULLY! ");
     unlock(&data->lock);
 
     done = BOOLEAN_TRUE;
@@ -55,7 +56,7 @@ static bool_t wakeup_processor(uint8_t lapic_id, uint64_t __beginning, trampolin
     for(uint8_t j = 0; j < 2; ++j) {
         if(j == 1) { 
             system_status(KERNEL_FAILURE, NULLSTR);
-            printk("Retrying... ");
+            printf("Retrying... ");
         }
 
         lapic_send_startup(lapic_id, __beginning); // send startup
@@ -147,15 +148,13 @@ void smp_init(kernel_header_t* khdr)
             continue;
 
         
-        printk_align_format(3); // I wouldn't expect CPU's with > 1000 cores.
-        printk("       waking up AP Core %u ... ", ap);
-        printk_align_format(0);
+        printf("       waking up AP Core %3u ... ", ap);
         if(wakeup_processor(ap, alloc_low, init)) {
             while(!done) { // wait for the AP Core to finish init.
                 __asm__ volatile("pause");
             }
             system_status(KERNEL_SUCCESS, NULLSTR);
-            putln();
+            printf("\n");
         }
         
 
@@ -172,7 +171,7 @@ void smp_init(kernel_header_t* khdr)
     unVirtual((void*)alloc_low, tsize); // this needs to be flushed across all AP core's from the TLB.
 
     system_status(KERNEL_SUCCESS, NULLSTR);
-    printk("Successfully Initialized %u AP Cores - %u Active.\n", ncpus, ncpus + 1);
+    printf("Successfully Initialized %u AP Cores - %u Active.\n", ncpus, ncpus + 1);
 
     return;
 }

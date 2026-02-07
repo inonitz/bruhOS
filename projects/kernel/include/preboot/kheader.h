@@ -46,12 +46,12 @@ KERNEL_STATIC_ASSERT(offsetof(kernel_header_t, memcfg) == 32 && sizeof(kernel_me
     "Offset & Type Size Check - Headers Shared across modules Must conform to the same expectations, \
     even under different toolchains\n"
 );
-KERNEL_STATIC_ASSERT(offsetof(kernel_header_t, screen) == 128 && sizeof(framebuffer_t) == 16, 
+KERNEL_STATIC_ASSERT(offsetof(kernel_header_t, screen) == 128 && sizeof(framebuffer_t) == 24, 
     __kernelHeaderType_ScreenFramebuffer_OffsetAndSizeExpectationCheck, 
     "Offset & Type Size Check - Headers Shared across modules Must conform to the same expectations, \
     even under different toolchains\n"
 );
-KERNEL_STATIC_ASSERT(offsetof(kernel_header_t, acpi) == 144 && sizeof(ACPIinitialConfig) == 16, 
+KERNEL_STATIC_ASSERT(offsetof(kernel_header_t, acpi) == 152 && sizeof(ACPIinitialConfig) == 16, 
     __kernelHeaderType_ACPI_Datatable_OffsetAndSizeExpectationCheck, 
     "Offset & Type Size Check - Headers Shared across modules Must conform to the same expectations, \
     even under different toolchains\n"

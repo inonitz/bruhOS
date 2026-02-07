@@ -136,7 +136,7 @@ add_custom_target(run_${TARGET_FILENAME}
 
 
 add_custom_target(debug_${TARGET_FILENAME}
-    COMMAND qemu-system-x86_64 -s -S ${QEMU_FLAGS}
+    COMMAND qemu-system-x86_64 -s -S -no-reboot -D qemudebug.txt ${QEMU_FLAGS}
     DEPENDS ${ISO_IMAGE_PATH}
     USES_TERMINAL
 )

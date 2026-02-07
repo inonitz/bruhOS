@@ -79,9 +79,11 @@ void* memcpy(
 	const void* __restrict __src,
 	size_t __n
 ) {
+	uint8_t* dst = __dest;
+	const uint8_t* src  = __src;
 	for(uint64_t i = 0; i < __n; ++i)
 	{
-		((uint8_t*)__dest)[i] = ((uint8_t*)__src)[i]; 
+		dst[i] = src[i]; 
 	}
     return __dest;
 }

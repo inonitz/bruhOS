@@ -12,8 +12,8 @@ console_t local_console =
 {
     .canvas = {
         .buffers = {
-            .front = { NULLPTR, { 0, 0 }, {0} },
-            .back  = { NULLPTR, { 0, 0 }, {0} }
+            .front = { NULLPTR, 0, 0, 0, 0 },
+            .back  = { NULLPTR, 0, 0, 0, 0 }
         },
         .dims   = { 0, 0 },
         .winoff = { 0, 0 },

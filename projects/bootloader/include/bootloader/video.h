@@ -22,7 +22,16 @@ EFI_API void PrintAvailableVideoModes(
 */
 EFI_API void setVideoMode(
     IN EFI_GRAPHICS_OUTPUT_PROTOCOL* gop,
-    IN uint16_t                      mode
+    IN uint16_t                      mode,
+    IN const CHAR16*                 optionalErrorMessage
+);
+
+/*
+    Given a GOP Mode Info Structure, 
+    this function returns a struct that contains all data which is relevant to a pixel in the framebuffers' memory. 
+*/
+pixelMetadata_t parseFramebufferPixelFormat(
+    IN EFI_GRAPHICS_OUTPUT_MODE_INFORMATION* outputInfo
 );
 
 
@@ -36,6 +45,22 @@ EFI_API void initialize_screenbuffer(
     IN  uint16_t        width,
     IN  uint16_t        height,
     OUT framebuffer_t*  init
+);
+
+
+/*
+    Initializes the framebuffer to one of the following resolutions, given that they exist:
+        640x480
+        854x480
+        1280x720
+        1920x1080
+        2560x1440
+    Otherwise, the biggest resolution (that was found) will be set.
+    In the case that either resolution is found from the list (& is also RGB),
+    the framebuffer will be set to the minimum resolution.
+*/
+EFI_API void initialize_screenbuffer2(
+    OUT framebuffer_t* init
 );
 
 

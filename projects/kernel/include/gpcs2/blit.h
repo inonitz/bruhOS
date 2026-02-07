@@ -49,23 +49,23 @@ uint64_t write_array_to_framebuffer(
     *   return BAD_BUFFER
     * 
 */
-uint64_t write_bm8rgb_framebuffer(
-	IN framebuffer_t* fb,
-	IN vec2us*        offset,
-	IN bitmap8*       c,
-    IN uint32_t       color
-);
+// uint64_t write_bm8rgb_framebuffer(
+// 	IN framebuffer_t* fb,
+// 	IN vec2us*        offset,
+// 	IN bitmap8*       c,
+//     IN uint32_t       color
+// );
 
 
 
 /* 
     * same as write_bitmap8_rgb_to_framebuffer (color = WHITE)
 */
-uint64_t write_bm8_framebuffer(
-	IN framebuffer_t* fb,
-	IN vec2us*        offset,
-	IN bitmap8*       c
-);
+// uint64_t write_bm8_framebuffer(
+// 	IN framebuffer_t* fb,
+// 	IN vec2us*        offset,
+// 	IN bitmap8*       c
+// );
 
 
 
@@ -157,12 +157,12 @@ vec2us framebufferWriteSubStringBmFontRGB(
     *   *result_dims = calculated_total_buffersize
     *   return BUFFER_TOO_SMALL
 */
-uint64_t batch_bitmap8_array(
-	IN  bitmap8  bitmaps[],
-	IN  uint16_t bitmap_spacing,
-	OUT bitmap8* result,
-	OUT vec2us*  result_dims
-);
+// uint64_t batch_bitmap8_array(
+// 	IN  bitmap8  bitmaps[],
+// 	IN  uint16_t bitmap_spacing,
+// 	OUT bitmap8* result,
+// 	OUT vec2us*  result_dims
+// );
 
 
 #endif /* __KERNEL_C_DEFINITION_CONSOLE_GRAPHICS_TEXT_BLIT__ */

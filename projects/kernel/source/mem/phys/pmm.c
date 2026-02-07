@@ -34,7 +34,7 @@ typedef enum {
 void PrintMemMapBasicInfo(efi_memory_map* map)
 {
     const uint64_t dscs = map->used_size / map->entry_size;
-    printk("efi_memory_map info:\nsize:              %x\nstart:             %p\nDescriptor Amount: %x\nDescriptor Size:   %x\n", 
+    printf("efi_memory_map info:\nsize:              %x\nstart:             %p\nDescriptor Amount: %x\nDescriptor Size:   %x\n", 
         map->map_size,
         map->mmap, 
         dscs, 
@@ -66,28 +66,28 @@ void PrintMemMapInfo(efi_memory_map* map, bool_t FreeOrUsed)
 
 
     // print all available/used memory addresses.
-    printk("(%s Physical Addresses)\n", MemoryType[FreeOrUsed]);
+    printf("(%s Physical Addresses)\n", MemoryType[FreeOrUsed]);
     for(uint64_t i = 0; i < dscs; ++i)
     {
         dsc = (efi_mem_descriptor*)((uint64_t)map->mmap + (i * map->entry_size));
         RegionIsFree[i % 2] = (dsc->memtype == Conventional) || (dsc->memtype == BootServicesCode) || (dsc->memtype == BootServicesData);
         RegionIsFree[i % 2] = FreeOrUsed * !RegionIsFree[i % 2] + !FreeOrUsed * RegionIsFree[i % 2];
 
-        printk(print_info[(i != 0 && i % 9 == 0) + 2]);
-        printk(print_info[RegionIsFree[i % 2]], dsc->physAddr);
+        printf(print_info[(i != 0 && i % 9 == 0) + 2]);
+        printf(print_info[RegionIsFree[i % 2]], dsc->physAddr);
     }
 
 
     // print every available/used memory region size.
-    printk("\n\n(%s Physical Addresses Sizes)\n", MemoryType[FreeOrUsed]);
+    printf("\n\n(%s Physical Addresses Sizes)\n", MemoryType[FreeOrUsed]);
     for(uint64_t i = 0; i < dscs; ++i)
     {
         dsc = (efi_mem_descriptor*)((uint64_t)map->mmap + (i * map->entry_size));
         RegionIsFree[i % 2] = (dsc->memtype == Conventional) || (dsc->memtype == BootServicesCode) || (dsc->memtype == BootServicesData);
         RegionIsFree[i % 2] = FreeOrUsed * !RegionIsFree[i % 2] + !FreeOrUsed * RegionIsFree[i % 2];
 
-        printk(print_info[(i != 0 && i % 9 == 0) + 2]);
-        printk(print_info[RegionIsFree[i % 2]], dsc->pages);
+        printf(print_info[(i != 0 && i % 9 == 0) + 2]);
+        printf(print_info[RegionIsFree[i % 2]], dsc->pages);
     }
 }
 
@@ -107,6 +107,7 @@ const id_string* memoryTypeString(uint32_t id, const id_string* arr, uint8_t len
     }
     return arr;
 }
+
 void PrintMemMapDescriptors(efi_memory_map* map)
 {
     const uint64_t      dscs = map->used_size / map->entry_size;
@@ -137,41 +138,39 @@ void PrintMemMapDescriptors(efi_memory_map* map)
     };
 
 
-    printk("EFI Memory Map Description:\n");
-    printk( "idx memory type                | p          | v                | pages      ||");
-    printk(" idx memory type                | p          | v                | pages      ||\n");
+    printf("EFI Memory Map Description:\n");
+    printf( "idx memory type                | p          | v                | pages      ||");
+    printf(" idx memory type                | p          | v                | pages      ||\n");
     for(uint16_t i = 0; i < dscs; i += epl)
     {
         for(uint16_t j = 0; j < epl; ++j) {
-            dsc = (efi_mem_descriptor*)((uint64_t)map->mmap + ((i+j) * map->entry_size));
-            printk_align_format(3);
-            printk("%u ", i+j);
-            printk_align_format(6);
-            printk("%s | %x | %p | %x || ", 
+            dsc = (efi_mem_descriptor*)((uint8_t*)map->mmap + ((i+j) * map->entry_size));
+            printf("%3u ", i+j);
+            printf("%s | %lx | %lp | %+lu || ", 
                 memoryTypeString(dsc->memtype, mem_string, 18)->str,
                 dsc->physAddr, 
                 dsc->virtAddr, 
                 dsc->pages
             );
         }
-        printk("\n");
+        printf("\n");
     }
 
 
+    /* Shouldn't this be important if dscs % epl != 0 ? */
     // for(uint16_t i = dscs - rem; i < dscs; ++i)
     // {
     //     dsc = (efi_mem_descriptor*)((uint64_t)map->mmap + (i * map->entry_size));
-    //     printk_align_format(3);
-    //     printk("%u ", i);
-    //     printk_align_format(6);
-    //     printk("%s | %x | %p |%u||", 
+    //     printf_align_format(3);
+    //     printf("%3u ", i);
+    //     printf_align_format(6);
+    //     printf("%s | %x | %p |%u||", 
     //         memoryTypeString(dsc->memtype, mem_string, 18)->str,
     //         dsc->physAddr, 
     //         dsc->virtAddr, 
     //         dsc->pages
     //     );
     // }
-    printk_align_format(0);
     return;
 }
 
@@ -179,34 +178,30 @@ void PrintMemMapDescriptors(efi_memory_map* map)
 
 void PrintPMMInfo()
 {
-    printk("Physical Memory Manager Description:\n");
-    printk("    Detected %u (Pages)\n    Available memory (bytes): %z\n    Used      memory (bytes): %z\n    Page Frame Allocator Data:\n", 
+    printf("Physical Memory Manager Description:\n");
+    printf("    Detected %u (Pages)\n    Available memory (bytes): %z\n    Used      memory (bytes): %z\n    Page Frame Allocator Data:\n", 
         totalDetectedMemory(), 
         totalFreeMemory(), 
         totalUsedMemory()
     );
 
 
-    printk("        Buddy Allocator (Low Mem, 0->4MiB) | Region Start (physical): %X", pageManager.lowZoneAllocator.manager->start);
-    printk_align_format(6);
-    printk(" | Available Pages: %z | Max Available Block Size (pages): %z\n",
+    printf("        Buddy Allocator (Low Mem, 0->4MiB) | Region Start (physical): %X", pageManager.lowZoneAllocator.manager->start);
+    printf(" | Available Pages: %z | Max Available Block Size (pages): %z\n",
         pageManager.lowZoneAllocator.total,
         pageManager.lowZoneAllocator.maxMemReq
     );
-    printk_align_format(0);
 
 
     for(uint32_t i = 0; i < pageManager.zoneCount; ++i)
     {
-        printk("        Buddy Allocator (Normal Mem      ) | Region Start (physical): %X", pageManager.zoneAllocators[i].manager->start);
-        printk_align_format(6);
-        printk(" | Available Pages: %z | Max Available Block Size (pages): %z\n",
+        printf("        Buddy Allocator (Normal Mem      ) | Region Start (physical): %X", pageManager.zoneAllocators[i].manager->start);
+        printf(" | Available Pages: %z | Max Available Block Size (pages): %z\n",
             pageManager.zoneAllocators[i].total,
             pageManager.zoneAllocators[i].maxMemReq
         );
-        printk_align_format(0);
     }
-    putln();
+    printf("\n");
     return;
 }
 
@@ -214,7 +209,7 @@ void PrintPMMInfo()
 
 void PrintBuddyDescriptors()
 {
-    printk("Buddy Descriptors: \n");
+    printf("Buddy Descriptors: \n");
     
     
     buddyLow_info(pageManager.lowZoneAllocator.manager);
@@ -222,7 +217,7 @@ void PrintBuddyDescriptors()
 
     for(uint16_t i = 0; i < pageManager.zoneCount; ++i)
     {
-        printk("buddy %u (normal): \n", i);
+        printf("buddy %u (normal): \n", i);
         buddyInfo(pageManager.zoneAllocators[i].manager);
     }
     return;
@@ -236,7 +231,7 @@ void PrintBuddyDescriptor(uint16_t buddyID)
         buddyLow_info(pageManager.lowZoneAllocator.manager);
     }
     else {
-        printk("buddy %u (normal): ", buddyID);
+        printf("buddy %u (normal): ", buddyID);
         buddyInfo(pageManager.zoneAllocators[buddyID - 1].manager);
     }
     return;
@@ -283,7 +278,7 @@ void pfa_init(efi_memory_map* map)
     totalAllocatorMem = sizeof(BuddyAllocatorLowMem) + totalAllocators * (sizeof(BuddyAllocator) + sizeof(managed_zone));
     totalAllocatorMem = !!(totalAllocatorMem % PAGE_SIZE) + (totalAllocatorMem >> LOG2_PAGE_SIZE);
     
-    // printk("ALLOCATORS (COUNT - %u) (MEMORY PAGES CONSUMED - %u)\n", totalAllocators, totalAllocatorMem);
+    // printf("ALLOCATORS (COUNT - %u) (MEMORY PAGES CONSUMED - %u)\n", totalAllocators, totalAllocatorMem);
     for(uint16_t i = 0; i < dscs; ++i) // find a region to store all buddy allocators. (memory managers).
     { 
         dsc         = (efi_mem_descriptor*)((uint64_t)map->mmap + (i * map->entry_size));
@@ -371,14 +366,14 @@ void pfa_init(efi_memory_map* map)
     // uint16_t idx = 0;
     // for(; idx < tmpCount / 4; ++idx)
     // {
-    //     printk("%x %x %x %x || %x %x %x %x\n",
+    //     printf("%x %x %x %x || %x %x %x %x\n",
     //         freeZones[4*idx].mem,   freeZones[4*idx + 1].mem,   freeZones[4*idx + 2].mem,   freeZones[4*idx + 3].mem,
     //         freeZones[4*idx].pages, freeZones[4*idx + 1].pages, freeZones[4*idx + 2].pages, freeZones[4*idx + 3].pages
     //     );
     // }
     // for(idx *= 4; idx < tmpCount; ++idx)
     // {
-    //     printk("%x %x\n",
+    //     printf("%x %x\n",
     //         freeZones[idx].mem, freeZones[idx].pages 
     //     );
     // }
@@ -408,16 +403,16 @@ void pfa_init(efi_memory_map* map)
     }
     // // uncomment to see debugging output
     // for(uint64_t i = 0; i < tmpCount; ++i) {
-    //     printk("%u | ", mapZoneToAllocator[i]);
+    //     printf("%u | ", mapZoneToAllocator[i]);
     // }
-    // printk("\nAAAAAAAAAAAAA\n");
+    // printf("\nAAAAAAAAAAAAA\n");
 
 
     // every allocator will be assigned different regions according to mapZoneToAllocator.
     mem_zone zoneStack[tmpCount];
     for(uint16_t i = 0; i < totalAllocators; ++i)
     {
-        // printk("gdt %X %X\n", *(uint64_t*)( ((uint64_t)&map->mmap) + 144));
+        // printf("gdt %X %X\n", *(uint64_t*)( ((uint64_t)&map->mmap) + 144));
         tmpVar = 0;
         for(uint16_t j = 0; j < tmpCount; ++j) { // find the free regions for this allocator.
             if(!(mapZoneToAllocator[j] == i)) 
@@ -425,13 +420,13 @@ void pfa_init(efi_memory_map* map)
             zoneStack[tmpVar] = freeZones[j];
             ++tmpVar;
         }
-        // printk("gdt %X\n", *(uint64_t*)( ((uint64_t)&map->mmap) + 144) );
+        // printf("gdt %X\n", *(uint64_t*)( ((uint64_t)&map->mmap) + 144) );
 
-        // printk("%p AT %p %u\n", pageManager.zoneAllocators[i].manager, (void*)(ALLOC_MANAGED_MEM * i), tmpVar);
+        // printf("%p AT %p %u\n", pageManager.zoneAllocators[i].manager, (void*)(ALLOC_MANAGED_MEM * i), tmpVar);
         buddy_alloc_init_free_regions(pageManager.zoneAllocators[i].manager, (void*)(ALLOC_MANAGED_MEM * i), zoneStack, (uint16_t)tmpVar);
         memset(zoneStack, 0, sizeof(mem_zone) * tmpCount); // reset the stack.
 
-        // printk("gdt %X\n", *(uint64_t*)( ((uint64_t)&map->mmap) + 144) );
+        // printf("gdt %X\n", *(uint64_t*)( ((uint64_t)&map->mmap) + 144) );
     }
     lowmem_buddy_init_free_regions(pageManager.lowZoneAllocator.manager, 0, lowMemZones, under4MiB);
 
@@ -460,7 +455,7 @@ void* pfa_alloc_pages(IN uint32_t count, uint8_t type)
 {
     count = (uint32_t)round2(count);
     if(count * PAGE_SIZE > ALLOC_MANAGED_MEM || count == 0) return NULLPTR;
-    // printk("REQUESTED %u\n", count);
+    // printf("REQUESTED %u\n", count);
 
 
     void*          out       = NULLPTR;
@@ -490,10 +485,10 @@ void* pfa_alloc_pages(IN uint32_t count, uint8_t type)
         // atomic lock. 
         atomic_exchange_ret_u8(&pageManager.zoneAllocators[i].isusing, BOOLEAN_TRUE);
 
-        // printk("BEFORE %p\n", out);
+        // printf("BEFORE %p\n", out);
         out = alloc_pages(pageManager.zoneAllocators[i].manager, count);
         pageManager.zoneAllocators[i].maxMemReq = maxBlockReq(pageManager.zoneAllocators[i].manager) >> LOG2_PAGE_SIZE;
-        // printk("BEFORE %p\n", out);
+        // printf("BEFORE %p\n", out);
         
         satisfied = boolean(out);
         pageManager.free     -= satisfied * (uint64_t)count * PAGE_SIZE;
@@ -655,10 +650,10 @@ uint64_t MemoryPressure()      { return MemoryMapPageCount / pageManager.free; }
 
 //     // debug print for sanity check.
 //     // DEBUG(
-//     //     printk("\nFirmware Used Memory Zones: %u\ntotal Memory: %u Pages\n", offset, totalPages);
+//     //     printf("\nFirmware Used Memory Zones: %u\ntotal Memory: %u Pages\n", offset, totalPages);
 //     //     for(uint8_t i = 0; i < offset; ++i)
 //     //     {
-//     //         printk("Memory Region %u : { %X, %x }\n", i, usedRegions[i].mem, usedRegions[i].pages);
+//     //         printf("Memory Region %u : { %X, %x }\n", i, usedRegions[i].mem, usedRegions[i].pages);
 //     //     }
 //     // );
 //     localStackPointer += sizeof(mem_zone) * (dscs + 1);

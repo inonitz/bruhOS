@@ -12,7 +12,7 @@ void kpanic(const char_t* msg)
     consoleSetTextColor(__KERNEL_CONSOLE_BLACK);
     
 
-    printk("KERNEL PANIC!!!\n");
+    printf("KERNEL PANIC!!!\n");
     KERNEL_ERROR(KERNEL_FAILURE_SEVERE, BOOLEAN_TRUE, msg)
     return;
 }

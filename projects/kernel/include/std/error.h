@@ -1,6 +1,6 @@
 #ifndef __KERNEL_C_DEFINITION_STD_NONSTANDARD_ERROR_HEADER__
 #define __KERNEL_C_DEFINITION_STD_NONSTANDARD_ERROR_HEADER__
-#include <std/io.h>
+#include <std/printf.h>
 #include <std/enable_bool.h>
 #include <std/bool.h>
 
@@ -26,8 +26,8 @@
 #endif
 
 
-#define printLocation() printk("file: %s\nline: %s", __FILE__, __LINE__)
-#define debug_printk(str, ...) DEBUG(printk(str, __VA_ARGS__);)
+#define printLocation() printf("file: %s\nline: %s", __FILE__, __LINE__)
+#define debug_printk(str, ...) DEBUG(printf(str, __VA_ARGS__);)
 
 #define KERNEL_ERROR(err_type, is_critical_section, msg) \
 	kernelErrorReport(__FILE__, __func__, __LINE__, err_type, is_critical_section, msg); \

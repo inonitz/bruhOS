@@ -208,9 +208,10 @@ void enablePagingJumpToEntry(
     // debug_printb(L"entry @%p\n\rnewHeader @%p (physical)\n\r", entry, newHeader);
     dumpMemoryMap(&oldHeader->map);
     // dumpPageTables(pml4);
-    print_kernel_header(oldHeader);
+    // print_kernel_header(oldHeader);
+    
     exitBootServices(ImageHandle, memoryMapKey);
-
+    
     /* BiggestFreeZone is now the memory-descriptor entry for the paging tables */
     finalizeMemoryMap(
         &oldHeader->map, 
@@ -228,7 +229,7 @@ void enablePagingJumpToEntry(
         finalizeMemoryMap mapped 'oldHeader->map.mmap' to the virtual address space  
         Problem is, we haven't switched the page table yet, 
         so a memory access would cause a page fault
-        So we do a little bit of pointer magic to read from the physical address    
+        So we do a little bit of pointer magic to read from the physical address
     */
     oldHeader->memcfg.pml4     = (uint64_t)pml4;
     oldHeader->memcfg.pml4size = (
@@ -322,7 +323,7 @@ static void finalizeMemoryMap(
     efi_mem_descriptor* remainingMemoryPages = (efi_mem_descriptor*)NULL;
     efi_mem_descriptor* prev = (efi_mem_descriptor*)NULL;
     efi_mem_descriptor* dsc  = (efi_mem_descriptor*)NULL;
-    const uint64_t      dscs = (map->used_size / map->entry_size);    
+    const uint64_t      dscs = (map->used_size / map->entry_size);
 
 
     // Move all entries from idx biFreeIdx to the right by 1.
@@ -432,10 +433,10 @@ static void mapFramebufferToVirtualMemory(
     
     /* fb->start is already a virtual address, so we need to undo the offset to get the phys_addr */
     /* see main.c:143 */
-    virt   = (uint64_t)fb->start;
-    phys   = (uint64_t)fb->start - virtualOffset;
-    fbsize = (uint64_t)fb->dims.x * (uint64_t)fb->dims.y;
-    fbsize *= __KERNEL_CONSOLE_RGB32_UNION_TYPE_SIZE_BYTES;
+    virt   = (uint64_t)fb->m_baseAddress;
+    phys   = (uint64_t)fb->m_baseAddress - virtualOffset;
+    fbsize = (uint64_t)fb->m_pixelsPerScanLine * (uint64_t)fb->m_height;
+    fbsize *= fb->m_pixelElementSizeBytes;
     fbsize >>= EFI_PAGE_SHIFT;
     debug_printb(L"Mapping %z Pages for Framebuffer @%p (Physical) -> @%p (Virtual)\n\r",
         fbsize,
@@ -646,9 +647,9 @@ static void print_kernel_header(
     Framebuffer:\n\t\
       start : %p\n\t\
       dims  : (%u, %u)\n\t",
-        hdr->screen.start,
-        hdr->screen.dims.x,
-        hdr->screen.dims.y
+        hdr->screen.m_baseAddress,
+        hdr->screen.m_width,
+        hdr->screen.m_height
     );
     debug_printb(L"\
     ACPI Config: %a\n\t\

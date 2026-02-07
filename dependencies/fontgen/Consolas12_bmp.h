@@ -10,13 +10,13 @@
 
 typedef struct
 {
-    char_t GlyphCount;
-    char_t FirstAsciiCode;
-    char_t GlyphBytesWidth;
-    char_t GlyphHeight;
-    char_t FixedWidth;
-    char_t const *GlyphWidth;
-    char_t const *GlyphBitmaps;
+    char GlyphCount;
+    char FirstAsciiCode;
+    char GlyphBytesWidth;
+    char GlyphHeight;
+    char FixedWidth;
+    char const *GlyphWidth;
+    char const *GlyphBitmaps;
 } fontStyle_t;
 
 

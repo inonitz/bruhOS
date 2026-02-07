@@ -17,7 +17,7 @@ void consoleClear(IN console_t* cons)
 
     for(uint64_t off = 0; off < buffer_size; ++off)
     {
-        *((uint64_t*)tmp->start + off) = batch_col;
+        *((uint64_t*)tmp->m_baseAddress + off) = batch_col;
     }
 	cons->cursor_pos = (vec2us){ 0, 0 }; // reset to start.
 }

@@ -31,13 +31,13 @@ int32_t strcmp(
 
 EFI_API void memsetzero(
     uint8_t* buffer,
-    uint32_t size
+    uint32_t bytes
 );
 
 
 EFI_API void memsetzerovoid(
     void* buffer,
-    uint32_t size
+    uint32_t bytes
 );
 
 

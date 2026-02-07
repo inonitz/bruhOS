@@ -11,16 +11,19 @@ uint64_t setup_window(
 )
 {
 	to_init->buffers.front = (framebuffer_t){ 
-		initialized_front_buf->start, 
-		initialized_front_buf->dims , 
-		{ 0, 0 }
+		initialized_front_buf->m_baseAddress, 
+		initialized_front_buf->m_width,
+		initialized_front_buf->m_height,
+		initialized_front_buf->m_pixelsPerScanLine,
+		initialized_front_buf->m_pixelElementSizeBytes,
 	};
-	to_init->buffers.back  = (framebuffer_t){
+	to_init->buffers.back = (framebuffer_t){ 
 		NULLPTR,
-		{ 0, 0 }, 
-		{ 0, 0 }
+		0, 0,
+		0,
+		0
 	};
-	to_init->dims   = initialized_front_buf->dims;
+	to_init->dims = (vec2us){ initialized_front_buf->m_width, initialized_front_buf->m_height };
 	to_init->winoff = window_offset;
 	return KERNEL_SUCCESS;	
 }
@@ -29,6 +32,8 @@ uint64_t setup_window(
 uint64_t getFrameBufferSize(framebuffer_t* buf)
 {
 	/* See UEFI Spec - Graphics Output Protocol for more info */
-	uint64_t result = (uint64_t)buf->dims.x * (uint64_t)buf->dims.y;
-	return __KERNEL_CONSOLE_RGB32_UNION_TYPE_SIZE_BYTES * result;
+	uint64_t result = (uint64_t)buf->m_pixelElementSizeBytes;
+	result *= buf->m_pixelsPerScanLine;
+	result *= buf->m_height;
+	return result;
 }

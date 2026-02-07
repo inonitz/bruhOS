@@ -40,10 +40,10 @@ static void dump_freelist(BuddyAllocator* mman, uint8_t lvl)
 	while (begin != &HEAD(mman)[lvl])
 	{
 		off = get_offset(begin, LINKEDMAP(mman));
-        printk("[%u]->", off);
+        printf("[%u]->", off);
 		begin = MPTR(mman, begin->next);
 	}
-	printk("\n");
+	printf("\n");
 }
 
 
@@ -51,10 +51,10 @@ static void dump_levels(BuddyAllocator* mman)
 {
 	for (uint8_t i = 0; i < BUDDY_TREE_DEPTH + 1; ++i)
 	{
-		printk("lvl %u: ", i);
+		printf("lvl %u: ", i);
 		dump_freelist(mman, i);
 	}
-	printk("\n\n");
+	printf("\n\n");
 }
 
 
@@ -242,7 +242,7 @@ void buddy_alloc_init_free_regions(BuddyAllocator* mman, void* start, struct mem
 	}
 	for(uint32_t i = 0; i < count; ++i)
 	{
-		// printk("idx: %u lg2: %u\n", indices[i], lg2idx[i]);
+		// printf("idx: %u lg2: %u\n", indices[i], lg2idx[i]);
 		push_entry(mman, lg2idx[i], &NODE_AT(mman, indices[i]));
 	}
 
@@ -331,8 +331,8 @@ uint8_t free_page(BuddyAllocator* mman, void* ptr)
 
 void buddyInfo(BuddyAllocator* mman)
 {
-	printk("Buddy Allocator Info:\n");
-	printk("Free-lists from lvl %u to %u:\n", 0, (uint32_t)BUDDY_TREE_DEPTH);
+	printf("Buddy Allocator Info:\n");
+	printf("Free-lists from lvl %u to %u:\n", 0, (uint32_t)BUDDY_TREE_DEPTH);
 	dump_levels(mman);
 }
 
@@ -402,7 +402,7 @@ void* reserveBlock(BuddyAllocator* mman, uint64_t blockAddr, uint32_t count)
 	}
 	if(!block->state) 
 	{
-		printk("couldn't reserve block - didn't find a parent block available to split.");
+		printf("couldn't reserve block - didn't find a parent block available to split.");
 		return NULLPTR;
 	};
 
