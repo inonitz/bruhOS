@@ -95,6 +95,7 @@ set(SOURCES
     source/acpi/picdisable.s
     source/device/hpet.c
     source/device/lapict.c
+    source/device/port.c
     source/entry/entry.c
     source/entry/kernel.c
     source/gpcs2/blit.c

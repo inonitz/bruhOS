@@ -1,7 +1,5 @@
 #include <acpi/pic.h>
-#include <std/macro.h>
-#include <std/error.h>
-
+#include <device/port.h>
 
 
 // define's taken from https://github.com/pdoane/osdev/blob/master/time/pit.c.
@@ -15,18 +13,6 @@
 #define CMD_RW_BOTH                     0x30   // Least followed by Most Significant Byte
 #define CMD_COUNTER0                    0x00
 #define PIT_FREQUENCY                   1193182
-
-
-static void __noinline outb(uint16_t port, uint8_t value)
-{
-    __asm__ volatile ("outb %0, %1" : : "a"(value), "Nd"(port));
-}
-static uint8_t __noinline inb(uint16_t port)
-{
-    uint8_t ret;
-    __asm__ volatile("inb %1, %0" : "=a"(ret) : "Nd"(port));
-    return ret;
-}
 
 
 extern void pic_disable_asm(void);

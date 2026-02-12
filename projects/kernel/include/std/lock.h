@@ -32,6 +32,10 @@
 #define SPINLOCK_VAL(spinlock_type) (spinlock_type.flag)
 
 
+static const atomic8u_t ks_flagZero = 0;
+static const atomic8u_t ks_flagOne  = 1;
+
+
 typedef struct __spinlock_type
 {
     atomic8u_t flag;
@@ -74,7 +78,7 @@ static __force_inline bool_t try_lock(spinlock_t* sl)
 
 static __force_inline void unlock(spinlock_t* sl)
 {
-    atomic_cmpxchg_u8(&sl->flag, &sl->flag, BOOLEAN_FALSE);
+    atomic_store_explicit_u8(&sl->flag, &ks_flagZero, memory_model_release);
     return;
 }
 

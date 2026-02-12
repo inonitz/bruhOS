@@ -1,9 +1,9 @@
 #ifndef __KERNEL_C_DEFINITION_STD_ATOMIC_HEADER__
 #define __KERNEL_C_DEFINITION_STD_ATOMIC_HEADER__
+#include <std/macro.h>
 #include <std/int.h>
 #include <std/enable_bool.h>
 #include <std/bool.h>
-#include <std/macro.h>
 
 
 typedef int8_t   alignsz(sizeof(int8_t  )) atomic8_t  ; 
